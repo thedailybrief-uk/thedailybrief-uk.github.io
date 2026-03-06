@@ -22,6 +22,8 @@
       --border-light: #eae7e0;
       --accent-geo: #8b2332;
       --accent-dom: #1b4f72;
+      --accent-morning: #b8860b;
+      --accent-evening: #4a3f6b;
       --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
       --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --body-serif: 'Source Serif 4', Georgia, serif;
@@ -59,7 +61,7 @@
     }
     .masthead-nav {
       display: flex; align-items: center; justify-content: center; gap: 28px;
-      padding: 10px 0; border-top: 1px solid var(--border-light);
+      padding: 10px 0; border-top: 1px solid var(--border-light); flex-wrap: wrap;
     }
     .masthead-nav a {
       font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
@@ -75,12 +77,25 @@
 
     /* ── Curated Briefing ── */
     .curated-section { margin: 28px auto; max-width: 1100px; padding: 0 24px; }
-    .curated-banner {
-      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-      color: #fff; border-radius: 10px; padding: 28px 32px;
+    .curated-edition {
+      border-radius: 10px; padding: 28px 32px; margin-bottom: 20px;
     }
-    .curated-banner h2 { font-family: var(--serif); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-    .curated-meta { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .curated-edition.evening {
+      background: linear-gradient(135deg, #1a1a2e, #2a2540);
+      color: #fff;
+    }
+    .curated-edition.morning {
+      background: linear-gradient(135deg, #2c2a1a, #3d3520);
+      color: #fff;
+    }
+    .edition-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+    }
+    .edition-icon {
+      font-size: 18px; opacity: 0.7;
+    }
+    .edition-header h2 { font-family: var(--serif); font-size: 20px; font-weight: 700; }
+    .curated-meta { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 20px; padding-left: 30px; }
     .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
     @media (max-width: 768px) { .curated-grid { grid-template-columns: 1fr; } }
     .curated-column h3 {
@@ -95,6 +110,10 @@
     .curated-item:last-child { border-bottom: none; padding-bottom: 0; }
     .curated-item h4 { font-family: var(--body-serif); font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 5px; }
     .curated-item p { font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.65); }
+    .curated-empty {
+      text-align: center; padding: 32px 20px;
+      color: rgba(255,255,255,0.35); font-size: 13px; font-style: italic;
+    }
 
     /* ── Section ── */
     .section { margin: 36px 0; }
@@ -201,7 +220,7 @@
       </div>
       <h1 class="masthead-title">The Daily Briefing</h1>
       <nav class="masthead-nav">
-        <a href="#curated">Curated Summary</a>
+        <a href="#curated">Curated Briefings</a>
         <a href="#geopolitical" class="geo">Geopolitical</a>
         <a href="#domestic" class="dom">UK Domestic</a>
       </nav>
@@ -209,34 +228,41 @@
     <div class="last-updated">Last refreshed: <span id="refreshTime">loading...</span></div>
   </header>
 
-  <!-- Curated Briefing -->
+  <!-- ════════════════════════════════════════════ -->
+  <!-- CURATED BRIEFINGS                           -->
+  <!-- ════════════════════════════════════════════ -->
   <div class="curated-section" id="curated">
-    <div class="curated-banner">
-      <h2>Curated Briefing</h2>
-      <div class="curated-meta">Evening Edition &mdash; Thursday 6 March 2026</div>
+
+    <!-- ── EVENING EDITION ── -->
+    <div class="curated-edition evening">
+      <div class="edition-header">
+        <span class="edition-icon">&#9790;</span>
+        <h2>Evening Briefing</h2>
+      </div>
+      <div class="curated-meta">Thursday 6 March 2026 &mdash; 17:00 GMT</div>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
           <div>
             <div class="curated-item">
               <h4>US-Israel War on Iran Enters Day Seven</h4>
-              <p>The US and Israel continue strikes on Iran, with at least 1,332 killed since operations began on 28 February. Israel's military chief announced a "next phase" after 2,500 strikes with 6,000+ weapons. A panel of Iranian clerics is meeting to determine the regime's next leader after Ayatollah Khamenei was killed in airstrikes. The US House rejected a war powers resolution 212-219 that would have curbed presidential authority. Oil prices have surged 24-31% this week, with Brent hitting $91/barrel.</p>
+              <p>The US and Israel continue strikes on Iran, with at least 1,332 killed since operations began on 28 February. Israel's military chief announced a "next phase" after 2,500 strikes with 6,000+ weapons. A panel of Iranian clerics is meeting to determine the regime's next leader after Ayatollah Khamenei was killed in airstrikes. The US House rejected a war powers resolution 212-219. Oil prices have surged 24-31% this week, with Brent hitting $91/barrel.</p>
             </div>
             <div class="curated-item">
               <h4>Iran Retaliates with Missiles on Tel Aviv; Lebanon Hit Again</h4>
-              <p>Iran's Revolutionary Guards launched a wave of drones and missiles at targets in Tel Aviv. Israeli airstrikes killed 123 and wounded 683 in Lebanon. Six US service members were killed in a drone strike on a port in Kuwait. European governments remain divided on response, with the UK and France deploying naval and air-defence assets to the eastern Mediterranean.</p>
+              <p>Iran's Revolutionary Guards launched drones and missiles at Tel Aviv. Israeli airstrikes killed 123 and wounded 683 in Lebanon. Six US service members killed in a drone strike on a port in Kuwait. Qatar warns the war will force Gulf states to stop energy exports "within days". UK and France deploying naval and air-defence assets to the eastern Mediterranean.</p>
             </div>
             <div class="curated-item">
               <h4>Ukraine Regains Ground; POW Swap Amid Stalled Talks</h4>
-              <p>Ukraine captured more territory than it lost in February for the first time since the Kursk offensive, with net gains of 257 sq km this year. Russia and Ukraine exchanged 200 POWs each, but US-brokered peace negotiations remain stalled over territorial demands. Russia has suffered an estimated 1.27 million casualties since February 2022. Overnight, 155 drones were launched at Ukraine including ~100 Shaheds.</p>
+              <p>Ukraine captured more territory than it lost in February &mdash; net gains of 257 sq km this year. Russia and Ukraine exchanged 200 POWs each, but US-brokered peace talks remain stalled over territorial demands. Russia has suffered an estimated 1.27 million casualties since Feb 2022. 155 drones launched at Ukraine overnight including ~100 Shaheds.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Global Bonds Suffer One of Worst Routs in Years</h4>
+              <p>Bond markets are in turmoil as the Iran conflict drives oil prices higher and inflation expectations spike. The sell-off is hitting government debt across the US, UK and eurozone, with investors fleeing to commodities and cash. Analysts warn of stagflation risk if the conflict persists.</p>
             </div>
             <div class="curated-item">
               <h4>DRC Landslide Kills 200+ at Coltan Mining Site</h4>
-              <p>Heavy rains triggered a landslide at a major coltan mining site in eastern DRC, killing over 200 people including an estimated 70 children. The disaster highlights the dangerous conditions in artisanal mining of minerals critical to the global electronics supply chain.</p>
-            </div>
-            <div class="curated-item">
-              <h4>Pakistan-Afghanistan Border Conflict Displaces Thousands</h4>
-              <p>A week-long military confrontation between Pakistan and Afghanistan has displaced 115,000 in Afghanistan and 3,000 in Pakistan, with troops exchanging fire at dozens of points along their shared border.</p>
+              <p>Heavy rains triggered a landslide at a major coltan mining site in eastern DRC, killing over 200 including ~70 children. Pakistan-Afghanistan border conflict has displaced 118,000 people across both countries.</p>
             </div>
           </div>
         </div>
@@ -245,31 +271,53 @@
           <div>
             <div class="curated-item">
               <h4>Spring Statement: Borrowing Down, Growth Forecast Cut</h4>
-              <p>Rachel Reeves delivered the Spring Statement with borrowing down nearly &pound;18bn compared to autumn forecasts &mdash; the lowest in six years. However, the OBR cut its 2026 GDP growth forecast from 1.4% to 1.1%. NHS day-to-day funding will increase 3% annually from 2026/27, though health leaders warn of "stretched budgets" and risk to elective care targets.</p>
+              <p>Rachel Reeves delivered the Spring Statement with borrowing down nearly &pound;18bn &mdash; the lowest in six years. However, the OBR cut 2026 GDP growth from 1.4% to 1.1%. NHS day-to-day funding up 3% annually from 2026/27, though health leaders warn of "stretched budgets" and risk to elective care targets. OBR forecasts people will be &pound;1,000/year better off after inflation.</p>
             </div>
             <div class="curated-item">
-              <h4>PM Calls E4 Leaders on Middle East Crisis</h4>
-              <p>Keir Starmer held calls with the leaders of France, Germany and Italy this morning to coordinate on the Middle East escalation. The UK has moved naval and air-defence resources to the eastern Mediterranean alongside France.</p>
+              <h4>PM Coordinates with France, Germany, Italy on Iran Crisis</h4>
+              <p>Keir Starmer held calls with E4 leaders this morning on the Middle East escalation. The UK has moved naval and air-defence resources to the eastern Mediterranean. Emirates has resumed some Dubai flights, but widespread airspace closures continue to affect UK travel.</p>
             </div>
             <div class="curated-item">
-              <h4>Labour Reeling After Gorton &amp; Denton By-Election Loss</h4>
-              <p>The fallout continues from Labour's disastrous third-place finish in Gorton and Denton, a seat they won with 51% in 2024. The Greens took it with 40.7%, Reform came second at 28.7%, and Labour collapsed to 25.4%. It was the Green Party's first by-election win and their fifth MP. Polling shows multi-party fragmentation accelerating across the UK.</p>
+              <h4>Labour Reeling After Gorton &amp; Denton By-Election Collapse</h4>
+              <p>Fallout continues from Labour's third-place finish in Gorton &amp; Denton &mdash; a seat they won with 51% in 2024. Greens took it with 40.7%, Reform second at 28.7%, Labour collapsed to 25.4%. It was the Green Party's first by-election win. Polls show multi-party fragmentation accelerating across the UK.</p>
             </div>
             <div class="curated-item">
-              <h4>Foreign Affairs Committee: EU Reset Lacks Strategy</h4>
-              <p>A report by the Foreign Affairs Committee found the government's UK-EU reset lacks clear strategic priorities, with the EU appearing to achieve more concrete progress on its demands than the UK has on its own.</p>
+              <h4>US Economy Sheds 92,000 Jobs; UK Impact Expected</h4>
+              <p>The US unexpectedly lost 92,000 jobs in February, rattling markets and raising recession fears. Analysts expect knock-on effects for the UK economy, particularly in financial services and export sectors, compounding the OBR's already-downgraded growth outlook.</p>
             </div>
             <div class="curated-item">
-              <h4>Carbon Budget Fairness Warning</h4>
-              <p>MPs warned that the Seventh Carbon Budget must deliver fair benefits to all or risk losing public consent. The committee said "fairness is fundamental" to the policy's legitimacy, amid concerns that the transition costs fall disproportionately on lower-income households.</p>
+              <h4>EU Reset Lacks Strategy; Carbon Budget Fairness Warning</h4>
+              <p>The Foreign Affairs Committee found the UK-EU reset lacks clear strategic priorities, with the EU achieving more progress on its demands. Separately, MPs warned the Seventh Carbon Budget must deliver fair benefits to all or risk losing public consent.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ── MORNING EDITION ── -->
+    <div class="curated-edition morning">
+      <div class="edition-header">
+        <span class="edition-icon">&#9788;</span>
+        <h2>Morning Briefing</h2>
+      </div>
+      <div class="curated-meta">Next edition: Friday 7 March 2026 &mdash; 10:00 GMT</div>
+      <div class="curated-grid">
+        <div class="curated-column">
+          <h3><span class="dot geo"></span> Geopolitical</h3>
+          <div class="curated-empty">Tomorrow's morning briefing will appear here at 10:00 AM</div>
+        </div>
+        <div class="curated-column">
+          <h3><span class="dot dom"></span> UK Domestic</h3>
+          <div class="curated-empty">Tomorrow's morning briefing will appear here at 10:00 AM</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Live RSS Feeds -->
+  <!-- ════════════════════════════════════════════ -->
+  <!-- LIVE RSS FEEDS                              -->
+  <!-- ════════════════════════════════════════════ -->
   <main class="container">
 
     <!-- Geopolitical -->
@@ -306,8 +354,8 @@
 
   <footer class="site-footer">
     <p class="footer-brand">The Daily Briefing</p>
-    <p>Aggregated from BBC, Sky News, Financial Times, The Telegraph, Reuters &amp; Al Jazeera<br/>
-    Auto-refreshes on each visit &middot; Curated summaries updated periodically</p>
+    <p>Aggregated from Financial Times, BBC, Sky News, Reuters &amp; Al Jazeera<br/>
+    Live feeds refresh on each visit &middot; Curated briefings at 10:00 AM &amp; 5:00 PM</p>
   </footer>
 
   <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
@@ -323,22 +371,22 @@ document.getElementById('currentDate').textContent =
   now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
 
 // ── RSS Config ──
+// Priority order: FT first, then BBC, Sky, Al Jazeera
+// Telegraph blocks all RSS proxies so cannot be included in live feeds
 const PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
 const GEO_FEEDS = [
+  { name: 'Financial Times', url: 'https://www.ft.com/rss/home', top: 5 },
   { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', top: 4 },
+  { name: 'BBC Business', url: 'https://feeds.bbci.co.uk/news/business/rss.xml', top: 3 },
   { name: 'Sky News', url: 'https://feeds.skynews.com/feeds/rss/world.xml', top: 3 },
-  { name: 'Financial Times', url: 'https://www.ft.com/world?format=rss', top: 3 },
-  { name: 'The Telegraph', url: 'https://www.telegraph.co.uk/news/rss.xml', top: 3 },
-  { name: 'Reuters', url: 'https://www.reutersnews.com/api/rss/news/international', top: 3 },
   { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', top: 3 },
 ];
 
 const DOM_FEEDS = [
-  { name: 'BBC Politics', url: 'https://feeds.bbci.co.uk/news/politics/rss.xml', top: 4 },
+  { name: 'BBC Politics', url: 'https://feeds.bbci.co.uk/news/politics/rss.xml', top: 5 },
+  { name: 'BBC UK', url: 'https://feeds.bbci.co.uk/news/uk/rss.xml', top: 3 },
   { name: 'Sky News', url: 'https://feeds.skynews.com/feeds/rss/politics.xml', top: 3 },
-  { name: 'Financial Times', url: 'https://www.ft.com/stream/badbe4ef-3c55-4e78-a209-0e4493623498?format=rss', top: 3 },
-  { name: 'The Telegraph', url: 'https://www.telegraph.co.uk/politics/rss.xml', top: 3 },
 ];
 
 // ── Helpers ──
@@ -400,13 +448,11 @@ function dedupe(articles) {
 function renderSection(articles, accentClass) {
   if (!articles.length) return '<div class="error-state">Unable to load stories right now.</div>';
 
-  // Sort by date, newest first
   articles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
   const deduped = dedupe(articles);
 
-  // Top stories = first 6, rest = also today
   const top = deduped.slice(0, 6);
-  const rest = deduped.slice(6, 20);
+  const rest = deduped.slice(6, 18);
 
   let html = '<div class="top-stories">';
   top.forEach(a => {
