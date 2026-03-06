@@ -22,8 +22,6 @@
       --border-light: #eae7e0;
       --accent-geo: #8b2332;
       --accent-dom: #1b4f72;
-      --accent-geo-light: #f9eced;
-      --accent-dom-light: #e8f0f7;
       --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
       --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --body-serif: 'Source Serif 4', Georgia, serif;
@@ -38,7 +36,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Header */
+    /* ── Masthead ── */
     .masthead {
       border-bottom: 3px double var(--border);
       background: var(--bg);
@@ -46,383 +44,150 @@
       top: 0;
       z-index: 50;
     }
-
-    .masthead-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
+    .masthead-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
     .masthead-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 0 12px;
-      border-bottom: 1px solid var(--border-light);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0 10px; border-bottom: 1px solid var(--border-light);
     }
-
     .masthead-date {
-      font-family: var(--sans);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
+      font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-tertiary);
     }
-
     .masthead-title {
-      font-family: var(--serif);
-      font-size: clamp(28px, 5vw, 42px);
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--text-primary);
-      text-align: center;
-      padding: 14px 0;
+      font-family: var(--serif); font-size: clamp(26px, 5vw, 40px); font-weight: 800;
+      letter-spacing: -0.5px; text-align: center; padding: 12px 0;
     }
-
     .masthead-nav {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-      padding: 10px 0;
-      border-top: 1px solid var(--border-light);
+      display: flex; align-items: center; justify-content: center; gap: 28px;
+      padding: 10px 0; border-top: 1px solid var(--border-light);
     }
-
     .masthead-nav a {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
+      font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-secondary); text-decoration: none; transition: color 0.2s; padding-bottom: 2px;
     }
-
     .masthead-nav a:hover { color: var(--text-primary); }
-    .masthead-nav a.geo { border-bottom: 2px solid var(--accent-geo); padding-bottom: 2px; }
-    .masthead-nav a.dom { border-bottom: 2px solid var(--accent-dom); padding-bottom: 2px; }
+    .masthead-nav a.geo { border-bottom: 2px solid var(--accent-geo); }
+    .masthead-nav a.dom { border-bottom: 2px solid var(--accent-dom); }
+    .last-updated { font-size: 11px; color: var(--text-muted); text-align: center; padding: 6px 0; }
 
-    .last-updated {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-align: center;
-      padding: 8px 0;
-    }
+    /* ── Container ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-    .last-updated span { font-weight: 500; }
-
-    /* Main content */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Curated briefing section */
-    .curated-section {
-      margin: 32px auto;
-      max-width: 1200px;
-      padding: 0 24px;
-    }
-
+    /* ── Curated Briefing ── */
+    .curated-section { margin: 28px auto; max-width: 1100px; padding: 0 24px; }
     .curated-banner {
-      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-      color: #fff;
-      border-radius: 12px;
-      padding: 32px 36px;
-      margin-bottom: 24px;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      color: #fff; border-radius: 10px; padding: 28px 32px;
     }
-
-    .curated-banner h2 {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .curated-banner .curated-meta {
-      font-size: 13px;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 20px;
-    }
-
-    .curated-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 768px) {
-      .curated-grid { grid-template-columns: 1fr; }
-    }
-
+    .curated-banner h2 { font-family: var(--serif); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .curated-meta { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    @media (max-width: 768px) { .curated-grid { grid-template-columns: 1fr; } }
     .curated-column h3 {
-      font-family: var(--sans);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.5);
     }
-
-    .curated-column h3 .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
+    .curated-column h3 .dot { width: 7px; height: 7px; border-radius: 50%; }
     .curated-column h3 .dot.geo { background: var(--accent-geo); }
     .curated-column h3 .dot.dom { background: var(--accent-dom); }
+    .curated-item { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .curated-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .curated-item h4 { font-family: var(--body-serif); font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 5px; }
+    .curated-item p { font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.65); }
 
-    .curated-item {
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .curated-item:last-child { border-bottom: none; }
-
-    .curated-item h4 {
-      font-family: var(--body-serif);
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.4;
-      margin-bottom: 6px;
-    }
-
-    .curated-item p {
-      font-size: 13px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.7);
-    }
-
-    .curated-empty {
-      text-align: center;
-      padding: 40px 20px;
-      color: rgba(255,255,255,0.4);
-      font-size: 14px;
-      font-style: italic;
-    }
-
-    /* Section */
-    .section {
-      margin: 40px 0;
-    }
-
+    /* ── Section ── */
+    .section { margin: 36px 0; }
     .section-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 28px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px; padding-bottom: 14px; border-bottom: 2px solid var(--border);
     }
-
-    .section-accent {
-      width: 4px;
-      height: 32px;
-      border-radius: 2px;
-    }
-
+    .section-accent { width: 4px; height: 28px; border-radius: 2px; }
     .section-accent.geo { background: var(--accent-geo); }
     .section-accent.dom { background: var(--accent-dom); }
+    .section-title { font-family: var(--serif); font-size: 22px; font-weight: 700; }
+    .section-subtitle { font-size: 13px; color: var(--text-tertiary); margin-left: auto; }
 
-    .section-title {
-      font-family: var(--serif);
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-primary);
+    /* ── Top stories (large cards) ── */
+    .top-stories { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 32px; }
+    @media (max-width: 740px) { .top-stories { grid-template-columns: 1fr; } }
+
+    .top-card {
+      background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px;
+      padding: 22px 24px; text-decoration: none; color: inherit;
+      transition: box-shadow 0.2s, transform 0.15s; display: flex; flex-direction: column;
+    }
+    .top-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); transform: translateY(-1px); }
+    .top-card .card-source {
+      font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .top-card .card-source.geo { color: var(--accent-geo); }
+    .top-card .card-source.dom { color: var(--accent-dom); }
+    .top-card h3 {
+      font-family: var(--body-serif); font-size: 18px; font-weight: 600;
+      line-height: 1.35; margin-bottom: 8px;
+    }
+    .top-card p { font-size: 14px; line-height: 1.55; color: var(--text-secondary); flex: 1; }
+    .top-card .card-time {
+      font-size: 11px; color: var(--text-muted); margin-top: 12px;
+      padding-top: 10px; border-top: 1px solid var(--border-light);
     }
 
-    .section-subtitle {
-      font-size: 13px;
-      color: var(--text-tertiary);
-      margin-left: auto;
-      font-weight: 400;
+    /* ── Also today (compact list) ── */
+    .also-today-header {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 14px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
     }
-
-    /* Source group */
-    .source-group {
-      margin-bottom: 36px;
+    .also-today { display: flex; flex-direction: column; gap: 0; }
+    .also-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 0; border-bottom: 1px solid var(--border-light);
+      text-decoration: none; color: inherit; transition: background 0.15s;
     }
-
-    .source-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      margin-bottom: 16px;
-      padding-left: 2px;
+    .also-item:hover { background: rgba(0,0,0,0.015); }
+    .also-item:last-child { border-bottom: none; }
+    .also-item .also-source {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
+      white-space: nowrap; padding-top: 3px; min-width: 90px;
     }
-
-    /* News grid */
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 20px;
+    .also-item .also-source.geo { color: var(--accent-geo); }
+    .also-item .also-source.dom { color: var(--accent-dom); }
+    .also-item h4 {
+      font-family: var(--body-serif); font-size: 15px; font-weight: 600;
+      line-height: 1.35; color: var(--text-primary);
     }
+    .also-item .also-time { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
 
-    @media (max-width: 740px) {
-      .news-grid { grid-template-columns: 1fr; }
-    }
-
-    /* News card */
-    .news-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-light);
-      border-radius: 8px;
-      padding: 20px 22px;
-      transition: box-shadow 0.2s, transform 0.15s;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .news-card:hover {
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      transform: translateY(-1px);
-    }
-
-    .news-card-source {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .news-card-source.geo { color: var(--accent-geo); }
-    .news-card-source.dom { color: var(--accent-dom); }
-
-    .news-card h3 {
-      font-family: var(--body-serif);
-      font-size: 17px;
-      font-weight: 600;
-      line-height: 1.4;
-      margin-bottom: 10px;
-      color: var(--text-primary);
-    }
-
-    .news-card p {
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--text-secondary);
-      flex: 1;
-    }
-
-    .news-card-time {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-light);
-    }
-
-    /* Loading / Error states */
-    .loading-state {
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--text-tertiary);
-    }
-
+    /* ── Loading / Error ── */
+    .loading-state { text-align: center; padding: 48px 20px; color: var(--text-tertiary); }
     .loading-spinner {
-      width: 28px;
-      height: 28px;
-      border: 2.5px solid var(--border);
-      border-top-color: var(--text-tertiary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
+      width: 24px; height: 24px; border: 2.5px solid var(--border);
+      border-top-color: var(--text-tertiary); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 14px;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
+    .error-state { text-align: center; padding: 32px 20px; color: var(--text-tertiary); font-size: 14px; }
 
-    .error-state {
-      text-align: center;
-      padding: 32px 20px;
-      color: var(--text-tertiary);
-      font-size: 14px;
-    }
-
-    /* Footer */
+    /* ── Footer ── */
     .site-footer {
-      border-top: 3px double var(--border);
-      margin-top: 60px;
-      padding: 32px 24px;
-      text-align: center;
+      border-top: 3px double var(--border); margin-top: 48px;
+      padding: 28px 24px; text-align: center;
     }
-
-    .site-footer p {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.8;
-    }
-
+    .site-footer p { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
     .site-footer .footer-brand {
-      font-family: var(--serif);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
+      font-family: var(--serif); font-size: 15px; font-weight: 700;
+      color: var(--text-secondary); margin-bottom: 6px;
     }
 
-    /* Scroll to top */
+    /* ── Scroll to top ── */
     .scroll-top {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 40px;
-      height: 40px;
-      background: var(--text-primary);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-      z-index: 40;
+      position: fixed; bottom: 24px; right: 24px; width: 38px; height: 38px;
+      background: var(--text-primary); color: #fff; border: none; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 40;
     }
-
     .scroll-top.visible { opacity: 1; pointer-events: auto; }
-
-    /* Time of day tabs */
-    .time-tabs {
-      display: flex;
-      gap: 0;
-      margin-bottom: 24px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      width: fit-content;
-    }
-
-    .time-tab {
-      padding: 8px 20px;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      background: var(--bg-card);
-      border: none;
-      cursor: pointer;
-      color: var(--text-tertiary);
-      transition: all 0.2s;
-    }
-
-    .time-tab:not(:last-child) { border-right: 1px solid var(--border); }
-    .time-tab.active { background: var(--text-primary); color: #fff; }
-    .time-tab:hover:not(.active) { background: var(--bg-section); }
   </style>
 </head>
 <body>
@@ -436,7 +201,7 @@
       </div>
       <h1 class="masthead-title">The Daily Briefing</h1>
       <nav class="masthead-nav">
-        <a href="#curated" class="">Curated Summary</a>
+        <a href="#curated">Curated Summary</a>
         <a href="#geopolitical" class="geo">Geopolitical</a>
         <a href="#domestic" class="dom">UK Domestic</a>
       </nav>
@@ -444,22 +209,60 @@
     <div class="last-updated">Last refreshed: <span id="refreshTime">loading...</span></div>
   </header>
 
-  <!-- Curated Briefing (populated when I add summaries) -->
+  <!-- Curated Briefing -->
   <div class="curated-section" id="curated">
     <div class="curated-banner">
       <h2>Curated Briefing</h2>
-      <div class="curated-meta" id="curatedMeta">No curated summary yet — check back soon</div>
-      <div class="curated-grid" id="curatedContent">
+      <div class="curated-meta">Evening Edition &mdash; Thursday 6 March 2026</div>
+      <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
-          <div id="curatedGeo">
-            <div class="curated-empty">Awaiting next curated update</div>
+          <div>
+            <div class="curated-item">
+              <h4>US-Israel War on Iran Enters Day Seven</h4>
+              <p>The US and Israel continue strikes on Iran, with at least 1,332 killed since operations began on 28 February. Israel's military chief announced a "next phase" after 2,500 strikes with 6,000+ weapons. A panel of Iranian clerics is meeting to determine the regime's next leader after Ayatollah Khamenei was killed in airstrikes. The US House rejected a war powers resolution 212-219 that would have curbed presidential authority. Oil prices have surged 24-31% this week, with Brent hitting $91/barrel.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Iran Retaliates with Missiles on Tel Aviv; Lebanon Hit Again</h4>
+              <p>Iran's Revolutionary Guards launched a wave of drones and missiles at targets in Tel Aviv. Israeli airstrikes killed 123 and wounded 683 in Lebanon. Six US service members were killed in a drone strike on a port in Kuwait. European governments remain divided on response, with the UK and France deploying naval and air-defence assets to the eastern Mediterranean.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Ukraine Regains Ground; POW Swap Amid Stalled Talks</h4>
+              <p>Ukraine captured more territory than it lost in February for the first time since the Kursk offensive, with net gains of 257 sq km this year. Russia and Ukraine exchanged 200 POWs each, but US-brokered peace negotiations remain stalled over territorial demands. Russia has suffered an estimated 1.27 million casualties since February 2022. Overnight, 155 drones were launched at Ukraine including ~100 Shaheds.</p>
+            </div>
+            <div class="curated-item">
+              <h4>DRC Landslide Kills 200+ at Coltan Mining Site</h4>
+              <p>Heavy rains triggered a landslide at a major coltan mining site in eastern DRC, killing over 200 people including an estimated 70 children. The disaster highlights the dangerous conditions in artisanal mining of minerals critical to the global electronics supply chain.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Pakistan-Afghanistan Border Conflict Displaces Thousands</h4>
+              <p>A week-long military confrontation between Pakistan and Afghanistan has displaced 115,000 in Afghanistan and 3,000 in Pakistan, with troops exchanging fire at dozens of points along their shared border.</p>
+            </div>
           </div>
         </div>
         <div class="curated-column">
           <h3><span class="dot dom"></span> UK Domestic</h3>
-          <div id="curatedDom">
-            <div class="curated-empty">Awaiting next curated update</div>
+          <div>
+            <div class="curated-item">
+              <h4>Spring Statement: Borrowing Down, Growth Forecast Cut</h4>
+              <p>Rachel Reeves delivered the Spring Statement with borrowing down nearly &pound;18bn compared to autumn forecasts &mdash; the lowest in six years. However, the OBR cut its 2026 GDP growth forecast from 1.4% to 1.1%. NHS day-to-day funding will increase 3% annually from 2026/27, though health leaders warn of "stretched budgets" and risk to elective care targets.</p>
+            </div>
+            <div class="curated-item">
+              <h4>PM Calls E4 Leaders on Middle East Crisis</h4>
+              <p>Keir Starmer held calls with the leaders of France, Germany and Italy this morning to coordinate on the Middle East escalation. The UK has moved naval and air-defence resources to the eastern Mediterranean alongside France.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Labour Reeling After Gorton &amp; Denton By-Election Loss</h4>
+              <p>The fallout continues from Labour's disastrous third-place finish in Gorton and Denton, a seat they won with 51% in 2024. The Greens took it with 40.7%, Reform came second at 28.7%, and Labour collapsed to 25.4%. It was the Green Party's first by-election win and their fifth MP. Polling shows multi-party fragmentation accelerating across the UK.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Foreign Affairs Committee: EU Reset Lacks Strategy</h4>
+              <p>A report by the Foreign Affairs Committee found the government's UK-EU reset lacks clear strategic priorities, with the EU appearing to achieve more concrete progress on its demands than the UK has on its own.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Carbon Budget Fairness Warning</h4>
+              <p>MPs warned that the Seventh Carbon Budget must deliver fair benefits to all or risk losing public consent. The committee said "fairness is fundamental" to the policy's legitimacy, amid concerns that the transition costs fall disproportionately on lower-income households.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -474,7 +277,7 @@
       <div class="section-header">
         <div class="section-accent geo"></div>
         <h2 class="section-title">Geopolitical</h2>
-        <span class="section-subtitle">World affairs, diplomacy & conflict</span>
+        <span class="section-subtitle">World affairs, diplomacy &amp; conflict</span>
       </div>
       <div id="geoContent">
         <div class="loading-state">
@@ -489,7 +292,7 @@
       <div class="section-header">
         <div class="section-accent dom"></div>
         <h2 class="section-title">UK Domestic Politics</h2>
-        <span class="section-subtitle">Westminster, policy & governance</span>
+        <span class="section-subtitle">Westminster, policy &amp; governance</span>
       </div>
       <div id="domContent">
         <div class="loading-state">
@@ -503,8 +306,8 @@
 
   <footer class="site-footer">
     <p class="footer-brand">The Daily Briefing</p>
-    <p>Aggregated from BBC, Sky News, The Guardian, Reuters & Al Jazeera<br/>
-    Auto-refreshes on each visit &middot; Curated summaries added periodically</p>
+    <p>Aggregated from BBC, Sky News, The Guardian, Reuters &amp; Al Jazeera<br/>
+    Auto-refreshes on each visit &middot; Curated summaries updated periodically</p>
   </footer>
 
   <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
@@ -514,19 +317,18 @@
   </button>
 
 <script>
-// ── Date display ──
+// ── Date ──
 const now = new Date();
-const dateOpts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-document.getElementById('currentDate').textContent = now.toLocaleDateString('en-GB', dateOpts).toUpperCase();
+document.getElementById('currentDate').textContent =
+  now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
 
-// ── RSS Feeds Config ──
+// ── RSS Config ──
 const PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
 const GEO_FEEDS = [
   { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
   { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss' },
   { name: 'Sky News', url: 'https://feeds.skynews.com/feeds/rss/world.xml' },
-  { name: 'Reuters', url: 'https://www.reutersnews.com/api/rss/news/international' },
   { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
 ];
 
@@ -536,14 +338,14 @@ const DOM_FEEDS = [
   { name: 'Sky News', url: 'https://feeds.skynews.com/feeds/rss/politics.xml' },
 ];
 
-// ── Fetch & Parse ──
+// ── Helpers ──
 async function fetchFeed(feed) {
   try {
     const res = await fetch(PROXY + encodeURIComponent(feed.url));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    if (data.status !== 'ok' || !data.items) throw new Error('Bad feed response');
-    return data.items.slice(0, 8).map(item => ({
+    if (data.status !== 'ok' || !data.items) throw new Error('Bad response');
+    return data.items.slice(0, 10).map(item => ({
       title: item.title,
       description: stripHtml(item.description || ''),
       link: item.link,
@@ -551,84 +353,92 @@ async function fetchFeed(feed) {
       source: feed.name,
     }));
   } catch (e) {
-    console.warn(`Failed to fetch ${feed.name}:`, e);
+    console.warn(`Failed: ${feed.name}`, e);
     return [];
   }
 }
 
 function stripHtml(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  const text = tmp.textContent || '';
-  return text.length > 200 ? text.slice(0, 200).trim() + '...' : text;
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  const t = d.textContent || '';
+  return t.length > 180 ? t.slice(0, 180).trim() + '...' : t;
 }
 
 function timeAgo(dateStr) {
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return '';
-  const diff = Math.floor((Date.now() - date.getTime()) / 1000);
-  if (diff < 60) return 'Just now';
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  return `${Math.floor(diff / 86400)}d ago`;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return '';
+  const s = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (s < 60) return 'Just now';
+  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+  return `${Math.floor(s / 86400)}d ago`;
 }
 
-function deduplicateByTitle(articles) {
+function dedupe(articles) {
   const seen = new Set();
   return articles.filter(a => {
-    const key = a.title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 60);
-    if (seen.has(key)) return false;
-    seen.add(key);
+    const k = a.title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 50);
+    if (seen.has(k)) return false;
+    seen.add(k);
     return true;
   });
 }
 
-function renderCards(articles, accentClass) {
-  return articles.map(a => `
-    <a class="news-card" href="${a.link}" target="_blank" rel="noopener noreferrer">
-      <span class="news-card-source ${accentClass}">${a.source}</span>
-      <h3>${a.title}</h3>
-      <p>${a.description}</p>
-      <div class="news-card-time">${timeAgo(a.pubDate)}</div>
-    </a>
-  `).join('');
+// ── Render consolidated section ──
+function renderSection(articles, accentClass) {
+  if (!articles.length) return '<div class="error-state">Unable to load stories right now.</div>';
+
+  // Sort by date, newest first
+  articles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  const deduped = dedupe(articles);
+
+  // Top stories = first 6, rest = also today
+  const top = deduped.slice(0, 6);
+  const rest = deduped.slice(6, 20);
+
+  let html = '<div class="top-stories">';
+  top.forEach(a => {
+    html += `
+      <a class="top-card" href="${a.link}" target="_blank" rel="noopener noreferrer">
+        <span class="card-source ${accentClass}">${a.source}</span>
+        <h3>${a.title}</h3>
+        <p>${a.description}</p>
+        <div class="card-time">${timeAgo(a.pubDate)}</div>
+      </a>`;
+  });
+  html += '</div>';
+
+  if (rest.length) {
+    html += '<div class="also-today-header">Also Today</div><div class="also-today">';
+    rest.forEach(a => {
+      html += `
+        <a class="also-item" href="${a.link}" target="_blank" rel="noopener noreferrer">
+          <span class="also-source ${accentClass}">${a.source}</span>
+          <div>
+            <h4>${a.title}</h4>
+            <div class="also-time">${timeAgo(a.pubDate)}</div>
+          </div>
+        </a>`;
+    });
+    html += '</div>';
+  }
+
+  return html;
 }
 
-function renderSourceGroup(sourceName, articles, accentClass) {
-  if (!articles.length) return '';
-  return `
-    <div class="source-group">
-      <div class="source-label">${sourceName}</div>
-      <div class="news-grid">${renderCards(articles, accentClass)}</div>
-    </div>
-  `;
-}
-
-// ── Load sections ──
+// ── Load ──
 async function loadSection(feeds, containerId, accentClass) {
   const container = document.getElementById(containerId);
   try {
     const results = await Promise.all(feeds.map(f => fetchFeed(f)));
-    let html = '';
-
-    feeds.forEach((feed, i) => {
-      const articles = results[i];
-      if (articles.length) {
-        html += renderSourceGroup(feed.name, articles, accentClass);
-      }
-    });
-
-    if (!html) {
-      container.innerHTML = '<div class="error-state">Unable to load stories right now. Try refreshing.</div>';
-      return;
-    }
-    container.innerHTML = html;
+    const all = results.flat();
+    container.innerHTML = renderSection(all, accentClass);
   } catch (e) {
     container.innerHTML = '<div class="error-state">Something went wrong loading stories.</div>';
   }
 }
 
-// ── Init ──
 async function init() {
   await Promise.all([
     loadSection(GEO_FEEDS, 'geoContent', 'geo'),
@@ -640,12 +450,10 @@ async function init() {
 
 init();
 
-// ── Scroll to top button ──
-const scrollBtn = document.getElementById('scrollTop');
-window.addEventListener('scroll', () => {
-  scrollBtn.classList.toggle('visible', window.scrollY > 400);
-});
-scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+// ── Scroll to top ──
+const sb = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => sb.classList.toggle('visible', window.scrollY > 400));
+sb.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 </script>
 
 </body>
