@@ -233,7 +233,9 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="curated-section" id="curated">
 
-    <!-- ── EVENING EDITION ── -->
+    <!-- Morning edition is inserted first (see below), evening follows -->
+
+    <!-- ── EVENING EDITION (previous) ── -->
     <div class="curated-edition evening">
       <div class="edition-header">
         <span class="edition-icon">&#9790;</span>
@@ -294,21 +296,63 @@
       </div>
     </div>
 
-    <!-- ── MORNING EDITION ── -->
+    <!-- ── MORNING EDITION (previous day) ── -->
     <div class="curated-edition morning">
       <div class="edition-header">
         <span class="edition-icon">&#9788;</span>
         <h2>Morning Briefing</h2>
       </div>
-      <div class="curated-meta">Next edition: Friday 7 March 2026 &mdash; 10:00 GMT</div>
+      <div class="curated-meta">Friday 7 March 2026 &mdash; 10:00 GMT</div>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
-          <div class="curated-empty">Tomorrow's morning briefing will appear here at 10:00 AM</div>
+          <div>
+            <div class="curated-item">
+              <h4>Iran War Enters Second Week; Trump Demands "Unconditional Surrender"</h4>
+              <p>The US-Israel war against Iran shows no sign of slowing as it enters its second week. Israel launched a new wave of strikes on Tehran overnight targeting "regime infrastructure", while US B-2 bombers dropped dozens of penetrator bombs on deeply buried missile launchers. Trump has ruled out any deal with Iran except "unconditional surrender". Al Jazeera's correspondent in Tehran reports the overnight bombardment was the most intense yet, hitting residential buildings and civilian infrastructure. Iran's IRGC announced its 23rd wave of retaliatory strikes on Israel.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Russia Feeding Iran Intelligence on US Military Positions</h4>
+              <p>Multiple US officials confirmed Russia is providing Iran with satellite imagery and targeting intelligence on American troop locations, warships and aircraft in the Middle East. Sources describe the effort as "fairly extensive and systematic". Moscow is seen as seeking to prolong the conflict to divert Western resources from Ukraine. The White House downplayed the impact, saying US operations are "completely decimating" Iranian targets regardless. Over 50,000 US troops and 200+ fighter jets are deployed in the operation.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Wall Street Posts Worst Week Since October; Oil Hits $90</h4>
+              <p>The Dow fell 453 points on Friday as oil surged past $90/barrel &mdash; its biggest weekly gain (35%) since futures trading began in 1983. The S&amp;P 500 dropped 1.3%, the Nasdaq sank 361 points. Combined with February's shock 92,000 job losses and unemployment rising to 4.4%, analysts warn of stagflation. Qatar's threat to halt Gulf energy exports "within days" sent European gas prices up 45%. Brent at $100 could add 10-20p/litre to UK fuel prices within weeks.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Ukraine Damages Two Russian Black Sea Frigates; 136 Clashes in 24 Hours</h4>
+              <p>Ukraine confirmed it damaged two Russian Black Sea Fleet frigates &mdash; Admiral Essen and Admiral Makarov &mdash; in a strike on the Novorossiysk naval base. Air defences destroyed 111 of 141 Russian drones overnight. 136 combat clashes took place in 24 hours. Trump and Zelenskyy have agreed on "90-95%" of a peace proposal, though Putin's response remains hostile. Russia struck Kharkiv and Kyiv regions with drones, killing civilians.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Lebanon Displacement Passes 95,000; Death Toll Over 200</h4>
+              <p>Lebanese officials say over 95,000 people have been displaced since the Iran war began, with the death toll from Israeli strikes surpassing 200. Israel struck a reported Iranian "command centre" in Beirut's southern suburbs. The humanitarian crisis is deepening as airspace closures disrupt aid and commercial flights across the region.</p>
+            </div>
+          </div>
         </div>
         <div class="curated-column">
           <h3><span class="dot dom"></span> UK Domestic</h3>
-          <div class="curated-empty">Tomorrow's morning briefing will appear here at 10:00 AM</div>
+          <div>
+            <div class="curated-item">
+              <h4>Fuel Price Spike Looms as Oil Hits $90; Spring Statement Silent</h4>
+              <p>With Brent crude surging past $90 and analysts warning $100 is possible, UK drivers face potential 10-20p/litre increases on petrol and diesel within weeks. The Spring Statement made no mention of the looming fuel cost crisis despite industry calls. Reeves pointed to the existing fuel duty freeze from the Autumn Budget but offered no extension. The OBR acknowledged the Middle East conflict "could have very significant impacts" on the UK economy but finalised its forecasts before the escalation.</p>
+            </div>
+            <div class="curated-item">
+              <h4>European Gas Prices Surge 45% After Qatar Halts LNG Production</h4>
+              <p>European natural gas prices jumped as much as 45% after Qatar stopped LNG production at the world's largest facility due to the Middle East conflict. The UK is particularly exposed as a major LNG importer. Energy analysts warn of a return to winter 2022-style price spikes if Gulf disruptions continue, with knock-on effects for household bills and inflation.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Voting Age Bill Clears Second Reading; Foreign Interference Review Due</h4>
+              <p>The Representation of the People Bill passed its second reading on 2 March, proposing to lower the voting age to 16 for all elections, introduce automated electoral registration, and reform political donation rules. Separately, the government's independent review into foreign financial interference in UK politics &mdash; launched in December 2025 &mdash; is due to report by end of March.</p>
+            </div>
+            <div class="curated-item">
+              <h4>BBC Under Fire Over BAFTA Broadcast Incident</h4>
+              <p>The Culture, Media and Sport Committee published the BBC's response to its letter demanding an explanation for how a racial slur was broadcast during BAFTA film awards coverage. The incident has reignited debate over editorial standards and live broadcast controls at the corporation.</p>
+            </div>
+            <div class="curated-item">
+              <h4>Markets Rattled: Dow's Worst Week Hits UK Financial Sector</h4>
+              <p>Wall Street's worst week since October &mdash; driven by oil spikes and weak US jobs data &mdash; is expected to ripple through UK markets when they open on Monday. The FTSE 100's heavy weighting in oil and mining may provide some cushion, but financial services and consumer stocks face headwinds from rising stagflation fears and the OBR's downgraded 1.1% growth forecast.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -365,6 +409,18 @@
   </button>
 
 <script>
+// ── Reorder editions: most recent on top ──
+(function() {
+  const section = document.getElementById('curated');
+  const editions = section.querySelectorAll('.curated-edition');
+  // Morning edition should appear before evening
+  const morning = section.querySelector('.curated-edition.morning');
+  const evening = section.querySelector('.curated-edition.evening');
+  if (morning && evening && evening.compareDocumentPosition(morning) & Node.DOCUMENT_POSITION_FOLLOWING) {
+    section.insertBefore(morning, evening);
+  }
+})();
+
 // ── Date ──
 const now = new Date();
 document.getElementById('currentDate').textContent =
