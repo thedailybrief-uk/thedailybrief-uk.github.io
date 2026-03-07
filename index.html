@@ -178,6 +178,19 @@
     }
     .also-item .also-time { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
 
+    /* ── Also Today: collapsible overflow ── */
+    .also-overflow { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .also-overflow.open { max-height: 5000px; }
+    .also-expand {
+      width: 100%; background: none; border: none; border-top: 1px solid var(--border-light);
+      padding: 10px 0; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 6px; font-family: var(--sans);
+      font-size: 12px; color: var(--text-tertiary); transition: color 0.2s;
+    }
+    .also-expand:hover { color: var(--text-primary); }
+    .also-expand svg { width: 14px; height: 14px; transition: transform 0.25s; }
+    .also-expand.open svg { transform: rotate(180deg); }
+
     /* ── Loading / Error ── */
     .loading-state { text-align: center; padding: 48px 20px; color: var(--text-tertiary); }
     .loading-spinner {
@@ -628,8 +641,12 @@ function renderSection(articles, accentClass) {
   html += '</div>';
 
   if (rest.length) {
+    const visible = rest.slice(0, 3);
+    const overflow = rest.slice(3);
+    const uid = 'also-' + Math.random().toString(36).slice(2, 8);
+
     html += '<div class="also-today-header">Also Today</div><div class="also-today">';
-    rest.forEach(a => {
+    visible.forEach(a => {
       html += `
         <a class="also-item" href="${a.link}" target="_blank" rel="noopener noreferrer">
           <span class="also-source ${accentClass}">${a.source}</span>
@@ -639,6 +656,26 @@ function renderSection(articles, accentClass) {
           </div>
         </a>`;
     });
+
+    if (overflow.length) {
+      html += `<div class="also-overflow" id="${uid}">`;
+      overflow.forEach(a => {
+        html += `
+          <a class="also-item" href="${a.link}" target="_blank" rel="noopener noreferrer">
+            <span class="also-source ${accentClass}">${a.source}</span>
+            <div>
+              <h4>${a.title}</h4>
+              <div class="also-time">${timeAgo(a.pubDate)}</div>
+            </div>
+          </a>`;
+      });
+      html += '</div>';
+      html += `<button class="also-expand" onclick="var o=document.getElementById('${uid}');o.classList.toggle('open');this.classList.toggle('open');">
+        <span>${overflow.length} more</span>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </button>`;
+    }
+
     html += '</div>';
   }
 
