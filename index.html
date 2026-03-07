@@ -199,48 +199,30 @@
       color: var(--text-secondary); margin-bottom: 6px;
     }
 
-    /* ── Archive / Previous Briefings ── */
-    .archive-section {
-      margin: 8px auto 0; max-width: 1100px; padding: 0 24px;
+    /* ── Day Navigation ── */
+    .day-nav {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      margin-bottom: 20px; padding: 12px 0;
     }
-    .archive-toggle {
-      width: 100%; background: none; border: 1px solid var(--border);
-      border-radius: 8px; padding: 14px 20px; cursor: pointer;
-      display: flex; align-items: center; justify-content: space-between;
-      font-family: var(--sans); font-size: 13px; font-weight: 600;
-      color: var(--text-secondary); transition: all 0.2s;
+    .day-nav-btn {
+      background: none; border: 1px solid var(--border); border-radius: 50%;
+      width: 36px; height: 36px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; color: var(--text-secondary);
+      transition: all 0.2s;
     }
-    .archive-toggle:hover { border-color: var(--text-tertiary); color: var(--text-primary); }
-    .archive-toggle svg {
-      width: 16px; height: 16px; transition: transform 0.25s;
+    .day-nav-btn:hover:not(:disabled) {
+      border-color: var(--text-tertiary); color: var(--text-primary);
+      background: var(--bg-section);
     }
-    .archive-toggle.open svg { transform: rotate(180deg); }
-    .archive-body {
-      max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+    .day-nav-btn:disabled { opacity: 0.25; cursor: default; }
+    .day-nav-btn svg { width: 16px; height: 16px; }
+    .day-nav-label {
+      font-family: var(--serif); font-size: 16px; font-weight: 600;
+      color: var(--text-primary); min-width: 220px; text-align: center;
     }
-    .archive-body.open { max-height: 20000px; }
-
-    .archive-day {
-      margin-top: 16px;
-    }
-    .archive-day-toggle {
-      width: 100%; background: var(--bg-section); border: 1px solid var(--border-light);
-      border-radius: 6px; padding: 10px 16px; cursor: pointer;
-      display: flex; align-items: center; justify-content: space-between;
-      font-family: var(--sans); font-size: 12px; font-weight: 600;
-      letter-spacing: 0.5px; color: var(--text-secondary); transition: all 0.2s;
-    }
-    .archive-day-toggle:hover { border-color: var(--text-tertiary); }
-    .archive-day-toggle svg {
-      width: 14px; height: 14px; transition: transform 0.25s;
-    }
-    .archive-day-toggle.open svg { transform: rotate(180deg); }
-    .archive-day-body {
-      max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
-    }
-    .archive-day-body.open { max-height: 20000px; }
-    .archive-day-body .curated-edition {
-      margin-top: 12px; opacity: 0.85;
+    .day-nav-sub {
+      font-size: 11px; font-weight: 400; color: var(--text-tertiary);
+      font-family: var(--sans); display: block; margin-top: 2px;
     }
 
     /* ── Scroll to top ── */
@@ -277,17 +259,19 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="curated-section" id="curated">
 
-    <!-- ── TODAY'S EDITIONS (JS moves latest here) ── -->
-    <div id="today-editions"></div>
-
-    <!-- ── ARCHIVE ── -->
-    <div class="archive-section" id="archive-section" style="display:none;">
-      <button class="archive-toggle" id="archiveToggle">
-        <span>Previous Briefings</span>
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    <!-- ── DAY NAVIGATION ── -->
+    <div class="day-nav" id="dayNav" style="display:none;">
+      <button class="day-nav-btn" id="dayPrev" aria-label="Previous day">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       </button>
-      <div class="archive-body" id="archiveBody"></div>
+      <div class="day-nav-label" id="dayLabel"></div>
+      <button class="day-nav-btn" id="dayNext" aria-label="Next day">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
     </div>
+
+    <!-- ── VISIBLE EDITIONS (JS swaps day content here) ── -->
+    <div id="day-editions"></div>
 
     <!-- ════ ALL EDITIONS (sorted by JS) ════ -->
     <div id="all-editions" style="display:none;">
@@ -468,26 +452,17 @@
   </button>
 
 <script>
-// ── Sort editions into Today + Archive ──
+// ── Day Navigation ──
 (function() {
   const allEditions = document.getElementById('all-editions');
-  const todayContainer = document.getElementById('today-editions');
-  const archiveSection = document.getElementById('archive-section');
-  const archiveBody = document.getElementById('archiveBody');
-  const archiveToggle = document.getElementById('archiveToggle');
+  const dayContainer = document.getElementById('day-editions');
+  const dayNav = document.getElementById('dayNav');
+  const dayLabel = document.getElementById('dayLabel');
+  const prevBtn = document.getElementById('dayPrev');
+  const nextBtn = document.getElementById('dayNext');
 
   const editions = Array.from(allEditions.querySelectorAll('.curated-edition'));
   if (!editions.length) return;
-
-  // Sort: newest first (by date + time)
-  editions.sort((a, b) => {
-    const da = a.dataset.date + ' ' + (a.dataset.time || '00:00');
-    const db = b.dataset.date + ' ' + (b.dataset.time || '00:00');
-    return db.localeCompare(da);
-  });
-
-  // Today's date
-  const today = new Date().toISOString().slice(0, 10);
 
   // Group by date
   const byDate = {};
@@ -497,53 +472,58 @@
     byDate[d].push(el);
   });
 
+  // Sort within each date: morning before evening (by time)
+  Object.values(byDate).forEach(arr => {
+    arr.sort((a, b) => {
+      const ta = a.dataset.time || '00:00';
+      const tb = b.dataset.time || '00:00';
+      return tb.localeCompare(ta); // newest first within day
+    });
+  });
+
+  // Dates sorted newest first
   const dates = Object.keys(byDate).sort().reverse();
+  if (!dates.length) return;
 
-  // Today's editions go into todayContainer
-  if (byDate[today]) {
-    byDate[today].forEach(el => todayContainer.appendChild(el));
-  } else if (dates.length) {
-    // If no editions match today exactly, show the latest day as "today"
-    byDate[dates[0]].forEach(el => todayContainer.appendChild(el));
+  let currentIndex = 0; // 0 = newest day
+  const today = new Date().toISOString().slice(0, 10);
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   }
 
-  // Previous days go into archive
-  const archiveDates = dates.filter(d => d !== today && !(dates[0] === d && !byDate[today]));
+  function showDay(index) {
+    currentIndex = index;
+    const dateStr = dates[index];
 
-  if (archiveDates.length) {
-    archiveSection.style.display = 'block';
+    // Clear and populate
+    dayContainer.innerHTML = '';
+    byDate[dateStr].forEach(el => dayContainer.appendChild(el.cloneNode(true)));
 
-    archiveDates.forEach(dateStr => {
-      const d = new Date(dateStr + 'T12:00:00');
-      const label = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    // Update label
+    const isToday = dateStr === today;
+    const formatted = formatDate(dateStr);
+    dayLabel.innerHTML = isToday
+      ? formatted + '<span class="day-nav-sub">Today</span>'
+      : formatted;
 
-      const dayDiv = document.createElement('div');
-      dayDiv.className = 'archive-day';
+    // Update buttons
+    prevBtn.disabled = (index >= dates.length - 1);
+    nextBtn.disabled = (index <= 0);
 
-      const dayToggle = document.createElement('button');
-      dayToggle.className = 'archive-day-toggle';
-      dayToggle.innerHTML = '<span>' + label + '</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
-
-      const dayBody = document.createElement('div');
-      dayBody.className = 'archive-day-body';
-
-      byDate[dateStr].forEach(el => dayBody.appendChild(el));
-
-      dayToggle.addEventListener('click', () => {
-        dayToggle.classList.toggle('open');
-        dayBody.classList.toggle('open');
-      });
-
-      dayDiv.appendChild(dayToggle);
-      dayDiv.appendChild(dayBody);
-      archiveBody.appendChild(dayDiv);
-    });
-
-    archiveToggle.addEventListener('click', () => {
-      archiveToggle.classList.toggle('open');
-      archiveBody.classList.toggle('open');
-    });
+    // Show nav if more than one day
+    dayNav.style.display = dates.length > 1 ? 'flex' : 'none';
   }
+
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex < dates.length - 1) showDay(currentIndex + 1);
+  });
+  nextBtn.addEventListener('click', () => {
+    if (currentIndex > 0) showDay(currentIndex - 1);
+  });
+
+  showDay(0);
 })();
 
 // ── Date ──
