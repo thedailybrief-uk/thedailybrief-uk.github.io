@@ -1100,7 +1100,8 @@ window._marketData = {};
     });
 
     // Align curated-item heights across columns per row (desktop only)
-    if (window.innerWidth > 768) {
+    function alignRows() {
+      if (window.innerWidth <= 768) return;
       dayContainer.querySelectorAll('.curated-grid').forEach(grid => {
         const cols = grid.querySelectorAll('.curated-column');
         if (cols.length !== 2) return;
@@ -1110,12 +1111,19 @@ window._marketData = {};
         for (let i = 0; i < count; i++) {
           itemsA[i].style.minHeight = '';
           itemsB[i].style.minHeight = '';
+        }
+        for (let i = 0; i < count; i++) {
           const h = Math.max(itemsA[i].offsetHeight, itemsB[i].offsetHeight);
           itemsA[i].style.minHeight = h + 'px';
           itemsB[i].style.minHeight = h + 'px';
         }
       });
     }
+    requestAnimationFrame(alignRows);
+    // Re-align when dive-deeper is toggled
+    dayContainer.querySelectorAll('.dive-deeper').forEach(d => {
+      d.addEventListener('toggle', () => requestAnimationFrame(alignRows));
+    });
 
     const isToday = dateStr === today;
     const formatted = formatDate(dateStr);
