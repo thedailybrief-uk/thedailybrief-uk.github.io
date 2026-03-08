@@ -1,21 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Daily Brief</title>
+  <meta name="theme-color" content="#faf9f6" id="themeColor" />
+  <link rel="canonical" href="https://thedailybrief-uk.github.io/" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
   <!-- #9 Meta tags for sharing -->
   <meta property="og:title" content="The Daily Brief" />
   <meta property="og:description" content="Curated geopolitical and UK domestic news briefings, updated at 10:00 AM and 5:00 PM daily." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://thedailybrief-uk.github.io" />
+  <meta property="og:image" content="https://thedailybrief-uk.github.io/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Daily Brief" />
+  <meta name="twitter:description" content="Curated geopolitical and UK domestic news briefings, updated at 08:00 and 18:00 GMT daily." />
+  <meta name="twitter:image" content="https://thedailybrief-uk.github.io/og-image.png" />
   <meta name="description" content="Curated geopolitical and UK domestic news briefings, updated at 10:00 AM and 5:00 PM daily." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "The Daily Brief",
+    "url": "https://thedailybrief-uk.github.io",
+    "description": "Curated geopolitical and UK domestic news briefings, updated daily at 08:00 and 18:00 GMT.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "The Daily Brief"
+    },
+    "inLanguage": "en-GB"
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- #12 Font optimisation: added display=swap, subset to latin -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" />
+  <link rel="preload" as="style" crossorigin href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" rel="stylesheet" />
+  <script>
+    // Apply dark mode before first paint to prevent flash
+    var s = localStorage.getItem('theme');
+    if (s === 'dark' || (!s && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.querySelector('meta[name="theme-color"]').content = '#141414';
+    }
+  </script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -51,7 +84,14 @@
       --border-light: #2a2a2a;
     }
 
-    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
     body {
       font-family: var(--sans);
       background: var(--bg);
@@ -86,8 +126,9 @@
     }
     .masthead-nav a, .masthead-nav button {
       font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-      color: var(--text-secondary); text-decoration: none; transition: color 0.2s; padding-bottom: 2px;
+      color: var(--text-secondary); text-decoration: none; transition: color 0.2s; padding: 12px 4px 2px;
       background: none; border: none; cursor: pointer; font-family: var(--sans);
+      min-height: 44px; display: inline-flex; align-items: center;
     }
     .masthead-nav a:hover, .masthead-nav button:hover { color: var(--text-primary); }
     .toggle-icon { display: inline-block; vertical-align: -2px; line-height: 1; font-size: 16px; }
@@ -113,7 +154,13 @@
     .market-change.down { color: var(--accent-red); }
     .markets-bar .market-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
     .market-context { font-size: 9px; color: var(--text-muted); font-style: italic; }
-    @media (max-width: 600px) { .markets-bar { gap: 16px; font-size: 10px; } }
+    @media (max-width: 600px) {
+      .markets-bar {
+        gap: 16px; font-size: 10px; justify-content: flex-start;
+        mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+      }
+    }
 
     /* ── Container ── */
     .container { padding: 0 24px; }
@@ -134,6 +181,14 @@
     .curated-edition.morning {
       background: linear-gradient(135deg, #2c2a1a, #3d3520);
       color: #fff;
+    }
+    [data-theme="dark"] .curated-edition.evening {
+      background: linear-gradient(135deg, #22224a, #332f5a);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    [data-theme="dark"] .curated-edition.morning {
+      background: linear-gradient(135deg, #3a3628, #4a4030);
+      border: 1px solid rgba(255,255,255,0.08);
     }
     .edition-header {
       display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
@@ -175,6 +230,9 @@
     .curated-column > div {
       display: grid; grid-template-rows: repeat(5, 1fr); flex: 1;
     }
+    @media (max-width: 768px) {
+      .curated-column > div { grid-template-rows: none; flex: none; }
+    }
     .curated-column:first-child {
       background: rgba(139, 35, 50, 0.15); border: 1px solid rgba(139, 35, 50, 0.25);
     }
@@ -193,6 +251,7 @@
     .curated-item:last-child { border-bottom: none; padding-bottom: 0; }
     .curated-item h4 { font-family: var(--body-serif); font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 5px; }
     .curated-item p { font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.65); }
+    @media (max-width: 768px) { .curated-item p { font-size: 14px; line-height: 1.6; } }
     .dive-deeper { margin-top: 10px; }
     .dive-deeper summary {
       font-size: 11px; font-weight: 600; letter-spacing: 0.3px; color: rgba(255,255,255,0.7);
@@ -224,7 +283,7 @@
       .col-expand-btn {
         display: block; width: 100%; background: rgba(255,255,255,0.1);
         border: 1px solid rgba(255,255,255,0.15); border-radius: 6px;
-        padding: 10px; margin-top: 12px; cursor: pointer; color: rgba(255,255,255,0.8);
+        padding: 14px 10px; min-height: 44px; margin-top: 12px; cursor: pointer; color: rgba(255,255,255,0.8);
         font-family: var(--sans); font-size: 12px; font-weight: 600;
         letter-spacing: 0.5px; transition: all 0.2s;
         text-align: center;
@@ -263,6 +322,7 @@
       transition: box-shadow 0.2s, transform 0.15s; display: flex; flex-direction: column;
     }
     .top-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); transform: translateY(-1px); }
+    [data-theme="dark"] .top-card:hover { box-shadow: 0 4px 20px rgba(255,255,255,0.06); }
     .top-card .card-source {
       font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
     }
@@ -291,6 +351,7 @@
       text-decoration: none; color: inherit; transition: background 0.15s;
     }
     .also-item:hover { background: rgba(0,0,0,0.015); }
+    [data-theme="dark"] .also-item:hover { background: rgba(255,255,255,0.04); }
     .also-item:last-child { border-bottom: none; }
     .also-item .also-source {
       font-size: 9px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
@@ -305,8 +366,9 @@
     .also-item .also-time { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
 
     /* ── Also Today: collapsible overflow ── */
-    .also-overflow { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-    .also-overflow.open { max-height: 5000px; }
+    .also-overflow { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows 0.35s ease; }
+    .also-overflow > * { overflow: hidden; }
+    .also-overflow.open { grid-template-rows: 1fr; }
     .also-expand {
       width: 100%; background: none; border: none; border-top: 1px solid var(--border-light);
       padding: 10px 0; cursor: pointer; display: flex; align-items: center;
@@ -359,7 +421,7 @@
     }
     .day-nav-btn {
       background: none; border: 1px solid var(--border); border-radius: 50%;
-      width: 36px; height: 36px; cursor: pointer; display: flex;
+      width: 44px; height: 44px; cursor: pointer; display: flex;
       align-items: center; justify-content: center; color: var(--text-secondary);
       transition: all 0.2s;
     }
@@ -429,7 +491,7 @@
     <span class="market-dot"></span>
     <div class="market-item"><span class="market-label">GBP/USD</span> <span class="market-value" id="mGBP">--</span> <span class="market-change" id="mGBPc"></span></div>
     <span class="market-dot"></span>
-    <span class="market-context">(vs. prev. close)</span>
+    <span class="market-context" id="marketContext">(vs. prev. close)</span>
   </div>
 
   <!-- ════════════════════════════════════════════ -->
@@ -442,7 +504,7 @@
       <button class="day-nav-btn" id="dayPrev" aria-label="Previous day">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       </button>
-      <div class="day-nav-label" id="dayLabel"></div>
+      <div class="day-nav-label" id="dayLabel" aria-live="polite"></div>
       <button class="day-nav-btn" id="dayNext" aria-label="Next day">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
@@ -828,6 +890,12 @@
         <span class="section-subtitle">World affairs, diplomacy &amp; conflict</span>
         <span class="section-time" id="geoTime"></span>
       </div>
+      <noscript>
+        <style>.skeleton-container { display: none; }</style>
+        <p style="text-align:center; padding:40px 20px; color:var(--text-secondary); font-family:var(--sans); font-size:14px;">
+          This site requires JavaScript to load news briefings. Please enable JavaScript and refresh the page.
+        </p>
+      </noscript>
       <div id="geoContent">
         <!-- #8 Loading skeleton -->
         <div class="skeleton-container">
@@ -879,12 +947,15 @@
   if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   toggle.addEventListener('click', () => {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const tc = document.getElementById('themeColor');
     if (isDark) {
       document.documentElement.removeAttribute('data-theme');
       localStorage.setItem('theme', 'light');
+      if (tc) tc.content = '#faf9f6';
     } else {
       document.documentElement.setAttribute('data-theme', 'dark');
       localStorage.setItem('theme', 'dark');
+      if (tc) tc.content = '#141414';
     }
   });
 })();
@@ -912,12 +983,20 @@ window._marketData = {};
   }
 
   // Load embedded data immediately (always available, set by update script)
+  let embeddedTs = '';
   try {
     const embedded = JSON.parse(document.getElementById('embedded-markets').textContent);
+    if (embedded.ts) {
+      const d = new Date(embedded.ts);
+      embeddedTs = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) +
+        ' ' + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    }
     Object.entries(embedded).forEach(([id, d]) => {
       if (id === 'ts') return;
       displayItem(id, d.price, d.change);
     });
+    const ctx = document.getElementById('marketContext');
+    if (ctx && embeddedTs) ctx.textContent = '(as of ' + embeddedTs + ')';
   } catch (e) {}
 
   // Then try live data via Yahoo v8 chart API (individual requests)
@@ -944,8 +1023,10 @@ window._marketData = {};
         } catch (e) { continue; }
       }
     }));
-    // Cache whatever we got
+    // Cache whatever we got and update context label
     if (anySuccess) {
+      const ctx = document.getElementById('marketContext');
+      if (ctx) ctx.textContent = '(live vs. prev. close)';
       try { localStorage.setItem('db_markets', JSON.stringify({ ts: Date.now(), data: window._marketData })); } catch(e) {}
     }
   }
@@ -1120,6 +1201,11 @@ window._marketData = {};
   // #11 Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const curated = document.getElementById('curated');
+    if (curated) {
+      const rect = curated.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+    }
     if (e.key === 'ArrowLeft' && currentIndex < dates.length - 1) showDay(currentIndex + 1);
     if (e.key === 'ArrowRight' && currentIndex > 0) showDay(currentIndex - 1);
   });
@@ -1141,6 +1227,12 @@ window._marketData = {};
   }, { passive: true });
 
   showDay(0);
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => showDay(currentIndex), 250);
+  });
 })();
 
 // ── Date ──
@@ -1149,7 +1241,10 @@ document.getElementById('currentDate').textContent =
   now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
 
 // ── RSS Config ──
-const PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+const PROXIES = [
+  url => 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url),
+  url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url)),
+];
 
 // #5 Feeds with paywall flag
 const GEO_FEEDS = [
@@ -1169,26 +1264,30 @@ const DOM_FEEDS = [
 // ── Helpers ──
 const feedStatus = {}; // #5 track feed results
 
-async function fetchFeed(feed) {
-  try {
-    const res = await fetch(PROXY + encodeURIComponent(feed.url));
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (data.status !== 'ok' || !data.items) throw new Error('Bad response');
-    const limit = feed.top || 4;
-    feedStatus[feed.name] = { ok: true, paywall: feed.paywall || false };
-    return data.items.slice(0, limit).map(item => ({
-      title: item.title,
-      description: stripHtml(item.description || ''),
-      link: item.link,
-      pubDate: item.pubDate,
-      source: feed.name,
-    }));
-  } catch (e) {
-    console.warn(`Failed: ${feed.name}`, e);
-    feedStatus[feed.name] = { ok: false, paywall: feed.paywall || false };
-    return [];
+async function fetchFeed(feed, signal) {
+  for (const makeUrl of PROXIES) {
+    try {
+      const res = await fetch(makeUrl(feed.url), { signal });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (data.status !== 'ok' || !data.items) throw new Error('Bad response');
+      const limit = feed.top || 4;
+      feedStatus[feed.name] = { ok: true, paywall: feed.paywall || false };
+      return data.items.slice(0, limit).map(item => ({
+        title: item.title,
+        description: stripHtml(item.description || ''),
+        link: item.link,
+        pubDate: item.pubDate,
+        source: feed.name,
+      }));
+    } catch (e) {
+      if (signal && signal.aborted) throw e;
+      console.warn(`Proxy failed for ${feed.name}, trying next...`, e);
+    }
   }
+  console.warn(`All proxies failed: ${feed.name}`);
+  feedStatus[feed.name] = { ok: false, paywall: feed.paywall || false };
+  return [];
 }
 
 function escHtml(str) {
@@ -1286,7 +1385,7 @@ function renderSection(articles, accentClass, feeds) {
     });
 
     if (overflow.length) {
-      html += `<div class="also-overflow" id="${uid}">`;
+      html += `<div class="also-overflow" id="${uid}"><div>`;
       overflow.forEach(a => {
         html += `
           <a class="also-item" href="${escHtml(a.link)}" target="_blank" rel="noopener noreferrer">
@@ -1297,7 +1396,7 @@ function renderSection(articles, accentClass, feeds) {
             </div>
           </a>`;
       });
-      html += '</div>';
+      html += '</div></div>';
       html += `<button class="also-expand" onclick="var o=document.getElementById('${uid}');o.classList.toggle('open');this.classList.toggle('open');">
         <span>${overflow.length} more</span>
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -1314,10 +1413,10 @@ function renderSection(articles, accentClass, feeds) {
 }
 
 // ── Load ──
-async function loadSection(feeds, containerId, accentClass, timeElId) {
+async function loadSection(feeds, containerId, accentClass, timeElId, signal) {
   const container = document.getElementById(containerId);
   try {
-    const results = await Promise.all(feeds.map(f => fetchFeed(f)));
+    const results = await Promise.all(feeds.map(f => fetchFeed(f, signal)));
     const all = results.flat();
     container.innerHTML = renderSection(all, accentClass, feeds);
     // #10 Per-section timestamp
@@ -1331,28 +1430,36 @@ async function loadSection(feeds, containerId, accentClass, timeElId) {
 }
 
 async function init() {
-  const timeout = new Promise(r => setTimeout(r, 15000));
-  await Promise.race([
-    Promise.all([
-      loadSection(GEO_FEEDS, 'geoContent', 'geo', 'geoTime'),
-      loadSection(DOM_FEEDS, 'domContent', 'dom', 'domTime'),
-    ]),
-    timeout,
-  ]);
-  const ts = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-  document.getElementById('refreshTime').textContent = ts + ' today';
-  // Clear any remaining skeletons after timeout
-  document.querySelectorAll('.skeleton-container').forEach(el => {
-    el.outerHTML = '<div class="error-state">Unable to load stories right now.</div>';
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  try {
+    await Promise.all([
+      loadSection(GEO_FEEDS, 'geoContent', 'geo', 'geoTime', controller.signal),
+      loadSection(DOM_FEEDS, 'domContent', 'dom', 'domTime', controller.signal),
+    ]);
+  } catch (e) {
+    // AbortError means timeout — replace any remaining skeletons
+  } finally {
+    clearTimeout(timeoutId);
+    const ts = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('refreshTime').textContent = ts + ' today';
+    document.querySelectorAll('.skeleton-container').forEach(el => {
+      el.outerHTML = '<div class="error-state">Unable to load stories right now.</div>';
+    });
+  }
 }
 
 init();
 
 // ── Scroll to top ──
 const sb = document.getElementById('scrollTop');
-window.addEventListener('scroll', () => sb.classList.toggle('visible', window.scrollY > 400));
+window.addEventListener('scroll', () => sb.classList.toggle('visible', window.scrollY > 400), { passive: true });
 sb.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// ── Service Worker ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
 </script>
 
 </body>
