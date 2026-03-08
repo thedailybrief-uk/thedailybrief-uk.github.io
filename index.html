@@ -1119,11 +1119,14 @@ window._marketData = {};
         }
       });
     }
-    requestAnimationFrame(alignRows);
-    // Re-align when dive-deeper is toggled
+    // Run alignment after layout settles, and re-run on resize/toggle
+    requestAnimationFrame(() => { alignRows(); setTimeout(alignRows, 100); });
     dayContainer.querySelectorAll('.dive-deeper').forEach(d => {
       d.addEventListener('toggle', () => requestAnimationFrame(alignRows));
     });
+    if (window._alignRowsHandler) window.removeEventListener('resize', window._alignRowsHandler);
+    window._alignRowsHandler = alignRows;
+    window.addEventListener('resize', alignRows);
 
     const isToday = dateStr === today;
     const formatted = formatDate(dateStr);
