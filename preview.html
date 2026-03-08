@@ -269,10 +269,6 @@
       color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.04);
       border-left: 2px solid rgba(255,255,255,0.12); border-radius: 0 4px 4px 0;
     }
-    .curated-empty {
-      text-align: center; padding: 32px 20px;
-      color: rgba(255,255,255,0.35); font-size: 13px; font-style: italic;
-    }
 
     /* ── Feature 1: What It Means For You ── */
     .impact-box {
@@ -376,26 +372,29 @@
     .one-to-read a { text-decoration: none; color: inherit; display: block; }
     .one-to-read h4 {
       font-family: var(--body-serif); font-size: 15px; font-weight: 600;
-      line-height: 1.35; margin-bottom: 6px;
+      line-height: 1.35; margin-bottom: 5px; color: rgba(255,255,255,0.9);
     }
     .otr-source {
-      font-family: var(--sans); font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase; color: rgba(255,255,255,0.45);
     }
     .otr-dot { color: rgba(255,255,255,0.25); margin: 0 6px; }
-    .otr-desc {
-      font-family: var(--sans); font-size: 12px; color: rgba(255,255,255,0.55);
-      line-height: 1.5;
-    }
+    .otr-desc { font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,0.55); }
 
     /* ── Feature 5: What Changed Today ── */
     .change-diff {
       font-family: var(--sans); font-size: 11px; font-style: italic;
-      color: rgba(255,255,255,0.45); line-height: 1.45;
-      margin: 4px 0 8px; padding-left: 2px;
+      line-height: 1.45; color: rgba(255,255,255,0.45);
+      padding: 4px 0 6px; display: flex; align-items: flex-start; gap: 6px;
     }
     .diff-arrow {
-      font-style: normal; color: rgba(255,255,255,0.3); margin-right: 4px;
+      color: rgba(255,255,255,0.3); font-style: normal; font-size: 13px;
+      flex-shrink: 0; margin-top: -1px;
+    }
+
+    .curated-empty {
+      text-align: center; padding: 32px 20px;
+      color: rgba(255,255,255,0.35); font-size: 13px; font-style: italic;
     }
 
     /* ── Mobile: collapsible editions ── */
@@ -862,6 +861,25 @@
         <h2>Morning Briefing</h2>
       </div>
       <div class="curated-meta">Sunday 8 March 2026 &mdash; 10:00 GMT</div>
+      <!-- Feature 1: What It Means For You -->
+      <div class="impact-box">
+        <h3 class="impact-heading">What It Means For You</h3>
+        <ul class="impact-list">
+          <li>Oil at $92 and rising &mdash; expect fuel prices to climb 10&ndash;20p/litre within weeks; consider filling up now</li>
+          <li>European gas reserves critically low at 21.6% &mdash; April energy cap reduction may be reversed by July</li>
+          <li>Gulf airspace restrictions affecting ~400 UK flights; check FCDO advice before booking travel to Middle East or South Asia</li>
+        </ul>
+      </div>
+      <!-- Feature 3: Reference Figures -->
+      <div class="ref-figures">
+        <span class="ref-figure"><span>Base Rate:</span> <strong>4.50%</strong></span>
+        <span class="ref-figure-sep">|</span>
+        <span class="ref-figure"><span>CPI:</span> <strong>3.1%</strong></span>
+        <span class="ref-figure-sep">|</span>
+        <span class="ref-figure"><span>NHS Wait:</span> <strong>7.5m</strong></span>
+        <span class="ref-figure-sep">|</span>
+        <span class="ref-figure"><span>Ukraine Net Territory (2026):</span> <strong>+257 km&sup2;</strong></span>
+      </div>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
@@ -924,6 +942,16 @@
           </div>
         </div>
       </div>
+      <!-- Feature 4: One To Read -->
+      <div class="one-to-read">
+        <span class="otr-label">One To Read</span>
+        <a href="https://www.telegraph.co.uk" target="_blank" rel="noopener noreferrer">
+          <h4>Why the Death of Khamenei Changes Nothing &mdash; and Everything</h4>
+          <span class="otr-source">The Daily Telegraph</span>
+          <span class="otr-dot">&middot;</span>
+          <span class="otr-desc">Analysis of how Iran's succession crisis reshapes the calculus for both Washington hawks and European mediators seeking an off-ramp from the Gulf conflict.</span>
+        </a>
+      </div>
     </div>
 
     <!-- ── EVENING 8 MARCH ── -->
@@ -933,12 +961,32 @@
         <h2>Evening Briefing</h2>
       </div>
       <div class="curated-meta">Sunday 8 March 2026 &mdash; 16:54 GMT</div>
+      <!-- Feature 1: What It Means For You -->
+      <div class="impact-box">
+        <h3 class="impact-heading">What It Means For You</h3>
+        <ul class="impact-list">
+          <li>Petrol likely to breach 160p/litre this week as Brent tops $92; fill up sooner rather than later</li>
+          <li>Gilt yields spiking &mdash; tracker mortgage holders face rate rises within weeks; fixed-rate deals tightening</li>
+          <li>Airspace closures still affecting ~400 UK-bound flights daily; check FCDO travel advice before booking</li>
+        </ul>
+      </div>
+      <!-- Feature 3: Reference Figures -->
+      <div class="ref-figures">
+        <span class="ref-figure"><span>Base Rate:</span> <strong>4.50%</strong></span>
+        <span class="ref-figure-sep">|</span>
+        <span class="ref-figure"><span>CPI:</span> <strong>3.1%</strong></span>
+        <span class="ref-figure-sep">|</span>
+        <span class="ref-figure"><span>NHS Wait:</span> <strong>7.5m</strong></span>
+        <span class="ref-figure-sep">|</span>
+        <span class="ref-figure"><span>Ukraine Net Territory (2026):</span> <strong>+257 km&sup2;</strong></span>
+      </div>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
           <div>
             <div class="curated-item">
               <h4>Israel Strikes Tehran Oil Facilities for First Time</h4>
+              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: strikes focused on military sites &rarr; This evening: campaign extended to oil infrastructure; Kharg Island and Shahr-e Rey refinery hit</div>
               <p>In a major escalation on day nine of the conflict, Israeli jets struck oil storage depots and refining facilities in Tehran for the first time, targeting the regime's economic lifeline. Iran's oil infrastructure had previously been off-limits. The strikes hit the Shahr-e Rey refinery complex south of Tehran and storage tanks at Kharg Island, which handles 90% of Iran's oil exports. The death toll from nine days of US-Israeli strikes has now surpassed 1,300 in Iran and 300 in Lebanon.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The decision to strike oil infrastructure marks a strategic shift from military and government targets to economic warfare. Iran's oil exports &mdash; already diminished by sanctions &mdash; were still generating approximately $30bn annually, funding both the regime and its proxy network. Destroying refining capacity creates a paradox: Iran sits on the world's fourth-largest oil reserves but may soon lack the ability to process crude for domestic consumption, potentially triggering fuel shortages that compound public anger. The Kharg Island strikes are particularly significant as the facility handles tanker loading for virtually all Iranian seaborne crude exports. Satellite imagery suggests at least four major storage tanks were destroyed.</div></details>
             </div>
@@ -954,6 +1002,7 @@
             </div>
             <div class="curated-item">
               <h4>Trump Demands Iran's 'Unconditional Surrender' as Diplomatic Window Narrows</h4>
+              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: diplomatic efforts ongoing &rarr; This evening: Trump rejects ceasefire, demands unconditional surrender; China calls emergency UNSC session</div>
               <p>President Trump demanded Iran's "unconditional surrender" on Sunday, rejecting European and Chinese calls for a ceasefire. NPR reports Israeli forces struck Beirut alongside Tehran as the campaign broadened. The failed House war powers resolution (212-219) has removed Congressional constraints on the operation. China has called an emergency UN Security Council session for Monday, while Russia has blocked two previous ceasefire resolutions. The EU foreign policy chief condemned strikes on civilian infrastructure as potential war crimes.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The "unconditional surrender" demand echoes the most maximalist US war aims since World War II and is widely seen as unrealistic by diplomats. Iran's interim leadership council, even if inclined towards negotiation, cannot accept terms that would amount to regime dissolution without triggering an internal IRGC coup. The broadening of strikes to Beirut suggests Israel is using the conflict to degrade Hezbollah's remaining capacity simultaneously. Monday's UN Security Council emergency session is expected to produce another vetoed resolution, but the diplomatic theatre matters: it forces countries to publicly declare positions, potentially isolating the US and Israel further. European frustration is mounting, with France's foreign minister calling the civilian toll "unacceptable" and Germany suspending arms export licences to Israel.</div></details>
             </div>
@@ -969,6 +1018,7 @@
           <div>
             <div class="curated-item">
               <h4>Reeves' Fiscal Headroom Evaporates as Gilt Yields Spike</h4>
+              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: headroom at &pound;9.9bn &rarr; This evening: City estimates &pound;4&ndash;6bn already lost; OBR growth forecast under serious threat</div>
               <p>The &pound;9.9bn fiscal headroom announced in last week's Spring Statement is rapidly eroding as gilt yields spike amid the global bond sell-off triggered by the Iran conflict. City economists estimate the Chancellor may have lost &pound;4-6bn of headroom in just days, potentially forcing emergency spending cuts or tax rises at the autumn budget. The OBR's growth forecast of 1.1% for 2026 &mdash; already downgraded from 1.4% &mdash; was finalised before the conflict escalated, with private sector forecasters now modelling just 0.6-0.8% if oil remains above $90.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The speed of the fiscal deterioration is remarkable: Reeves delivered the Spring Statement on March 3 emphasising borrowing down &pound;18bn, but within five days the Iran conflict has potentially wiped out half her fiscal buffer. The OBR warned the Middle East conflict "could have very significant impacts" on the UK economy, with modelling showing sustained $90+ oil could knock 0.4% off GDP and add 1.2 percentage points to inflation. This would breach both of Reeves' fiscal rules &mdash; the current budget balance rule and the debt-falling rule &mdash; forcing painful choices between spending cuts to already-stretched public services or politically toxic tax rises. Shadow Chancellor Jeremy Hunt called the situation "a catastrophic failure of fiscal planning".</div></details>
             </div>
@@ -995,6 +1045,96 @@
           </div>
         </div>
       </div>
+      <!-- Feature 4: One To Read -->
+      <div class="one-to-read">
+        <span class="otr-label">One To Read</span>
+        <a href="https://www.ft.com" target="_blank" rel="noopener noreferrer">
+          <h4>The New Oil Weapon: How Iran's Strait of Hormuz Strategy Rewrites the Rules of Energy War</h4>
+          <span class="otr-source">Financial Times</span>
+          <span class="otr-dot">&middot;</span>
+          <span class="otr-desc">A detailed examination of how closing the world's most critical oil chokepoint reshapes the global energy order &mdash; and why the consequences will outlast any ceasefire.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Feature 2: Weekly Roundup Edition -->
+    <div class="curated-edition weekly" data-date="2026-03-08" data-time="20:00">
+      <details class="weekly-details">
+        <summary class="edition-header">
+          <span class="edition-icon">&sect;</span>
+          <h2>Weekly Roundup</h2>
+          <span class="weekly-expand-hint">View roundup</span>
+        </summary>
+      <div class="curated-meta">Week of 3&ndash;8 March 2026</div>
+      <div class="impact-box">
+        <h3 class="impact-heading">The Week In Numbers</h3>
+        <ul class="impact-list">
+          <li>Brent crude: +27% this week ($73 &rarr; $92.69) &mdash; sharpest weekly rise since 2022</li>
+          <li>Iran conflict death toll: 1,300+ killed in nine days of US-Israeli strikes</li>
+          <li>UK fiscal headroom: &pound;9.9bn announced Monday &rarr; estimated &pound;4&ndash;5bn remaining by Friday</li>
+        </ul>
+      </div>
+      <div class="weekly-grid">
+        <div class="weekly-column">
+          <h3><span class="weekly-icon">&uarr;</span> What Moved Forward</h3>
+          <div class="weekly-item">
+            <h4>US-Israel Military Campaign Escalated Rapidly <span class="weekly-tag geo">Geo</span></h4>
+            <p>From targeted strikes on military sites to a full-scale air campaign hitting oil infrastructure, the Strait of Hormuz, and civilian targets across Iran and Lebanon. Six US service members killed; 1,300+ Iranian casualties.</p>
+          </div>
+          <div class="weekly-item">
+            <h4>Green Party Breakthrough Confirmed <span class="weekly-tag dom">Dom</span></h4>
+            <p>YouGov poll showed Greens overtaking both Labour and Tories for the first time. Four-party fragmentation now a structural feature of British politics ahead of May local elections.</p>
+          </div>
+          <div class="weekly-item">
+            <h4>Spring Statement Delivered <span class="weekly-tag dom">Dom</span></h4>
+            <p>Reeves announced borrowing down &pound;18bn and &pound;9.9bn headroom &mdash; but within days the Iran conflict began eroding those gains through spiking gilt yields.</p>
+          </div>
+        </div>
+        <div class="weekly-column">
+          <h3><span class="weekly-icon">&bull;</span> What Stalled</h3>
+          <div class="weekly-item">
+            <h4>Iran Diplomacy at an Impasse <span class="weekly-tag geo">Geo</span></h4>
+            <p>Trump's "unconditional surrender" demand, Russia blocking UN resolutions, and the killing of Khamenei have left no credible diplomatic pathway. China's backchannel is the only active negotiation.</p>
+          </div>
+          <div class="weekly-item">
+            <h4>Ukraine Peace Talks Frozen <span class="weekly-tag geo">Geo</span></h4>
+            <p>Despite a 200-prisoner swap and Ukraine's strongest territorial position in months (+257 km&sup2; net gain in 2026), US-brokered talks remain deadlocked over Russia's annexation demands.</p>
+          </div>
+          <div class="weekly-item">
+            <h4>UK-EU Reset Lacks Direction <span class="weekly-tag dom">Dom</span></h4>
+            <p>Cross-party committee found the government's approach has no published mandate and risks "ad hoc concessions without a framework". Security cooperation treated as secondary to trade.</p>
+          </div>
+        </div>
+        <div class="weekly-column">
+          <h3><span class="weekly-icon">&rarr;</span> What To Watch Next Week</h3>
+          <div class="weekly-item">
+            <h4>UN Security Council Emergency Session <span class="weekly-tag geo">Geo</span></h4>
+            <p>China's emergency session on Monday will force public declarations. Expect another Russian veto, but the diplomatic positioning matters for potential coalition shifts.</p>
+          </div>
+          <div class="weekly-item">
+            <h4>Oil Price Trajectory <span class="weekly-tag markets">Markets</span></h4>
+            <p>Options markets pricing 40% chance of Brent at $100 within 30 days. If Hormuz remains closed, Qatar may halt LNG production entirely &mdash; a trigger for European energy rationing.</p>
+          </div>
+          <div class="weekly-item">
+            <h4>Bank of England Response <span class="weekly-tag dom">Dom</span></h4>
+            <p>The MPC faces a stagflation dilemma: oil-driven inflation argues for holding rates, but growth collapse argues for cuts. Markets expect an emergency statement if gilt yields continue rising.</p>
+          </div>
+          <div class="weekly-item">
+            <h4>Iran Succession Crisis <span class="weekly-tag geo">Geo</span></h4>
+            <p>The Assembly of Experts must select a new Supreme Leader under active bombardment. The choice between a hardliner and a pragmatist will shape whether any future ceasefire is possible.</p>
+          </div>
+        </div>
+      </div>
+      <div class="one-to-read">
+        <span class="otr-label">One To Read This Weekend</span>
+        <a href="https://www.economist.com" target="_blank" rel="noopener noreferrer">
+          <h4>The Four-Party Fracture: How Britain's Electoral Map Was Redrawn in a Month</h4>
+          <span class="otr-source">The Economist</span>
+          <span class="otr-dot">&middot;</span>
+          <span class="otr-desc">A constituency-level analysis of how Reform, the Greens, Labour and the Conservatives are splitting the electorate &mdash; and what it means for the next general election.</span>
+        </a>
+      </div>
+      </details>
     </div>
 
     </div><!-- /all-editions -->
