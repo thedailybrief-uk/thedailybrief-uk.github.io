@@ -152,7 +152,7 @@
     .key-figure-change.up { color: #4ade80; }
     .key-figure-change.down { color: #f87171; }
     .key-figure-sep { color: rgba(255,255,255,0.2); }
-    .key-figure-context { font-size: 9px; color: rgba(255,255,255,0.35); font-style: italic; margin-left: auto; align-self: center; }
+    .key-figure-context { font-size: 10px; color: rgba(255,255,255,0.55); font-style: italic; margin-left: auto; align-self: center; white-space: nowrap; }
 
     /* #6 Updated tag */
     .updated-tag {
@@ -388,6 +388,8 @@
   </header>
 
   <!-- #1 Markets snapshot bar -->
+  <!-- Embedded market data (populated by update script, used as fallback) -->
+  <script id="embedded-markets" type="application/json">{"FTSE":{"price":8660.82,"change":-0.39},"SP":{"price":5770.20,"change":-1.30},"Brent":{"price":69.36,"change":-1.95},"GBP":{"price":1.2924,"change":0.12},"ts":"2026-03-08T09:00:00Z"}</script>
   <div class="markets-bar" id="marketsBar">
     <div class="market-item"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
     <span class="market-dot"></span>
@@ -688,79 +690,62 @@
 window._marketData = {};
 (function() {
   const symbols = [
-    { id: 'FTSE', el: 'mFTSE', ch: 'mFTSEc', sym: '^FTSE' },
-    { id: 'SP', el: 'mSP', ch: 'mSPc', sym: '^GSPC' },
-    { id: 'Brent', el: 'mBrent', ch: 'mBrentc', sym: 'BZ=F' },
-    { id: 'GBP', el: 'mGBP', ch: 'mGBPc', sym: 'GBPUSD=X' },
+    { id: 'FTSE', el: 'mFTSE', ch: 'mFTSEc', sym: '%5EFTSE' },
+    { id: 'SP', el: 'mSP', ch: 'mSPc', sym: '%5EGSPC' },
+    { id: 'Brent', el: 'mBrent', ch: 'mBrentc', sym: 'BZ%3DF' },
+    { id: 'GBP', el: 'mGBP', ch: 'mGBPc', sym: 'GBPUSD%3DX' },
   ];
 
-  function applyMarketData(results) {
-    results.forEach(q => {
-      const match = symbols.find(s => s.sym === q.symbol);
-      if (!match) return;
-      const price = q.regularMarketPrice;
-      const change = q.regularMarketChangePercent;
-      window._marketData[match.id] = { price, change };
-      document.getElementById(match.el).textContent = match.id === 'GBP' ? price.toFixed(4) : price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
-      const chEl = document.getElementById(match.ch);
-      const sign = change >= 0 ? '+' : '';
-      chEl.textContent = sign + change.toFixed(2) + '%';
-      chEl.className = 'market-change ' + (change >= 0 ? 'up' : 'down');
+  function displayItem(id, price, change) {
+    const s = symbols.find(x => x.id === id);
+    if (!s) return;
+    window._marketData[id] = { price, change };
+    document.getElementById(s.el).textContent = id === 'GBP' ? price.toFixed(4) : price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
+    const chEl = document.getElementById(s.ch);
+    const sign = change >= 0 ? '+' : '';
+    chEl.textContent = sign + change.toFixed(2) + '%';
+    chEl.className = 'market-change ' + (change >= 0 ? 'up' : 'down');
+  }
+
+  // Load embedded data immediately (always available, set by update script)
+  try {
+    const embedded = JSON.parse(document.getElementById('embedded-markets').textContent);
+    Object.entries(embedded).forEach(([id, d]) => {
+      if (id === 'ts') return;
+      displayItem(id, d.price, d.change);
     });
-    // Cache for offline / comparison
-    try { localStorage.setItem('db_markets', JSON.stringify({ ts: Date.now(), data: window._marketData })); } catch(e) {}
-  }
+  } catch (e) {}
 
-  async function fetchMarkets() {
-    const syms = symbols.map(s => s.sym).join(',');
-    const yahooUrl = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + syms;
-    const proxies = [
-      url => 'https://corsproxy.io/?' + encodeURIComponent(url),
-      url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
-    ];
-
-    // Try direct first, then proxies
-    const attempts = [yahooUrl, ...proxies.map(p => p(yahooUrl))];
-    for (const url of attempts) {
-      try {
-        const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
-        if (!res.ok) continue;
-        const data = await res.json();
-        const results = data.quoteResponse?.result;
-        if (results && results.length) { applyMarketData(results); return; }
-      } catch (e) { continue; }
+  // Then try live data via Yahoo v8 chart API (individual requests)
+  async function fetchLive() {
+    let anySuccess = false;
+    await Promise.allSettled(symbols.map(async (s) => {
+      const urls = [
+        'https://query2.finance.yahoo.com/v8/finance/chart/' + s.sym + '?range=2d&interval=1d',
+        'https://query1.finance.yahoo.com/v8/finance/chart/' + s.sym + '?range=2d&interval=1d',
+      ];
+      for (const url of urls) {
+        try {
+          const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+          if (!res.ok) continue;
+          const data = await res.json();
+          const meta = data.chart?.result?.[0]?.meta;
+          if (!meta) continue;
+          const price = meta.regularMarketPrice;
+          const prev = meta.chartPreviousClose || meta.previousClose;
+          const change = prev ? ((price - prev) / prev) * 100 : 0;
+          displayItem(s.id, price, change);
+          anySuccess = true;
+          return;
+        } catch (e) { continue; }
+      }
+    }));
+    // Cache whatever we got
+    if (anySuccess) {
+      try { localStorage.setItem('db_markets', JSON.stringify({ ts: Date.now(), data: window._marketData })); } catch(e) {}
     }
-
-    // All Yahoo attempts failed — try cached data
-    try {
-      const cached = JSON.parse(localStorage.getItem('db_markets'));
-      if (cached && cached.data) {
-        Object.assign(window._marketData, cached.data);
-        Object.entries(cached.data).forEach(([id, d]) => {
-          const s = symbols.find(x => x.id === id);
-          if (!s) return;
-          document.getElementById(s.el).textContent = id === 'GBP' ? d.price.toFixed(4) : d.price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
-          const chEl = document.getElementById(s.ch);
-          const sign = d.change >= 0 ? '+' : '';
-          chEl.textContent = sign + d.change.toFixed(2) + '%';
-          chEl.className = 'market-change ' + (d.change >= 0 ? 'up' : 'down');
-        });
-        document.getElementById('marketsBar').title = 'Market data cached — last updated ' + new Date(cached.ts).toLocaleTimeString();
-      }
-    } catch (e) {}
-
-    // Last resort: at least get GBP/USD from exchange rate API
-    try {
-      const res = await fetch('https://api.exchangerate-api.com/v4/latest/GBP');
-      if (res.ok) {
-        const data = await res.json();
-        const gbp = (1 / data.rates.USD);
-        document.getElementById('mGBP').textContent = gbp.toFixed(4);
-        window._marketData['GBP'] = { price: gbp, change: 0 };
-      }
-    } catch (e2) {}
   }
-  fetchMarkets();
+  fetchLive();
 })();
 
 // ── Day Navigation ──
@@ -853,22 +838,19 @@ window._marketData = {};
         });
       }
 
-      // #3 Key figures strip — extract numbers from edition text with % changes
+      // #3 Key figures strip — market data + text-extracted figures with % changes
       const allText = clone.textContent;
       const figures = [];
       const md = window._marketData || {};
-      const brentMatch = allText.match(/Brent[^$]*\$(\d+(?:\.\d+)?)/i);
-      const ftseMatch = allText.match(/FTSE[^\d]*(\d[\d,.]+)/i);
+      // Use live/embedded market data for Brent and FTSE (always available via embedded JSON)
+      if (md.Brent) figures.push({ label: 'Brent', val: '$' + md.Brent.price.toFixed(2), change: md.Brent.change });
+      if (md.FTSE) figures.push({ label: 'FTSE', val: md.FTSE.price.toLocaleString('en-GB', { maximumFractionDigits: 0 }), change: md.FTSE.change });
+      // Text-extracted figures
       const growthMatch = allText.match(/growth[^0-9]*(\d+\.\d+%)/i);
       const jobsMatch = allText.match(/(\d[\d,]+)\s*(?:US\s*)?jobs?\s*(?:lost|losses|shed)/i);
-      // Also try to extract inline % changes from text
-      const brentChMatch = allText.match(/Brent[^.]*?([+-]?\d+\.?\d*)%/i);
-      const ftseChMatch = allText.match(/FTSE[^.]*?([+-]?\d+\.?\d*)%/i);
-      if (brentMatch) figures.push({ label: 'Brent', val: '$' + brentMatch[1], change: md.Brent ? md.Brent.change : (brentChMatch ? parseFloat(brentChMatch[1]) : null) });
-      if (ftseMatch) figures.push({ label: 'FTSE', val: ftseMatch[1], change: md.FTSE ? md.FTSE.change : (ftseChMatch ? parseFloat(ftseChMatch[1]) : null) });
       if (growthMatch) figures.push({ label: 'UK Growth', val: growthMatch[1], change: null });
       if (jobsMatch) figures.push({ label: 'US Jobs', val: '-' + jobsMatch[1], change: null });
-      if (figures.length >= 2) {
+      if (figures.length >= 1) {
         const strip = document.createElement('div');
         strip.className = 'key-figures';
         strip.innerHTML = figures.map(f => {
@@ -883,7 +865,7 @@ window._marketData = {};
         }).join('<span class="key-figure-sep">|</span>');
         const hasAnyChange = figures.some(f => f.change !== null && f.change !== undefined && !isNaN(f.change));
         if (hasAnyChange) {
-          strip.innerHTML += '<span class="key-figure-context">vs. prev. close</span>';
+          strip.innerHTML += '<span class="key-figure-context">(vs. prev. close)</span>';
         }
         const meta = clone.querySelector('.curated-meta');
         if (meta) meta.after(strip);
