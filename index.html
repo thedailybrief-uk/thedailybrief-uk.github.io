@@ -1099,6 +1099,24 @@ window._marketData = {};
       dayContainer.appendChild(clone);
     });
 
+    // Align curated-item heights across columns per row (desktop only)
+    if (window.innerWidth > 768) {
+      dayContainer.querySelectorAll('.curated-grid').forEach(grid => {
+        const cols = grid.querySelectorAll('.curated-column');
+        if (cols.length !== 2) return;
+        const itemsA = cols[0].querySelectorAll('.curated-item');
+        const itemsB = cols[1].querySelectorAll('.curated-item');
+        const count = Math.min(itemsA.length, itemsB.length);
+        for (let i = 0; i < count; i++) {
+          itemsA[i].style.minHeight = '';
+          itemsB[i].style.minHeight = '';
+          const h = Math.max(itemsA[i].offsetHeight, itemsB[i].offsetHeight);
+          itemsA[i].style.minHeight = h + 'px';
+          itemsB[i].style.minHeight = h + 'px';
+        }
+      });
+    }
+
     const isToday = dateStr === today;
     const formatted = formatDate(dateStr);
     dayLabel.innerHTML = isToday
