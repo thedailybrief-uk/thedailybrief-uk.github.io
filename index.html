@@ -109,6 +109,7 @@
     .market-change.up { color: var(--accent-green); }
     .market-change.down { color: var(--accent-red); }
     .markets-bar .market-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
+    .market-context { font-size: 9px; color: var(--text-muted); font-style: italic; }
     @media (max-width: 600px) { .markets-bar { gap: 16px; font-size: 10px; } }
 
     /* ── Container ── */
@@ -415,6 +416,8 @@
     <div class="market-item"><span class="market-label">Brent Crude</span> <span class="market-value" id="mBrent">--</span> <span class="market-change" id="mBrentc"></span></div>
     <span class="market-dot"></span>
     <div class="market-item"><span class="market-label">GBP/USD</span> <span class="market-value" id="mGBP">--</span> <span class="market-change" id="mGBPc"></span></div>
+    <span class="market-dot"></span>
+    <span class="market-context">(vs. prev. close)</span>
   </div>
 
   <!-- ════════════════════════════════════════════ -->
@@ -981,7 +984,7 @@ window._marketData = {};
         }).join('<span class="key-figure-sep">|</span>');
         const hasAnyChange = figures.some(f => f.change !== null && f.change !== undefined && !isNaN(f.change));
         if (hasAnyChange) {
-          strip.innerHTML += '<span class="key-figure-context">(vs. prev. close)</span>';
+          strip.innerHTML += '<span class="key-figure-context">(vs. prev. brief)</span>';
         }
         const meta = clone.querySelector('.curated-meta');
         if (meta) meta.after(strip);
