@@ -1012,7 +1012,9 @@ window._marketData = {};
             col.classList.toggle('col-expanded');
             if (wasExpanded) {
               btn.innerHTML = 'Read full briefing ' + chevron;
-              col.scrollIntoView({ behavior: 'smooth', block: 'end' });
+              setTimeout(() => {
+                col.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 50);
             } else {
               btn.innerHTML = 'Show less ' + chevron;
             }
