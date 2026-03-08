@@ -186,8 +186,8 @@
     }
     .dive-deeper summary:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.9); }
     .dive-deeper summary::-webkit-details-marker { display: none; }
-    .dive-deeper summary::after { content: '▾'; font-size: 9px; transition: transform 0.2s; display: inline-block; }
-    .dive-deeper:not([open]) summary::after { transform: rotate(-90deg); }
+    .dive-deeper summary::after { content: '▼'; font-size: 11px; transition: transform 0.2s; display: inline-block; }
+    .dive-deeper[open] summary::after { transform: rotate(180deg); }
     .dive-deeper .deeper-content {
       margin-top: 8px; padding: 10px 12px; font-size: 12.5px; line-height: 1.6;
       color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.04);
