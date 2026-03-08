@@ -152,6 +152,7 @@
     .key-figure-change.up { color: #4ade80; }
     .key-figure-change.down { color: #f87171; }
     .key-figure-sep { color: rgba(255,255,255,0.2); }
+    .key-figure-context { font-size: 9px; color: rgba(255,255,255,0.35); font-style: italic; margin-left: auto; align-self: center; }
 
     /* #6 Updated tag */
     .updated-tag {
@@ -880,6 +881,10 @@ window._marketData = {};
           }
           return '<span class="key-figure"><span>' + escHtml(f.label) + ':</span> <strong>' + escHtml(f.val) + '</strong>' + changeHtml + '</span>';
         }).join('<span class="key-figure-sep">|</span>');
+        const hasAnyChange = figures.some(f => f.change !== null && f.change !== undefined && !isNaN(f.change));
+        if (hasAnyChange) {
+          strip.innerHTML += '<span class="key-figure-context">vs. prev. close</span>';
+        }
         const meta = clone.querySelector('.curated-meta');
         if (meta) meta.after(strip);
       }
