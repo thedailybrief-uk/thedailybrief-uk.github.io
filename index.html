@@ -162,8 +162,17 @@
       padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle;
     }
 
-    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 768px) { .curated-grid { grid-template-columns: 1fr; } }
+    .curated-column {
+      padding: 18px 20px; border-radius: 8px;
+    }
+    .curated-column:first-child {
+      background: rgba(139, 35, 50, 0.15); border: 1px solid rgba(139, 35, 50, 0.25);
+    }
+    .curated-column:last-child {
+      background: rgba(27, 79, 114, 0.2); border: 1px solid rgba(27, 79, 114, 0.3);
+    }
     .curated-column h3 {
       font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
       margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
