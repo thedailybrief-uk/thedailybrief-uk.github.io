@@ -212,27 +212,25 @@
     }
 
     /* ── Mobile: collapsible editions ── */
-    .edition-expand-btn {
-      display: none;
-    }
+    .col-expand-btn { display: none; }
     @media (max-width: 768px) {
-      .curated-edition.collapsed .curated-grid .curated-column > div > .curated-item:nth-child(n+3) {
+      .curated-edition.collapsed .curated-column:not(.col-expanded) > div > .curated-item:nth-child(n+3) {
         display: none;
       }
-      .edition-expand-btn {
+      .col-expand-btn {
         display: block; width: 100%; background: rgba(255,255,255,0.1);
         border: 1px solid rgba(255,255,255,0.15); border-radius: 6px;
-        padding: 12px; margin-top: 16px; cursor: pointer; color: rgba(255,255,255,0.8);
-        font-family: var(--sans); font-size: 13px; font-weight: 600;
+        padding: 10px; margin-top: 12px; cursor: pointer; color: rgba(255,255,255,0.8);
+        font-family: var(--sans); font-size: 12px; font-weight: 600;
         letter-spacing: 0.5px; transition: all 0.2s;
         text-align: center;
       }
-      .edition-expand-btn:hover { background: rgba(255,255,255,0.15); }
-      .edition-expand-btn svg {
-        width: 14px; height: 14px; vertical-align: middle; margin-left: 6px;
+      .col-expand-btn:hover { background: rgba(255,255,255,0.15); }
+      .col-expand-btn svg {
+        width: 13px; height: 13px; vertical-align: middle; margin-left: 5px;
         transition: transform 0.25s;
       }
-      .curated-edition:not(.collapsed) .edition-expand-btn svg {
+      .col-expanded .col-expand-btn svg {
         transform: rotate(180deg);
       }
     }
@@ -493,7 +491,7 @@
           </div>
         </div>
         <div class="curated-column">
-          <h3><span class="dot dom"></span> UK Domestic</h3>
+          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
           <div>
             <div class="curated-item">
               <h4>Spring Statement: Borrowing Down, Growth Forecast Cut</h4>
@@ -564,7 +562,7 @@
           </div>
         </div>
         <div class="curated-column">
-          <h3><span class="dot dom"></span> UK Domestic</h3>
+          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
           <div>
             <div class="curated-item">
               <h4>Petrol and Energy Bills Set to Surge as Oil Tops $93</h4>
@@ -635,7 +633,7 @@
           </div>
         </div>
         <div class="curated-column">
-          <h3><span class="dot dom"></span> UK Domestic</h3>
+          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
           <div>
             <div class="curated-item">
               <h4>Trump Demands UK 'Open Up North Sea' as Energy Crisis Deepens</h4>
@@ -706,7 +704,7 @@
           </div>
         </div>
         <div class="curated-column">
-          <h3><span class="dot dom"></span> UK Domestic</h3>
+          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
           <div>
             <div class="curated-item">
               <h4>Energy Prices Set to Spike as Iran War Hits UK Households</h4>
@@ -1000,20 +998,23 @@ window._marketData = {};
         if (meta) meta.after(strip);
       }
 
-      // Mobile expand/collapse button
-      const btn = document.createElement('button');
-      btn.className = 'edition-expand-btn';
-      btn.innerHTML = 'Read full briefing <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
-      clone.appendChild(btn);
+      // Mobile per-column expand/collapse buttons
       if (window.innerWidth <= 768) {
         clone.classList.add('collapsed');
+        clone.querySelectorAll('.curated-column').forEach(col => {
+          const btn = document.createElement('button');
+          btn.className = 'col-expand-btn';
+          const chevron = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
+          btn.innerHTML = 'Read full briefing ' + chevron;
+          col.appendChild(btn);
+          btn.addEventListener('click', () => {
+            const isExpanded = col.classList.toggle('col-expanded');
+            btn.innerHTML = isExpanded
+              ? 'Show less ' + chevron
+              : 'Read full briefing ' + chevron;
+          });
+        });
       }
-      btn.addEventListener('click', () => {
-        const isCollapsed = clone.classList.toggle('collapsed');
-        btn.innerHTML = isCollapsed
-          ? 'Read full briefing <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>'
-          : 'Show less <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
-      });
       dayContainer.appendChild(clone);
     });
 
