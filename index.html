@@ -175,16 +175,18 @@
     .curated-item:last-child { border-bottom: none; padding-bottom: 0; }
     .curated-item h4 { font-family: var(--body-serif); font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 5px; }
     .curated-item p { font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.65); }
-    .dive-deeper { margin-top: 8px; }
+    .dive-deeper { margin-top: 10px; }
     .dive-deeper summary {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.45);
-      cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 5px;
-      transition: color 0.2s;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.3px; color: rgba(255,255,255,0.7);
+      cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 4px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      transition: all 0.2s;
     }
-    .dive-deeper summary:hover { color: rgba(255,255,255,0.75); }
+    .dive-deeper summary:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.9); }
     .dive-deeper summary::-webkit-details-marker { display: none; }
-    .dive-deeper summary::before { content: '▸'; font-size: 10px; transition: transform 0.2s; display: inline-block; }
-    .dive-deeper[open] summary::before { transform: rotate(90deg); }
+    .dive-deeper summary::after { content: '▾'; font-size: 9px; transition: transform 0.2s; display: inline-block; }
+    .dive-deeper:not([open]) summary::after { transform: rotate(-90deg); }
     .dive-deeper .deeper-content {
       margin-top: 8px; padding: 10px 12px; font-size: 12.5px; line-height: 1.6;
       color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.04);
@@ -892,9 +894,7 @@ window._marketData = {};
       if (md.FTSE) figures.push({ label: 'FTSE', val: md.FTSE.price.toLocaleString('en-GB', { maximumFractionDigits: 0 }), change: md.FTSE.change });
       // Text-extracted figures
       const growthMatch = allText.match(/growth[^0-9]*(\d+\.\d+%)/i);
-      const jobsMatch = allText.match(/(\d[\d,]+)\s*(?:US\s*)?jobs?\s*(?:lost|losses|shed)/i);
       if (growthMatch) figures.push({ label: 'UK Growth', val: growthMatch[1], change: null });
-      if (jobsMatch) figures.push({ label: 'US Jobs', val: '-' + jobsMatch[1], change: null });
       if (figures.length >= 1) {
         const strip = document.createElement('div');
         strip.className = 'key-figures';
