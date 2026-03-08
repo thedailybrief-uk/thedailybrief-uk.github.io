@@ -148,6 +148,9 @@
       font-size: 12px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 6px;
     }
     .key-figure strong { color: rgba(255,255,255,0.95); font-weight: 700; }
+    .key-figure-change { font-size: 10px; font-weight: 700; margin-left: 2px; }
+    .key-figure-change.up { color: #4ade80; }
+    .key-figure-change.down { color: #f87171; }
     .key-figure-sep { color: rgba(255,255,255,0.2); }
 
     /* #6 Updated tag */
@@ -680,6 +683,8 @@
 })();
 
 // ── #1 Markets Bar ──
+// Store market data globally so key figures can use it
+window._marketData = {};
 (function() {
   const symbols = [
     { id: 'FTSE', el: 'mFTSE', ch: 'mFTSEc', sym: '^FTSE' },
@@ -687,35 +692,72 @@
     { id: 'Brent', el: 'mBrent', ch: 'mBrentc', sym: 'BZ=F' },
     { id: 'GBP', el: 'mGBP', ch: 'mGBPc', sym: 'GBPUSD=X' },
   ];
+
+  function applyMarketData(results) {
+    results.forEach(q => {
+      const match = symbols.find(s => s.sym === q.symbol);
+      if (!match) return;
+      const price = q.regularMarketPrice;
+      const change = q.regularMarketChangePercent;
+      window._marketData[match.id] = { price, change };
+      document.getElementById(match.el).textContent = match.id === 'GBP' ? price.toFixed(4) : price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
+      const chEl = document.getElementById(match.ch);
+      const sign = change >= 0 ? '+' : '';
+      chEl.textContent = sign + change.toFixed(2) + '%';
+      chEl.className = 'market-change ' + (change >= 0 ? 'up' : 'down');
+    });
+    // Cache for offline / comparison
+    try { localStorage.setItem('db_markets', JSON.stringify({ ts: Date.now(), data: window._marketData })); } catch(e) {}
+  }
+
   async function fetchMarkets() {
-    try {
-      const syms = symbols.map(s => s.sym).join(',');
-      const res = await fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + syms);
-      if (!res.ok) throw new Error('Markets API failed');
-      const data = await res.json();
-      const results = data.quoteResponse.result;
-      results.forEach(q => {
-        const match = symbols.find(s => s.sym === q.symbol);
-        if (!match) return;
-        const price = q.regularMarketPrice;
-        const change = q.regularMarketChangePercent;
-        document.getElementById(match.el).textContent = match.id === 'GBP' ? price.toFixed(4) : price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
-        const chEl = document.getElementById(match.ch);
-        const sign = change >= 0 ? '+' : '';
-        chEl.textContent = sign + change.toFixed(2) + '%';
-        chEl.className = 'market-change ' + (change >= 0 ? 'up' : 'down');
-      });
-    } catch (e) {
-      // Fallback: try alternative free API
+    const syms = symbols.map(s => s.sym).join(',');
+    const yahooUrl = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + syms;
+    const proxies = [
+      url => 'https://corsproxy.io/?' + encodeURIComponent(url),
+      url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+    ];
+
+    // Try direct first, then proxies
+    const attempts = [yahooUrl, ...proxies.map(p => p(yahooUrl))];
+    for (const url of attempts) {
       try {
-        const res = await fetch('https://api.exchangerate-api.com/v4/latest/GBP');
-        if (res.ok) {
-          const data = await res.json();
-          document.getElementById('mGBP').textContent = (1 / data.rates.USD).toFixed(4);
-        }
-      } catch (e2) { /* silent */ }
-      console.warn('Markets fetch failed:', e);
+        const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+        if (!res.ok) continue;
+        const data = await res.json();
+        const results = data.quoteResponse?.result;
+        if (results && results.length) { applyMarketData(results); return; }
+      } catch (e) { continue; }
     }
+
+    // All Yahoo attempts failed — try cached data
+    try {
+      const cached = JSON.parse(localStorage.getItem('db_markets'));
+      if (cached && cached.data) {
+        Object.assign(window._marketData, cached.data);
+        Object.entries(cached.data).forEach(([id, d]) => {
+          const s = symbols.find(x => x.id === id);
+          if (!s) return;
+          document.getElementById(s.el).textContent = id === 'GBP' ? d.price.toFixed(4) : d.price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
+          const chEl = document.getElementById(s.ch);
+          const sign = d.change >= 0 ? '+' : '';
+          chEl.textContent = sign + d.change.toFixed(2) + '%';
+          chEl.className = 'market-change ' + (d.change >= 0 ? 'up' : 'down');
+        });
+        document.getElementById('marketsBar').title = 'Market data cached — last updated ' + new Date(cached.ts).toLocaleTimeString();
+      }
+    } catch (e) {}
+
+    // Last resort: at least get GBP/USD from exchange rate API
+    try {
+      const res = await fetch('https://api.exchangerate-api.com/v4/latest/GBP');
+      if (res.ok) {
+        const data = await res.json();
+        const gbp = (1 / data.rates.USD);
+        document.getElementById('mGBP').textContent = gbp.toFixed(4);
+        window._marketData['GBP'] = { price: gbp, change: 0 };
+      }
+    } catch (e2) {}
   }
   fetchMarkets();
 })();
@@ -810,23 +852,33 @@
         });
       }
 
-      // #3 Key figures strip — extract numbers from edition text
+      // #3 Key figures strip — extract numbers from edition text with % changes
       const allText = clone.textContent;
       const figures = [];
+      const md = window._marketData || {};
       const brentMatch = allText.match(/Brent[^$]*\$(\d+(?:\.\d+)?)/i);
-      const ftseMatch = allText.match(/FTSE[^\d]*(\d[\d,.]+%?)/i);
+      const ftseMatch = allText.match(/FTSE[^\d]*(\d[\d,.]+)/i);
       const growthMatch = allText.match(/growth[^0-9]*(\d+\.\d+%)/i);
       const jobsMatch = allText.match(/(\d[\d,]+)\s*(?:US\s*)?jobs?\s*(?:lost|losses|shed)/i);
-      if (brentMatch) figures.push('Brent: $' + brentMatch[1]);
-      if (ftseMatch) figures.push('FTSE: ' + ftseMatch[1]);
-      if (growthMatch) figures.push('UK Growth: ' + growthMatch[1]);
-      if (jobsMatch) figures.push('US Jobs: -' + jobsMatch[1]);
+      // Also try to extract inline % changes from text
+      const brentChMatch = allText.match(/Brent[^.]*?([+-]?\d+\.?\d*)%/i);
+      const ftseChMatch = allText.match(/FTSE[^.]*?([+-]?\d+\.?\d*)%/i);
+      if (brentMatch) figures.push({ label: 'Brent', val: '$' + brentMatch[1], change: md.Brent ? md.Brent.change : (brentChMatch ? parseFloat(brentChMatch[1]) : null) });
+      if (ftseMatch) figures.push({ label: 'FTSE', val: ftseMatch[1], change: md.FTSE ? md.FTSE.change : (ftseChMatch ? parseFloat(ftseChMatch[1]) : null) });
+      if (growthMatch) figures.push({ label: 'UK Growth', val: growthMatch[1], change: null });
+      if (jobsMatch) figures.push({ label: 'US Jobs', val: '-' + jobsMatch[1], change: null });
       if (figures.length >= 2) {
         const strip = document.createElement('div');
         strip.className = 'key-figures';
         strip.innerHTML = figures.map(f => {
-          const [label, val] = f.split(': ');
-          return '<span class="key-figure"><span>' + label + ':</span> <strong>' + val + '</strong></span>';
+          let changeHtml = '';
+          if (f.change !== null && f.change !== undefined && !isNaN(f.change)) {
+            const sign = f.change >= 0 ? '+' : '';
+            const cls = f.change >= 0 ? 'up' : 'down';
+            const arrow = f.change >= 0 ? '▲' : '▼';
+            changeHtml = ' <span class="key-figure-change ' + cls + '">' + arrow + ' ' + sign + f.change.toFixed(2) + '%</span>';
+          }
+          return '<span class="key-figure"><span>' + escHtml(f.label) + ':</span> <strong>' + escHtml(f.val) + '</strong>' + changeHtml + '</span>';
         }).join('<span class="key-figure-sep">|</span>');
         const meta = clone.querySelector('.curated-meta');
         if (meta) meta.after(strip);
