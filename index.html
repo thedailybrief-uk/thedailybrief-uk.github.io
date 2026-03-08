@@ -166,10 +166,17 @@
       padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle;
     }
 
-    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
     @media (max-width: 768px) { .curated-grid { grid-template-columns: 1fr; } }
     .curated-column {
       padding: 18px 20px; border-radius: 8px;
+      display: flex; flex-direction: column;
+    }
+    .curated-column > div {
+      display: flex; flex-direction: column; flex: 1;
+    }
+    .curated-column > div > .curated-item {
+      flex: 1;
     }
     .curated-column:first-child {
       background: rgba(139, 35, 50, 0.15); border: 1px solid rgba(139, 35, 50, 0.25);
