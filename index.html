@@ -124,7 +124,8 @@
       border-radius: 10px; padding: 28px 32px; margin-bottom: 20px;
     }
     @media (max-width: 768px) {
-      .curated-edition { padding: 20px 16px; }
+      .curated-edition { padding: 18px 10px; }
+      .curated-section { padding: 0 8px; }
     }
     .curated-edition.evening {
       background: linear-gradient(135deg, #1a1a2e, #2a2540);
@@ -215,10 +216,7 @@
       display: none;
     }
     @media (max-width: 768px) {
-      .curated-edition.collapsed .curated-grid .curated-column:nth-child(n+2) {
-        display: none;
-      }
-      .curated-edition.collapsed .curated-grid .curated-column:first-child > div > .curated-item:nth-child(n+4) {
+      .curated-edition.collapsed .curated-grid .curated-column > div > .curated-item:nth-child(n+3) {
         display: none;
       }
       .edition-expand-btn {
