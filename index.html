@@ -90,6 +90,9 @@
       background: none; border: none; cursor: pointer; font-family: var(--sans);
     }
     .masthead-nav a:hover, .masthead-nav button:hover { color: var(--text-primary); }
+    .toggle-icon { display: inline-block; vertical-align: middle; line-height: 1; }
+    .toggle-icon.sun { font-size: 17px; font-weight: bold; color: var(--text-primary); }
+    .toggle-icon.moon { font-size: 14px; }
     .masthead-nav a.geo { border-bottom: 2px solid var(--accent-geo); }
     .masthead-nav a.dom { border-bottom: 2px solid var(--accent-dom); }
     .last-updated { font-size: 11px; color: var(--text-muted); text-align: center; padding: 6px 0; }
@@ -408,7 +411,7 @@
         <a href="#geopolitical" class="geo">Geopolitical</a>
         <a href="#domestic" class="dom">UK Domestic</a>
         <!-- #4 Dark mode toggle -->
-        <button id="darkToggle" aria-label="Toggle dark mode"><span style="font-size:15px">&#9788;</span> Light / &#9790; Dark</button>
+        <button id="darkToggle" aria-label="Toggle dark mode"><span class="toggle-icon sun">&#9788;</span> Light / <span class="toggle-icon moon">&#9790;</span> Dark</button>
       </nav>
     </div>
     <div class="last-updated">Last refreshed: <span id="refreshTime">loading...</span></div>
