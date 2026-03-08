@@ -1008,10 +1008,14 @@ window._marketData = {};
           btn.innerHTML = 'Read full briefing ' + chevron;
           col.appendChild(btn);
           btn.addEventListener('click', () => {
-            const isExpanded = col.classList.toggle('col-expanded');
-            btn.innerHTML = isExpanded
-              ? 'Show less ' + chevron
-              : 'Read full briefing ' + chevron;
+            const wasExpanded = col.classList.contains('col-expanded');
+            col.classList.toggle('col-expanded');
+            if (wasExpanded) {
+              btn.innerHTML = 'Read full briefing ' + chevron;
+              col.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else {
+              btn.innerHTML = 'Show less ' + chevron;
+            }
           });
         });
       }
