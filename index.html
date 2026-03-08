@@ -173,7 +173,7 @@
       display: flex; flex-direction: column;
     }
     .curated-column > div {
-      display: flex; flex-direction: column; flex: 1; gap: 0;
+      display: grid; grid-template-rows: repeat(5, 1fr); flex: 1;
     }
     .curated-column:first-child {
       background: rgba(139, 35, 50, 0.15); border: 1px solid rgba(139, 35, 50, 0.25);
@@ -1098,35 +1098,6 @@ window._marketData = {};
       }
       dayContainer.appendChild(clone);
     });
-
-    // Align curated-item heights across columns per row (desktop only)
-    function alignRows() {
-      if (window.innerWidth <= 768) return;
-      dayContainer.querySelectorAll('.curated-grid').forEach(grid => {
-        const cols = grid.querySelectorAll('.curated-column');
-        if (cols.length !== 2) return;
-        const itemsA = cols[0].querySelectorAll('.curated-item');
-        const itemsB = cols[1].querySelectorAll('.curated-item');
-        const count = Math.min(itemsA.length, itemsB.length);
-        for (let i = 0; i < count; i++) {
-          itemsA[i].style.minHeight = '';
-          itemsB[i].style.minHeight = '';
-        }
-        for (let i = 0; i < count; i++) {
-          const h = Math.max(itemsA[i].offsetHeight, itemsB[i].offsetHeight);
-          itemsA[i].style.minHeight = h + 'px';
-          itemsB[i].style.minHeight = h + 'px';
-        }
-      });
-    }
-    // Run alignment after layout settles, and re-run on resize/toggle
-    requestAnimationFrame(() => { alignRows(); setTimeout(alignRows, 100); });
-    dayContainer.querySelectorAll('.dive-deeper').forEach(d => {
-      d.addEventListener('toggle', () => requestAnimationFrame(alignRows));
-    });
-    if (window._alignRowsHandler) window.removeEventListener('resize', window._alignRowsHandler);
-    window._alignRowsHandler = alignRows;
-    window.addEventListener('resize', alignRows);
 
     const isToday = dateStr === today;
     const formatted = formatDate(dateStr);
