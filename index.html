@@ -648,7 +648,7 @@
 
   <!-- #1 Markets snapshot bar -->
   <!-- Embedded market data (populated by update script, used as fallback) -->
-  <script id="embedded-markets" type="application/json">{"FTSE":{"price":10147,"change":-1.34},"SP":{"price":6700,"change":-0.59},"Brent":{"price":108.75,"change":17.32},"GBP":{"price":1.3301,"change":-0.74},"ts":"2026-03-09T18:00:00Z"}</script>
+  <script id="embedded-markets" type="application/json">{"FTSE":{"price":10147,"change":-1.34},"SP":{"price":6700,"change":-0.59},"Brent":{"price":108.75,"change":17.32},"GBP":{"price":1.3301,"change":-0.74},"Gold":{"price":5092,"change":0.00},"EURGBP":{"price":0.8663,"change":-0.31},"Gilt":{"price":4.72,"change":0.16},"ts":"2026-03-09T18:00:00Z"}</script>
   <div class="markets-bar" id="marketsBar">
     <div class="market-item"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
     <span class="market-dot"></span>
@@ -657,6 +657,12 @@
     <div class="market-item"><span class="market-label">Brent Crude</span> <span class="market-value" id="mBrent">--</span> <span class="market-change" id="mBrentc"></span></div>
     <span class="market-dot"></span>
     <div class="market-item"><span class="market-label">GBP/USD</span> <span class="market-value" id="mGBP">--</span> <span class="market-change" id="mGBPc"></span></div>
+    <span class="market-dot"></span>
+    <div class="market-item"><span class="market-label">Gold</span> <span class="market-value" id="mGold">--</span> <span class="market-change" id="mGoldc"></span></div>
+    <span class="market-dot"></span>
+    <div class="market-item"><span class="market-label">EUR/GBP</span> <span class="market-value" id="mEURGBP">--</span> <span class="market-change" id="mEURGBPc"></span></div>
+    <span class="market-dot"></span>
+    <div class="market-item"><span class="market-label">UK 10Y Gilt</span> <span class="market-value" id="mGilt">--</span> <span class="market-change" id="mGiltc"></span></div>
     <span class="market-dot"></span>
     <span class="market-context" id="marketContext">(vs. prev. close)</span>
   </div>
@@ -1498,13 +1504,19 @@ window._marketData = {};
     { id: 'SP', el: 'mSP', ch: 'mSPc', sym: '%5EGSPC' },
     { id: 'Brent', el: 'mBrent', ch: 'mBrentc', sym: 'BZ%3DF' },
     { id: 'GBP', el: 'mGBP', ch: 'mGBPc', sym: 'GBPUSD%3DX' },
+    { id: 'Gold', el: 'mGold', ch: 'mGoldc', sym: 'GC%3DF' },
+    { id: 'EURGBP', el: 'mEURGBP', ch: 'mEURGBPc', sym: 'EURGBP%3DX' },
+    // Gilt yield has no Yahoo ticker — uses embedded data only (updated by briefing script)
   ];
 
   function displayItem(id, price, change) {
     const s = symbols.find(x => x.id === id);
     if (!s) return;
     window._marketData[id] = { price, change };
-    document.getElementById(s.el).textContent = id === 'GBP' ? price.toFixed(4) : price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
+    const fmt = id === 'GBP' || id === 'EURGBP' ? price.toFixed(4)
+      : id === 'Gilt' ? price.toFixed(2) + '%'
+      : price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
+    document.getElementById(s.el).textContent = fmt;
     const chEl = document.getElementById(s.ch);
     const sign = change >= 0 ? '+' : '';
     chEl.textContent = sign + change.toFixed(2) + '%';
