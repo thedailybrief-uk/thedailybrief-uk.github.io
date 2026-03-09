@@ -623,9 +623,216 @@
       opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 40;
     }
     .scroll-top.visible { opacity: 1; pointer-events: auto; }
+
+    /* ── Feature 1: Breaking Alert Banner ── */
+    .breaking-banner {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: linear-gradient(135deg, #8b2332, #a63045);
+      color: #fff; overflow: hidden;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .breaking-banner.dismissed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+    .breaking-inner {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 24px; max-width: 1200px; margin: 0 auto;
+    }
+    .breaking-label {
+      font-family: var(--sans); font-size: 10px; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 3px;
+      white-space: nowrap; animation: breakingPulse 2s ease-in-out infinite;
+    }
+    @keyframes breakingPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .breaking-text {
+      font-family: var(--sans); font-size: 13px; font-weight: 500; line-height: 1.4; flex: 1;
+    }
+    .breaking-dismiss {
+      background: none; border: none; color: rgba(255,255,255,0.7); font-size: 22px;
+      cursor: pointer; padding: 4px 8px; line-height: 1; transition: color 0.2s;
+      min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;
+    }
+    .breaking-dismiss:hover { color: #fff; }
+    body.has-breaking-banner { padding-top: 48px; }
+    @media (max-width: 600px) {
+      .breaking-text { font-size: 12px; }
+      body.has-breaking-banner { padding-top: 56px; }
+    }
+
+    /* ── Feature 2: Reading Time Estimate ── */
+    .reading-time {
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 10px;
+      margin-left: auto; white-space: nowrap;
+    }
+
+    /* ── Feature 3: Story Threading ── */
+    .story-thread { margin-top: 8px; }
+    .thread-btn {
+      font-family: var(--sans); font-size: 11px; font-weight: 500;
+      color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+      cursor: pointer; padding: 5px 10px; display: inline-flex; align-items: center; gap: 7px;
+      transition: all 0.2s;
+    }
+    .thread-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.18); }
+    .thread-btn .thread-chevron {
+      width: 12px; height: 12px; transition: transform 0.25s ease;
+      flex-shrink: 0; opacity: 0.5;
+    }
+    .thread-btn.open .thread-chevron { transform: rotate(180deg); }
+    .thread-count { font-weight: 400; color: rgba(255,255,255,0.35); }
+    .thread-timeline {
+      margin-top: 8px; padding-left: 12px;
+      border-left: 2px solid rgba(255,255,255,0.15);
+      display: none;
+    }
+    .thread-timeline.open { display: block; }
+    .thread-entry {
+      padding: 6px 0 6px 12px; position: relative; cursor: pointer;
+      transition: background 0.15s; border-radius: 0 4px 4px 0;
+    }
+    .thread-entry:hover { background: rgba(255,255,255,0.05); }
+    .thread-entry::before {
+      content: ''; position: absolute; left: -5px; top: 50%; transform: translateY(-50%);
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.1);
+    }
+    .thread-entry.active::before { background: var(--accent-geo); border-color: rgba(139,35,50,0.3); }
+    .thread-date {
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,0.4); display: block; margin-bottom: 2px;
+    }
+    .thread-headline {
+      font-family: var(--body-serif); font-size: 12px; font-weight: 500;
+      color: rgba(255,255,255,0.6); line-height: 1.35;
+    }
+    .thread-entry.active .thread-headline { color: rgba(255,255,255,0.85); font-weight: 600; }
+
+    /* ── Feature 8: Notification Subscription ── */
+    .notify-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-secondary); padding: 12px 4px 2px;
+      min-height: 44px; display: inline-flex; align-items: center;
+      transition: color 0.2s; position: relative;
+      font-family: var(--sans);
+    }
+    .notify-btn:hover { color: var(--text-primary); }
+    .notify-icon { vertical-align: middle; }
+    .notify-active::after {
+      content: ''; position: absolute; top: 10px; right: 2px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #4ade80; border: 1.5px solid var(--bg);
+    }
+    .notify-modal {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
+    }
+    .notify-modal.open { display: flex; }
+    .notify-modal-inner {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px 32px; max-width: 380px; width: 90%;
+      text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .notify-modal-inner h3 {
+      font-family: var(--serif); font-size: 18px; font-weight: 700;
+      margin-bottom: 8px; color: var(--text-primary);
+    }
+    .notify-modal-inner p {
+      font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 20px;
+    }
+    .notify-subscribe {
+      display: block; width: 100%; padding: 12px; border: none; border-radius: 8px;
+      background: var(--accent-geo); color: #fff; font-family: var(--sans);
+      font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 10px;
+      transition: background 0.2s;
+    }
+    .notify-subscribe:hover { background: #a63045; }
+    .notify-cancel {
+      display: block; width: 100%; padding: 10px; border: none; border-radius: 8px;
+      background: none; color: var(--text-tertiary); font-family: var(--sans);
+      font-size: 12px; cursor: pointer; transition: color 0.2s;
+    }
+    .notify-cancel:hover { color: var(--text-primary); }
+
+    /* ── Feature 10: Weekend Long Read Section ── */
+    .weekend-reads {
+      margin-top: 22px; padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .weekend-reads-heading {
+      font-family: var(--serif); font-size: 16px; font-weight: 700;
+      margin-bottom: 14px; color: rgba(255,255,255,0.85);
+    }
+    .weekend-reads-list { display: flex; flex-direction: column; gap: 0; }
+    .weekend-read-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-decoration: none; color: inherit; border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .weekend-read-item:last-child { border-bottom: none; }
+    .weekend-read-item:hover { background: rgba(255,255,255,0.05); }
+    .wr-number {
+      font-family: var(--serif); font-size: 28px; font-weight: 700;
+      color: rgba(255,255,255,0.15); min-width: 32px; line-height: 1;
+      padding-top: 2px;
+    }
+    .wr-content { flex: 1; }
+    .wr-content h4 {
+      font-family: var(--body-serif); font-size: 14px; font-weight: 600;
+      line-height: 1.35; margin-bottom: 4px; color: rgba(255,255,255,0.85);
+    }
+    .wr-meta {
+      display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+      font-family: var(--sans); font-size: 10px; margin-bottom: 4px;
+    }
+    .wr-source { font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
+    .wr-dot { color: rgba(255,255,255,0.2); margin: 0 6px; }
+    .wr-topic {
+      font-weight: 600; padding: 1px 6px; border-radius: 3px;
+      font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .wr-topic.geopolitics { background: rgba(139,35,50,0.3); color: rgba(255,255,255,0.7); }
+    .wr-topic.economics { background: rgba(20,120,120,0.3); color: rgba(255,255,255,0.7); }
+    .wr-topic.technology { background: rgba(100,60,180,0.3); color: rgba(255,255,255,0.7); }
+    .wr-topic.culture { background: rgba(180,130,20,0.3); color: rgba(255,255,255,0.7); }
+    .wr-topic.uk-politics { background: rgba(27,79,114,0.3); color: rgba(255,255,255,0.7); }
+    .wr-time { color: rgba(255,255,255,0.35); }
+    .wr-desc {
+      font-family: var(--sans); font-size: 12px; line-height: 1.5;
+      color: rgba(255,255,255,0.5); margin: 0;
+    }
+    @media (max-width: 600px) {
+      .wr-number { font-size: 22px; min-width: 24px; }
+      .wr-content h4 { font-size: 13px; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Feature 1: Breaking Alert Banner -->
+  <div class="breaking-banner" id="breakingBanner">
+    <div class="breaking-inner">
+      <span class="breaking-label">BREAKING</span>
+      <span class="breaking-text">Iran confirms missile strike on US naval vessel in Strait of Hormuz; Pentagon confirms no casualties &mdash; 14:32 GMT</span>
+      <button class="breaking-dismiss" id="breakingDismiss">&times;</button>
+    </div>
+  </div>
+
+  <!-- Feature 8: Notification Modal -->
+  <div class="notify-modal" id="notifyModal">
+    <div class="notify-modal-inner">
+      <h3>Edition Notifications</h3>
+      <p>Get a browser notification when morning (08:00) and evening (18:00) editions are published.</p>
+      <button class="notify-subscribe" id="notifySubscribe">Enable Notifications</button>
+      <button class="notify-cancel" id="notifyCancel">Not now</button>
+    </div>
+  </div>
 
   <!-- Masthead -->
   <header class="masthead">
@@ -641,6 +848,12 @@
         <a href="#domestic" class="dom">UK Domestic</a>
         <!-- #4 Dark mode toggle -->
         <button id="darkToggle" aria-label="Toggle dark mode"><span class="toggle-icon sun">&#9788;</span> Light / <span class="toggle-icon moon">&#9790;</span> Dark</button>
+        <!-- Feature 8: Notification Bell -->
+        <button class="notify-btn" id="notifyBtn" title="Get notified when new editions are published">
+          <svg class="notify-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="currentColor"/>
+          </svg>
+        </button>
       </nav>
     </div>
     <div class="last-updated">Last refreshed: <span id="refreshTime">loading...</span></div>
@@ -1224,6 +1437,84 @@
           <span class="otr-desc">A constituency-level analysis of how Reform, the Greens, Labour and the Conservatives are splitting the electorate &mdash; and what it means for the next general election.</span>
         </a>
       </div>
+
+      <!-- Feature 10: Weekend Reading List -->
+      <div class="weekend-reads">
+        <h3 class="weekend-reads-heading">Weekend Reading List</h3>
+        <div class="weekend-reads-list">
+          <a class="weekend-read-item" href="https://www.economist.com/briefing/2026/03/07/the-new-cold-war-over-hormuz" target="_blank" rel="noopener noreferrer">
+            <span class="wr-number">1</span>
+            <div class="wr-content">
+              <h4>The New Cold War Over Hormuz: How Energy Became a Weapon Again</h4>
+              <span class="wr-meta">
+                <span class="wr-source">The Economist</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-topic geopolitics">Geopolitics</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-time">12 min read</span>
+              </span>
+              <p class="wr-desc">Why the Strait of Hormuz crisis marks the return of energy as a strategic weapon &mdash; and what it means for the post-petroleum transition.</p>
+            </div>
+          </a>
+          <a class="weekend-read-item" href="https://www.ft.com/content/a1b2c3d4-stagflation-2026" target="_blank" rel="noopener noreferrer">
+            <span class="wr-number">2</span>
+            <div class="wr-content">
+              <h4>Stagflation Returns: The 1970s Playbook Central Bankers Are Dusting Off</h4>
+              <span class="wr-meta">
+                <span class="wr-source">Financial Times</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-topic economics">Economics</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-time">9 min read</span>
+              </span>
+              <p class="wr-desc">With oil above $100 and growth collapsing, the Bank of England faces its hardest choice since the Volcker era. A deep dive into the options.</p>
+            </div>
+          </a>
+          <a class="weekend-read-item" href="https://www.wired.com/story/iran-cyber-retaliation-infrastructure" target="_blank" rel="noopener noreferrer">
+            <span class="wr-number">3</span>
+            <div class="wr-content">
+              <h4>Iran&rsquo;s Invisible Front: The Cyber War Nobody Is Talking About</h4>
+              <span class="wr-meta">
+                <span class="wr-source">Wired</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-topic technology">Technology</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-time">11 min read</span>
+              </span>
+              <p class="wr-desc">How Iranian state hackers are retaliating against Western infrastructure while the world focuses on missiles and oil tankers.</p>
+            </div>
+          </a>
+          <a class="weekend-read-item" href="https://www.newstatesman.com/culture/2026/03/baftas-controversy-what-it-reveals" target="_blank" rel="noopener noreferrer">
+            <span class="wr-number">4</span>
+            <div class="wr-content">
+              <h4>The BAFTA Moment: Broadcasting, Disability and the Limits of Live Television</h4>
+              <span class="wr-meta">
+                <span class="wr-source">New Statesman</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-topic culture">Culture</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-time">7 min read</span>
+              </span>
+              <p class="wr-desc">The BBC&rsquo;s BAFTA broadcast failure raises deeper questions about inclusion, editorial standards and the impossible demands of live coverage.</p>
+            </div>
+          </a>
+          <a class="weekend-read-item" href="https://www.prospectmagazine.co.uk/politics/four-party-britain-reform-greens" target="_blank" rel="noopener noreferrer">
+            <span class="wr-number">5</span>
+            <div class="wr-content">
+              <h4>Four-Party Britain: Is This the End of Two-Party Politics?</h4>
+              <span class="wr-meta">
+                <span class="wr-source">Prospect</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-topic uk-politics">UK Politics</span>
+                <span class="wr-dot">&middot;</span>
+                <span class="wr-time">10 min read</span>
+              </span>
+              <p class="wr-desc">Reform leads, the Greens surge, Labour and the Conservatives stall at 16% each. A forensic look at how first-past-the-post may not survive the fracture.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
       </details>
     </div>
 
@@ -1664,22 +1955,50 @@ window._marketData = {};
           if (isUpdated) {
             const tag = document.createElement('span');
             tag.className = 'updated-tag';
-            tag.textContent = 'Updated';
+            tag.textContent = 'Updated from morning';
             h4.appendChild(tag);
           }
         });
       }
 
-      // #3 Key figures strip — market data + text-extracted figures with % changes
-      const allText = clone.textContent;
-      const figures = [];
+      // #3 Key figures strip — pick 3 most relevant from market data based on edition content
+      const allText = clone.textContent.toLowerCase();
       const md = window._marketData || {};
-      // Use live/embedded market data for Brent and FTSE (always available via embedded JSON)
-      if (md.Brent) figures.push({ label: 'Brent', val: '$' + md.Brent.price.toFixed(2), change: md.Brent.change });
-      if (md.FTSE) figures.push({ label: 'FTSE', val: md.FTSE.price.toLocaleString('en-GB', { maximumFractionDigits: 0 }), change: md.FTSE.change });
-      // Text-extracted figures
-      const growthMatch = allText.match(/growth[^0-9]*(\d+\.\d+%)/i);
-      if (growthMatch) figures.push({ label: 'UK Growth', val: growthMatch[1], change: null });
+
+      // All available market stats with relevance keywords
+      const marketPool = [
+        { key: 'Brent', label: 'Brent Crude', keywords: ['oil','brent','crude','petrol','energy','hormuz','opec','barrel','fuel','diesel','lng','gas price'], format: v => '$' + v.toFixed(2) },
+        { key: 'FTSE', label: 'FTSE 100', keywords: ['ftse','stock','shares','markets','london stock','equities','rally','sell-off','rout','city'], format: v => v.toLocaleString('en-GB', { maximumFractionDigits: 0 }) },
+        { key: 'SP', label: 'S&P 500', keywords: ['s&p','wall street','nasdaq','us market','us stocks','dow','recession','us econom','jobs report','fed ','federal reserve'], format: v => v.toLocaleString('en-GB', { maximumFractionDigits: 0 }) },
+        { key: 'GBP', label: 'GBP/USD', keywords: ['sterling','pound','gbp','currency','exchange rate','dollar'], format: v => v.toFixed(4) },
+        { key: 'Gold', label: 'Gold', keywords: ['gold','safe haven','precious metal','bullion','investor','flight to safety'], format: v => '$' + v.toLocaleString('en-GB', { maximumFractionDigits: 0 }) },
+        { key: 'Gilt', label: 'UK 10Y Gilt', keywords: ['gilt','bond','yield','borrowing','headroom','fiscal','treasury','debt','interest rate','bank of england','boe','mpc','rate cut','rate hold','mortgage'], format: v => v.toFixed(2) + '%' },
+        { key: 'EURGBP', label: 'EUR/GBP', keywords: ['euro','eur','eu reset','eu trade','european','brussels','brexit'], format: v => v.toFixed(4) },
+      ];
+
+      // Score each stat by keyword hits in the edition text + absolute change magnitude
+      const scored = marketPool
+        .filter(m => md[m.key])
+        .map(m => {
+          let score = 0;
+          m.keywords.forEach(kw => {
+            const regex = new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+            const hits = (allText.match(regex) || []).length;
+            score += hits * 2;
+          });
+          // Boost by absolute change magnitude (bigger movers are more newsworthy)
+          score += Math.abs(md[m.key].change) * 0.5;
+          return { ...m, score, data: md[m.key] };
+        })
+        .sort((a, b) => b.score - a.score);
+
+      // Take top 3
+      const figures = scored.slice(0, 3).map(m => ({
+        label: m.label,
+        val: m.format(m.data.price),
+        change: m.data.change
+      }));
+
       if (figures.length >= 1) {
         const strip = document.createElement('div');
         strip.className = 'key-figures';
@@ -2062,6 +2381,250 @@ sb.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
+
+// ════════════════════════════════════════════
+// PREVIEW FEATURES
+// ════════════════════════════════════════════
+
+// ── Feature 1: Breaking Alert Banner ──
+(function() {
+  const banner = document.getElementById('breakingBanner');
+  const dismiss = document.getElementById('breakingDismiss');
+  if (!banner) return;
+
+  // Check if already dismissed this session
+  if (sessionStorage.getItem('breakingDismissed')) {
+    banner.classList.add('dismissed');
+  } else {
+    document.body.classList.add('has-breaking-banner');
+  }
+
+  dismiss.addEventListener('click', () => {
+    banner.classList.add('dismissed');
+    document.body.classList.remove('has-breaking-banner');
+    sessionStorage.setItem('breakingDismissed', '1');
+  });
+})();
+
+// ── Feature 8: Notification Subscription ──
+(function() {
+  const btn = document.getElementById('notifyBtn');
+  const modal = document.getElementById('notifyModal');
+  const subscribe = document.getElementById('notifySubscribe');
+  const cancel = document.getElementById('notifyCancel');
+  if (!btn || !modal) return;
+
+  // Check if already subscribed
+  if (localStorage.getItem('notifySubscribed') || (typeof Notification !== 'undefined' && Notification.permission === 'granted')) {
+    btn.classList.add('notify-active');
+  }
+
+  btn.addEventListener('click', () => {
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+      // Already subscribed — show a test notification
+      new Notification('The Daily Brief', { body: 'You are already subscribed to edition notifications.' });
+      return;
+    }
+    modal.classList.add('open');
+  });
+
+  cancel.addEventListener('click', () => {
+    modal.classList.remove('open');
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('open');
+  });
+
+  subscribe.addEventListener('click', () => {
+    if (typeof Notification === 'undefined') {
+      alert('Notifications are not supported in this browser.');
+      modal.classList.remove('open');
+      return;
+    }
+    Notification.requestPermission().then(perm => {
+      modal.classList.remove('open');
+      if (perm === 'granted') {
+        btn.classList.add('notify-active');
+        localStorage.setItem('notifySubscribed', '1');
+        new Notification('The Daily Brief', {
+          body: 'Morning edition is ready — you\'ll be notified at 08:00 and 18:00 GMT.',
+          icon: '/icon-192.png'
+        });
+      }
+    });
+  });
+})();
+
+// ── Features 2, 3, 5, 6: Injected via showDay override ──
+// We wrap the original showDay logic by patching the day-editions container after rendering.
+(function() {
+  // Stopwords to exclude from matching
+  const stopWords = new Set(['this','that','with','from','have','been','were','will','they','their','than','also','after','into','more','over','about','would','could','which','there','these','other','some','what','when','most','just','only','very','even','much','such']);
+
+  function getCleanWords(text) {
+    return text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 3 && !stopWords.has(w));
+  }
+
+  // Build thread index from ALL editions once
+  const allEditions = document.getElementById('all-editions');
+  if (!allEditions) return;
+
+  const threadIndex = []; // { date, time, type, headline, words, editionEl }
+
+  allEditions.querySelectorAll('.curated-edition:not(.weekly)').forEach(ed => {
+    const date = ed.dataset.date;
+    const time = ed.dataset.time || '00:00';
+    const isMorning = parseInt(time.split(':')[0]) < 14;
+    const type = isMorning ? 'Morning' : 'Evening';
+    const d = new Date(date + 'T12:00:00');
+    const dayName = d.toLocaleDateString('en-GB', { weekday: 'short' });
+    const dayNum = d.getDate();
+    const monthName = d.toLocaleDateString('en-GB', { month: 'short' });
+
+    ed.querySelectorAll('.curated-item h4').forEach(h4 => {
+      const headline = h4.textContent.trim();
+      const words = getCleanWords(headline);
+      threadIndex.push({
+        date, time, type, headline, words,
+        label: dayName + ' ' + dayNum + ' ' + monthName + ' \u2014 ' + type,
+        editionEl: ed
+      });
+    });
+  });
+
+  // Group threads: items with 30%+ word overlap or 2+ common significant words
+  function findThread(words, currentDate, currentTime, currentHeadline) {
+    const matches = [];
+    threadIndex.forEach(entry => {
+      if (entry.date === currentDate && entry.time === currentTime) return; // skip same edition
+      if (entry.headline === currentHeadline) return; // skip exact duplicate
+      const overlap = words.filter(w => entry.words.includes(w)).length;
+      const minRequired = Math.max(2, Math.floor(Math.min(words.length, entry.words.length) * 0.3));
+      if (overlap >= minRequired) {
+        matches.push(entry);
+      }
+    });
+    return matches;
+  }
+
+  // Observe #day-editions for changes (showDay replaces content)
+  const dayContainer = document.getElementById('day-editions');
+  const observer = new MutationObserver(() => {
+    setTimeout(enhanceEditions, 50); // slight delay to let DOM settle
+  });
+  observer.observe(dayContainer, { childList: true });
+
+  function enhanceEditions() {
+    const editions = dayContainer.querySelectorAll('.curated-edition:not(.weekly)');
+    editions.forEach(edition => {
+      const date = edition.dataset.date;
+      const time = edition.dataset.time || '00:00';
+      const isMorning = parseInt(time.split(':')[0]) < 14;
+
+      // ── Feature 2: Reading Time ──
+      const header = edition.querySelector('.edition-header');
+      if (header && !header.querySelector('.reading-time')) {
+        const allText = edition.querySelectorAll('.curated-item p, .curated-item h4');
+        let wordCount = 0;
+        allText.forEach(el => {
+          wordCount += el.textContent.split(/\s+/).length;
+        });
+        const mins = Math.max(1, Math.ceil(wordCount / 220));
+        const badge = document.createElement('span');
+        badge.className = 'reading-time';
+        badge.textContent = mins + ' min read';
+        header.appendChild(badge);
+      }
+
+      // ── Feature 3: Story Threading ──
+      edition.querySelectorAll('.curated-item').forEach(item => {
+        const h4 = item.querySelector('h4');
+        if (!h4 || item.querySelector('.story-thread')) return;
+
+        // Get headline text excluding any appended tags (Updated, etc.)
+        const updatedTag = h4.querySelector('.updated-tag');
+        let headline = h4.textContent.trim();
+        if (updatedTag) {
+          headline = headline.replace(updatedTag.textContent, '').trim();
+        }
+
+        const words = getCleanWords(headline);
+        const threads = findThread(words, date, time, headline);
+
+        if (threads.length >= 1) {
+          const threadDiv = document.createElement('div');
+          threadDiv.className = 'story-thread';
+
+          const btn = document.createElement('button');
+          btn.className = 'thread-btn';
+          btn.innerHTML = '<svg class="thread-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>Follow this story <span class="thread-count">(' + (threads.length + 1) + ' editions)</span>';
+          threadDiv.appendChild(btn);
+
+          const timeline = document.createElement('div');
+          timeline.className = 'thread-timeline';
+
+          // Add thread entries sorted by date+time
+          const allEntries = [
+            ...threads,
+            { date, time, type: isMorning ? 'Morning' : 'Evening', headline, label: 'Current edition', isCurrent: true }
+          ].sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+          allEntries.forEach(entry => {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'thread-entry' + (entry.isCurrent ? ' active' : '');
+            entryDiv.innerHTML = '<span class="thread-date">' + escHtml(entry.label) + '</span>' +
+              '<span class="thread-headline">' + escHtml(entry.headline) + '</span>';
+
+            if (!entry.isCurrent) {
+              entryDiv.addEventListener('click', () => {
+                document.getElementById('curated').scrollIntoView({ behavior: 'smooth' });
+              });
+            }
+
+            timeline.appendChild(entryDiv);
+          });
+
+          threadDiv.appendChild(timeline);
+          // Insert after the last dive-deeper or at end of item
+          const diveDeeper = item.querySelector('.dive-deeper');
+          if (diveDeeper) {
+            diveDeeper.after(threadDiv);
+          } else {
+            item.appendChild(threadDiv);
+          }
+
+          btn.addEventListener('click', () => {
+            timeline.classList.toggle('open');
+            btn.classList.toggle('open');
+          });
+        }
+      });
+    });
+
+    // ── Feature 2: Reading time for weekly roundup too ──
+    dayContainer.querySelectorAll('.curated-edition.weekly').forEach(edition => {
+      const header = edition.querySelector('.edition-header');
+      if (header && !header.querySelector('.reading-time')) {
+        const allText = edition.querySelectorAll('.weekly-item p, .weekly-item h4, .one-to-read h4');
+        let wordCount = 0;
+        allText.forEach(el => {
+          wordCount += el.textContent.split(/\s+/).length;
+        });
+        const mins = Math.max(1, Math.ceil(wordCount / 220));
+        const badge = document.createElement('span');
+        badge.className = 'reading-time';
+        badge.textContent = mins + ' min read';
+        // Insert after h2 in the weekly header
+        const h2 = header.querySelector('h2');
+        if (h2) h2.after(badge);
+      }
+    });
+  }
+
+  // Run once on initial load (showDay(0) has already fired)
+  setTimeout(enhanceEditions, 100);
+})();
 </script>
 
 </body>
