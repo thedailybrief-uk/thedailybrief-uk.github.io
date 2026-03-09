@@ -140,12 +140,14 @@
 
     /* ── #1 Markets Bar ── */
     .markets-bar {
-      display: flex; align-items: center; justify-content: center; gap: 24px;
-      padding: 8px 24px; border-bottom: 1px solid var(--border-light);
-      font-size: 11px; font-weight: 500; color: var(--text-secondary);
+      display: flex; align-items: center; justify-content: center; gap: 18px;
+      padding: 8px 16px; border-bottom: 1px solid var(--border-light);
+      font-size: 10px; font-weight: 500; color: var(--text-secondary);
       overflow-x: auto; white-space: nowrap;
       background: var(--bg-section);
+      scrollbar-width: none; -ms-overflow-style: none;
     }
+    .markets-bar::-webkit-scrollbar { display: none; }
     .market-item { display: flex; align-items: center; gap: 6px; }
     .market-label { color: var(--text-tertiary); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-size: 9px; }
     .market-value { font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -240,7 +242,7 @@
     }
     .curated-column h3 {
       font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+      margin: 0 0 14px; display: flex; align-items: center; gap: 8px;
       color: rgba(255,255,255,0.5);
     }
     .curated-column h3 .dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -251,8 +253,8 @@
     .curated-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .curated-item:first-child { padding-top: 0; }
     .curated-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .curated-item h4 { font-family: var(--body-serif); font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 5px; }
-    .curated-item p { font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.65); }
+    .curated-item h4 { font-family: var(--body-serif); font-size: 15px; font-weight: 600; line-height: 1.35; margin: 0 0 5px; }
+    .curated-item p { font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.65); margin: 0; }
     @media (max-width: 768px) { .curated-item p { font-size: 14px; line-height: 1.6; } }
     .dive-deeper { margin-top: 10px; }
     .dive-deeper summary {
