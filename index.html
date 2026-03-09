@@ -356,9 +356,10 @@
     /* ── Feature 3: Reference Figures ── */
     .ref-figures {
       display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-      padding: 6px 14px; margin-top: 2px; margin-bottom: 18px;
+      padding: 6px 14px; margin: 0;
       background: rgba(255,255,255,0.03); border-radius: 0 0 6px 6px;
       font-size: 11px; color: rgba(255,255,255,0.5);
+      font-family: var(--sans);
     }
     .ref-figure { display: flex; align-items: center; gap: 5px; }
     .ref-figure strong { color: rgba(255,255,255,0.7); font-weight: 600; }
@@ -658,6 +659,16 @@
     <span class="market-dot"></span>
     <span class="market-context" id="marketContext">(vs. prev. close)</span>
   </div>
+  <div class="ref-figures" id="refFiguresBar">
+    <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
+    <span class="ref-figure-sep">|</span>
+    <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
+    <span class="ref-figure-sep">|</span>
+    <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
+    <span class="ref-figure-sep">|</span>
+    <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
+    <span class="ref-context">(vs. previous period)</span>
+  </div>
 
   <!-- ════════════════════════════════════════════ -->
   <!-- CURATED BRIEFINGS                           -->
@@ -697,16 +708,6 @@
           <li>Gulf energy disruption could reverse April energy cap reduction; budget for higher bills from July</li>
           <li>Airspace closures affecting ~400 UK flights daily; check FCDO travel advice before booking</li>
         </ul>
-      </div>
-      <div class="ref-figures">
-        <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-        <span class="ref-context">(vs. previous period)</span>
       </div>
       <div class="curated-grid">
         <div class="curated-column">
@@ -796,16 +797,6 @@
           <li>FTSE set for turbulent Monday opening; review portfolio exposure to financial and retail sectors</li>
         </ul>
       </div>
-      <div class="ref-figures">
-        <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-        <span class="ref-context">(vs. previous period)</span>
-      </div>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
@@ -893,16 +884,6 @@
           <li>April energy cap cut may be reversed by July if wholesale gas stays elevated; fixed-rate energy deals worth considering</li>
           <li>Construction sector contracting for 14th month; housing completions falling well short of government targets</li>
         </ul>
-      </div>
-      <div class="ref-figures">
-        <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-        <span class="ref-context">(vs. previous period)</span>
       </div>
       <div class="curated-grid">
         <div class="curated-column">
@@ -995,16 +976,6 @@
           <li>Gulf airspace restrictions affecting ~400 UK flights; check FCDO advice before booking travel to Middle East or South Asia</li>
         </ul>
       </div>
-      <div class="ref-figures">
-        <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-        <span class="ref-context">(vs. previous period)</span>
-      </div>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
@@ -1092,16 +1063,6 @@
           <li>Gilt yields spiking &mdash; tracker mortgage holders face rate rises within weeks; fixed-rate deals tightening</li>
           <li>Airspace closures still affecting ~400 UK-bound flights daily; check FCDO travel advice before booking</li>
         </ul>
-      </div>
-      <div class="ref-figures">
-        <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-        <span class="ref-context">(vs. previous period)</span>
       </div>
       <div class="curated-grid">
         <div class="curated-column">
@@ -1274,16 +1235,6 @@
           <li>Gulf airspace closures continue to disrupt UK flights; FCDO advises against all travel to Iran, Iraq and Lebanon &mdash; check rebooking options for Middle East and South Asian routes</li>
         </ul>
       </div>
-      <div class="ref-figures">
-        <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-        <span class="ref-context">(vs. previous period)</span>
-      </div>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
@@ -1371,16 +1322,6 @@
           <li>Bank of England rate cut on 19 March all but ruled out as oil shock threatens fresh inflation surge; mortgage holders on variable rates should brace for sustained higher costs</li>
           <li>Gulf airspace closures widening &mdash; US orders staff out of Saudi Arabia; FCDO maintains advice against all travel to Iran, Iraq and Lebanon; further flight cancellations expected across Middle East and South Asian routes</li>
         </ul>
-      </div>
-      <div class="ref-figures">
-        <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
-        <span class="ref-figure-sep">|</span>
-        <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-        <span class="ref-context">(vs. previous period)</span>
       </div>
       <div class="curated-grid">
         <div class="curated-column">
