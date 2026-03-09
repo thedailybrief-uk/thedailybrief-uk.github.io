@@ -1732,18 +1732,17 @@ document.getElementById('currentDate').textContent =
   now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
 
 // ── RSS Config ──
-const PROXIES = [
-  url => 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url),
-  url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url)),
-];
+// Strategy 1: rss2json (returns JSON)
+// Strategy 2: allorigins returning raw XML (independent of rss2json)
+// Each has a per-feed 8s timeout so one slow feed can't block the rest.
 
 // #5 Feeds with paywall flag
 const GEO_FEEDS = [
-  { name: 'Financial Times', url: 'https://www.ft.com/rss/home', top: 5, paywall: true },
-  { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', top: 4 },
+  { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', top: 5 },
   { name: 'BBC Business', url: 'https://feeds.bbci.co.uk/news/business/rss.xml', top: 3 },
   { name: 'Sky News', url: 'https://feeds.skynews.com/feeds/rss/world.xml', top: 3 },
   { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', top: 3 },
+  { name: 'Reuters', url: 'https://feeds.reuters.com/reuters/worldNews', top: 4 },
 ];
 
 const DOM_FEEDS = [
@@ -1755,28 +1754,72 @@ const DOM_FEEDS = [
 // ── Helpers ──
 const feedStatus = {}; // #5 track feed results
 
+function parseXmlFeed(xmlText) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xmlText, 'text/xml');
+  if (doc.querySelector('parsererror')) return null;
+  const items = doc.querySelectorAll('item');
+  if (!items.length) return null;
+  return Array.from(items).map(item => {
+    const get = tag => (item.querySelector(tag) || {}).textContent || '';
+    return { title: get('title'), description: get('description'), link: get('link'), pubDate: get('pubDate') };
+  });
+}
+
 async function fetchFeed(feed, signal) {
-  for (const makeUrl of PROXIES) {
-    try {
-      const res = await fetch(makeUrl(feed.url), { signal });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const limit = feed.top || 4;
+  const perFeedTimeout = 8000;
+  const strategies = [
+    // Strategy 1: rss2json
+    async () => {
+      const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url);
+      const res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(perFeedTimeout)]) });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       if (data.status !== 'ok' || !data.items) throw new Error('Bad response');
-      const limit = feed.top || 4;
-      feedStatus[feed.name] = { ok: true, paywall: feed.paywall || false };
       return data.items.slice(0, limit).map(item => ({
-        title: item.title,
-        description: stripHtml(item.description || ''),
-        link: item.link,
-        pubDate: item.pubDate,
-        source: feed.name,
+        title: item.title, description: stripHtml(item.description || ''),
+        link: item.link, pubDate: item.pubDate, source: feed.name,
       }));
+    },
+    // Strategy 2: allorigins raw XML, parsed client-side
+    async () => {
+      const url = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(feed.url);
+      const res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(perFeedTimeout)]) });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const xml = await res.text();
+      const items = parseXmlFeed(xml);
+      if (!items) throw new Error('XML parse failed');
+      return items.slice(0, limit).map(item => ({
+        title: item.title, description: stripHtml(item.description || ''),
+        link: item.link, pubDate: item.pubDate, source: feed.name,
+      }));
+    },
+    // Strategy 3: corsproxy.io raw XML fallback
+    async () => {
+      const url = 'https://corsproxy.io/?' + encodeURIComponent(feed.url);
+      const res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(perFeedTimeout)]) });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const xml = await res.text();
+      const items = parseXmlFeed(xml);
+      if (!items) throw new Error('XML parse failed');
+      return items.slice(0, limit).map(item => ({
+        title: item.title, description: stripHtml(item.description || ''),
+        link: item.link, pubDate: item.pubDate, source: feed.name,
+      }));
+    },
+  ];
+  for (const strategy of strategies) {
+    try {
+      const result = await strategy();
+      feedStatus[feed.name] = { ok: true, paywall: feed.paywall || false };
+      return result;
     } catch (e) {
       if (signal && signal.aborted) throw e;
-      console.warn(`Proxy failed for ${feed.name}, trying next...`, e);
+      console.warn('Proxy failed for ' + feed.name + ', trying next...', e.message);
     }
   }
-  console.warn(`All proxies failed: ${feed.name}`);
+  console.warn('All strategies failed: ' + feed.name);
   feedStatus[feed.name] = { ok: false, paywall: feed.paywall || false };
   return [];
 }
@@ -1907,10 +1950,9 @@ function renderSection(articles, accentClass, feeds) {
 async function loadSection(feeds, containerId, accentClass, timeElId, signal) {
   const container = document.getElementById(containerId);
   try {
-    const results = await Promise.all(feeds.map(f => fetchFeed(f, signal)));
-    const all = results.flat();
+    const results = await Promise.allSettled(feeds.map(f => fetchFeed(f, signal)));
+    const all = results.flatMap(r => r.status === 'fulfilled' ? r.value : []);
     container.innerHTML = renderSection(all, accentClass, feeds);
-    // #10 Per-section timestamp
     const timeEl = document.getElementById(timeElId);
     if (timeEl) {
       timeEl.textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
@@ -1922,7 +1964,7 @@ async function loadSection(feeds, containerId, accentClass, timeElId, signal) {
 
 async function init() {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  const timeoutId = setTimeout(() => controller.abort(), 25000);
   try {
     await Promise.all([
       loadSection(GEO_FEEDS, 'geoContent', 'geo', 'geoTime', controller.signal),
