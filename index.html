@@ -665,6 +665,15 @@
     }
     .breaking-text:hover { opacity: 0.85; }
     .breaking-text.linked { text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 2px; }
+    .curated-item.highlight-flash {
+      animation: highlightPulse 2s ease-out forwards;
+      border-radius: 6px;
+    }
+    @keyframes highlightPulse {
+      0% { background: rgba(139,35,50,0.35); box-shadow: 0 0 0 4px rgba(139,35,50,0.2); }
+      30% { background: rgba(139,35,50,0.25); box-shadow: 0 0 0 8px rgba(139,35,50,0.08); }
+      100% { background: transparent; box-shadow: 0 0 0 0 transparent; }
+    }
     .breaking-dismiss {
       background: none; border: none; color: rgba(255,255,255,0.7); font-size: 22px;
       cursor: pointer; padding: 4px 8px; line-height: 1; transition: color 0.2s;
@@ -2479,10 +2488,16 @@ if ('serviceWorker' in navigator) {
     breakingText.addEventListener('click', () => {
       const match = findMatchingItem();
       if (match) {
-        match.style.transition = 'background 0.4s ease';
-        match.style.background = 'rgba(139,35,50,0.15)';
         match.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => { match.style.background = ''; }, 2000);
+        // Wait for scroll to finish, then flash
+        setTimeout(() => {
+          match.classList.remove('highlight-flash');
+          match.offsetHeight; // force reflow
+          match.classList.add('highlight-flash');
+          match.addEventListener('animationend', () => {
+            match.classList.remove('highlight-flash');
+          }, { once: true });
+        }, 600);
       }
     });
 
