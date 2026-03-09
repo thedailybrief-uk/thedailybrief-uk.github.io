@@ -1465,7 +1465,7 @@ window._marketData = {};
       displayItem(id, d.price, d.change);
     });
     const ctx = document.getElementById('marketContext');
-    if (ctx && embeddedTs) ctx.textContent = '(as of ' + embeddedTs + ')';
+    if (ctx && embeddedTs) ctx.textContent = '(as of ' + embeddedTs + ' — daily change)';
   } catch (e) {}
 
   // Then try live data via Yahoo v8 chart API (individual requests)
@@ -1495,7 +1495,9 @@ window._marketData = {};
     // Cache whatever we got and update context label
     if (anySuccess) {
       const ctx = document.getElementById('marketContext');
-      if (ctx) ctx.textContent = '(live vs. prev. close)';
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' });
+      if (ctx) ctx.textContent = '(live at ' + timeStr + ' GMT — daily change)';
       try { localStorage.setItem('db_markets', JSON.stringify({ ts: Date.now(), data: window._marketData })); } catch(e) {}
     }
   }
@@ -1624,7 +1626,14 @@ window._marketData = {};
         }).join('<span class="key-figure-sep">|</span>');
         const hasAnyChange = figures.some(f => f.change !== null && f.change !== undefined && !isNaN(f.change));
         if (hasAnyChange) {
-          strip.innerHTML += '<span class="key-figure-context">(vs. prev. brief)</span>';
+          let contextLabel = 'daily change';
+          if (md.ts) {
+            try {
+              const tsDate = new Date(md.ts);
+              contextLabel = tsDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' }) + ' GMT';
+            } catch(e) {}
+          }
+          strip.innerHTML += '<span class="key-figure-context">(' + contextLabel + ')</span>';
         }
         const meta = clone.querySelector('.curated-meta');
         if (meta) meta.after(strip);
