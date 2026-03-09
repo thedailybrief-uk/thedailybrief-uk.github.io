@@ -666,13 +666,14 @@
     .breaking-text:hover { opacity: 0.85; }
     .breaking-text.linked { text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 2px; }
     .curated-item.highlight-flash {
-      animation: highlightPulse 2s ease-out forwards;
-      border-radius: 6px;
+      animation: highlightPulse 2.5s ease-out forwards;
+      border-radius: 6px; position: relative; z-index: 2;
     }
     @keyframes highlightPulse {
-      0% { background: rgba(139,35,50,0.35); box-shadow: 0 0 0 4px rgba(139,35,50,0.2); }
-      30% { background: rgba(139,35,50,0.25); box-shadow: 0 0 0 8px rgba(139,35,50,0.08); }
-      100% { background: transparent; box-shadow: 0 0 0 0 transparent; }
+      0% { background: rgba(255,255,255,0.12); outline: 2px solid rgba(139,35,50,0.8); outline-offset: 4px; }
+      15% { background: rgba(255,255,255,0.08); outline: 2px solid rgba(139,35,50,0.6); outline-offset: 6px; }
+      50% { background: rgba(255,255,255,0.04); outline: 2px solid rgba(139,35,50,0.3); outline-offset: 4px; }
+      100% { background: transparent; outline: 2px solid transparent; outline-offset: 4px; }
     }
     .breaking-dismiss {
       background: none; border: none; color: rgba(255,255,255,0.7); font-size: 22px;
@@ -2489,15 +2490,25 @@ if ('serviceWorker' in navigator) {
       const match = findMatchingItem();
       if (match) {
         match.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Wait for scroll to finish, then flash
-        setTimeout(() => {
+        // Flash immediately and again after scroll settles
+        function flash() {
           match.classList.remove('highlight-flash');
-          match.offsetHeight; // force reflow
+          match.offsetHeight;
           match.classList.add('highlight-flash');
           match.addEventListener('animationend', () => {
             match.classList.remove('highlight-flash');
           }, { once: true });
-        }, 600);
+        }
+        // Trigger after scroll completes (use IntersectionObserver for reliability)
+        const io = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            io.disconnect();
+            requestAnimationFrame(flash);
+          }
+        }, { threshold: 0.5 });
+        io.observe(match);
+        // Safety fallback in case observer doesn't fire
+        setTimeout(() => { io.disconnect(); flash(); }, 1200);
       }
     });
 
