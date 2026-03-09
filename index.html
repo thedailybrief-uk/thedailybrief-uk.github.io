@@ -583,28 +583,41 @@
 
     /* ── Day Navigation ── */
     .day-nav {
-      display: flex; align-items: center; justify-content: center; gap: 16px;
-      margin-bottom: 20px; padding: 12px 0;
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      margin-bottom: 20px; padding: 14px 0;
     }
     .day-nav-btn {
-      background: none; border: 1px solid var(--border); border-radius: 50%;
-      width: 44px; height: 44px; cursor: pointer; display: flex;
-      align-items: center; justify-content: center; color: var(--text-secondary);
-      transition: all 0.2s;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 50%;
+      width: 40px; height: 40px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; color: var(--text-tertiary);
+      transition: all 0.25s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .day-nav-btn:hover:not(:disabled) {
-      border-color: var(--text-tertiary); color: var(--text-primary);
-      background: var(--bg-section);
+      border-color: var(--text-secondary); color: var(--text-primary);
+      background: var(--bg-section); box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transform: scale(1.05);
     }
-    .day-nav-btn:disabled { opacity: 0.25; cursor: default; }
-    .day-nav-btn svg { width: 16px; height: 16px; }
+    .day-nav-btn:active:not(:disabled) { transform: scale(0.95); }
+    .day-nav-btn:disabled { opacity: 0.15; cursor: default; }
+    .day-nav-btn svg { width: 15px; height: 15px; stroke-width: 2.5; }
+    [data-theme="dark"] .day-nav-btn { box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    [data-theme="dark"] .day-nav-btn:hover:not(:disabled) { box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
     .day-nav-label {
       font-family: var(--serif); font-size: 16px; font-weight: 600;
-      color: var(--text-primary); text-align: center; min-width: 160px;
+      color: var(--text-primary); text-align: center; min-width: 180px;
+      transition: opacity 0.3s ease;
     }
     .day-nav-sub {
-      font-size: 11px; font-weight: 400; color: var(--text-tertiary);
-      font-family: var(--sans); display: block; margin-top: 2px;
+      font-size: 10px; font-weight: 500; color: var(--text-muted);
+      font-family: var(--sans); display: block; margin-top: 3px;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    /* Day transition */
+    #day-editions {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    #day-editions.fade-out {
+      opacity: 0; transform: translateY(6px);
     }
 
     /* #7 Swipe hint */
@@ -1922,7 +1935,8 @@ window._marketData = {};
     return Array.from(editionEl.querySelectorAll('.curated-item h4')).map(h => h.textContent.toLowerCase().replace(/[^a-z0-9\s]/g, ''));
   }
 
-  function showDay(index) {
+  let _showDayTimer = null;
+  function showDay(index, animate) {
     currentIndex = index;
     const dateStr = dates[index];
     const dayEditions = byDate[dateStr];
@@ -1931,6 +1945,7 @@ window._marketData = {};
     const morningEd = dayEditions.find(e => parseInt((e.dataset.time||'00:00').split(':')[0]) < 14);
     const morningHeadlines = morningEd ? getHeadlines(morningEd) : [];
 
+    function renderContent() {
     dayContainer.innerHTML = '';
     dayEditions.forEach(el => {
       const clone = el.cloneNode(true);
@@ -2062,13 +2077,29 @@ window._marketData = {};
     prevBtn.disabled = (index >= dates.length - 1);
     nextBtn.disabled = (index <= 0);
     dayNav.style.display = dates.length > 1 ? 'flex' : 'none';
+    } // end renderContent
+
+    // Animate transition if switching days (not initial load)
+    if (animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      clearTimeout(_showDayTimer);
+      dayContainer.classList.add('fade-out');
+      _showDayTimer = setTimeout(() => {
+        renderContent();
+        // Force reflow then fade in
+        dayContainer.offsetHeight;
+        dayContainer.classList.remove('fade-out');
+      }, 250);
+    } else {
+      dayContainer.classList.remove('fade-out');
+      renderContent();
+    }
   }
 
   prevBtn.addEventListener('click', () => {
-    if (currentIndex < dates.length - 1) showDay(currentIndex + 1);
+    if (currentIndex < dates.length - 1) showDay(currentIndex + 1, true);
   });
   nextBtn.addEventListener('click', () => {
-    if (currentIndex > 0) showDay(currentIndex - 1);
+    if (currentIndex > 0) showDay(currentIndex - 1, true);
   });
 
   // #11 Keyboard navigation
@@ -2079,8 +2110,8 @@ window._marketData = {};
       const rect = curated.getBoundingClientRect();
       if (rect.bottom < 0 || rect.top > window.innerHeight) return;
     }
-    if (e.key === 'ArrowLeft' && currentIndex < dates.length - 1) showDay(currentIndex + 1);
-    if (e.key === 'ArrowRight' && currentIndex > 0) showDay(currentIndex - 1);
+    if (e.key === 'ArrowLeft' && currentIndex < dates.length - 1) showDay(currentIndex + 1, true);
+    if (e.key === 'ArrowRight' && currentIndex > 0) showDay(currentIndex - 1, true);
   });
 
   // #7 Mobile swipe navigation
@@ -2095,8 +2126,8 @@ window._marketData = {};
     const dx = e.changedTouches[0].screenX - touchStartX;
     const dy = e.changedTouches[0].screenY - touchStartY;
     if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return; // too short or vertical
-    if (dx < 0 && currentIndex > 0) showDay(currentIndex - 1); // swipe left = next day
-    if (dx > 0 && currentIndex < dates.length - 1) showDay(currentIndex + 1); // swipe right = prev day
+    if (dx < 0 && currentIndex > 0) showDay(currentIndex - 1, true); // swipe left = next day
+    if (dx > 0 && currentIndex < dates.length - 1) showDay(currentIndex + 1, true); // swipe right = prev day
   }, { passive: true });
 
   showDay(0);
