@@ -2138,7 +2138,8 @@ window._marketData = {};
   swipeTarget.addEventListener('touchend', (e) => {
     const dx = e.changedTouches[0].screenX - touchStartX;
     const dy = e.changedTouches[0].screenY - touchStartY;
-    if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return; // too short or vertical
+    // Require deliberate horizontal swipe: 100px+ horizontal, and horizontal must be 3x vertical
+    if (Math.abs(dx) < 100 || Math.abs(dy) * 3 > Math.abs(dx)) return;
     if (dx < 0 && currentIndex > 0) showDay(currentIndex - 1, true); // swipe left = next day
     if (dx > 0 && currentIndex < dates.length - 1) showDay(currentIndex + 1, true); // swipe right = prev day
   }, { passive: true });
