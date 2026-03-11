@@ -845,7 +845,7 @@
   <div class="breaking-banner" id="breakingBanner">
     <div class="breaking-inner">
       <span class="breaking-label">BREAKING</span>
-      <span class="breaking-text">Pentagon launches 'most intense' strikes on Iran as Brent crude crashes $30 on Hormuz de-escalation hopes &mdash; 18:01 GMT</span>
+      <span class="breaking-text">Iran says US and Israel have struck nearly 10,000 civilian sites as day 12 of war begins &mdash; 08:03 GMT</span>
       <button class="breaking-dismiss" id="breakingDismiss">&times;</button>
     </div>
   </div>
@@ -887,7 +887,7 @@
 
   <!-- #1 Markets snapshot bar -->
   <!-- Embedded market data (populated by update script, used as fallback) -->
-  <script id="embedded-markets" type="application/json">{"FTSE":{"price":10369,"change":1.16},"SP":{"price":6796,"change":0.83},"Brent":{"price":86.66,"change":-8.56},"GBP":{"price":1.3448,"change":0.89},"Gold":{"price":5189,"change":1.68},"EURGBP":{"price":0.8661,"change":-0.04},"Gilt":{"price":4.49,"change":-2.18},"ts":"2026-03-10T18:01:00Z"}</script>
+  <script id="embedded-markets" type="application/json">{"FTSE":{"price":10249,"change":-1.16},"SP":{"price":6781,"change":-0.21},"Brent":{"price":87.95,"change":1.49},"GBP":{"price":1.3438,"change":0.15},"Gold":{"price":5227,"change":0.73},"EURGBP":{"price":0.8646,"change":-0.17},"Gilt":{"price":4.62,"change":2.90},"ts":"2026-03-11T08:03:00Z"}</script>
   <div class="markets-bar" id="marketsBar">
     <div class="market-item"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
     <span class="market-dot"></span>
@@ -940,19 +940,19 @@
     <!-- ════ ALL EDITIONS (sorted by JS) ════ -->
     <div id="all-editions" style="display:none;">
 
-    <!-- ── MORNING 7 MARCH ── -->
-    <div class="curated-edition morning" data-date="2026-03-07" data-time="10:00" data-markets='{"FTSE":{"price":10284.75,"change":-1.20},"SP":{"price":5679.12,"change":-1.59},"Brent":{"price":92.69,"change":8.50},"GBP":{"price":1.3387,"change":0.59}}'>
+    <!-- ── MORNING 11 MARCH ── -->
+    <div class="curated-edition morning" data-date="2026-03-11" data-time="08:03" data-markets='{"FTSE":{"price":10249,"change":-1.16},"SP":{"price":6781,"change":-0.21},"Brent":{"price":87.95,"change":1.49},"GBP":{"price":1.3438,"change":0.15},"Gold":{"price":5227,"change":0.73},"EURGBP":{"price":0.8646,"change":-0.17},"Gilt":{"price":4.62,"change":2.90}}'>
       <div class="edition-header">
         <span class="edition-icon">&#9788;</span>
         <h2>Morning Briefing</h2>
       </div>
-      <div class="curated-meta">Saturday 7 March 2026 &mdash; 10:00 GMT</div>
+      <div class="curated-meta">Wednesday 11 March 2026 &mdash; 08:03 GMT</div>
       <div class="impact-box">
         <h3 class="impact-heading">What It Means For You</h3>
         <ul class="impact-list">
-          <li>Brent at $93 &mdash; fill up before pump prices rise 10&ndash;20p/litre; diesel already at a 16-month high</li>
-          <li>Heating oil prices spiking sharply; 1.5m UK homes on oil should consider topping up tanks now</li>
-          <li>FTSE set for turbulent Monday opening; review portfolio exposure to financial and retail sectors</li>
+          <li>Brent stabilising near $88 after last week&rsquo;s $120 spike &mdash; RAC expects pump prices to ease toward 150p/litre; filling a 55-litre tank now &pound;6 cheaper than feared</li>
+          <li>Gilt yields climb to 4.62%, highest since November &mdash; fixed-rate mortgage repricing likely; two-year fixes may edge back above 5.1% this week</li>
+          <li>Workers&rsquo; rights reforms take effect 6 April: statutory sick pay from day one, zero-hours contract protections &mdash; check your employment terms now</li>
         </ul>
       </div>
       <div class="curated-grid">
@@ -1869,7 +1869,7 @@
 
   <footer class="site-footer">
     <p class="footer-brand">The Daily Brief</p>
-    <p>Aggregated from Financial Times, BBC, Sky News &amp; Al Jazeera<br/>
+    <p>Aggregated from BBC, Sky News, Al Jazeera, Reuters, The Telegraph, Financial Times, The Independent &amp; The Economist<br/>
     Live feeds refresh on each visit &middot; Curated briefings at 10:00 AM &amp; 5:00 PM</p>
   </footer>
 
@@ -2264,17 +2264,25 @@ document.getElementById('currentDate').textContent =
 
 // #5 Feeds with paywall flag
 const GEO_FEEDS = [
-  { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', top: 5 },
+  { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', top: 4 },
   { name: 'BBC Business', url: 'https://feeds.bbci.co.uk/news/business/rss.xml', top: 3 },
   { name: 'Sky News', url: 'https://feeds.skynews.com/feeds/rss/world.xml', top: 3 },
   { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', top: 3 },
-  { name: 'Reuters', url: 'https://feeds.reuters.com/reuters/worldNews', top: 4 },
+  { name: 'Reuters', url: 'https://feeds.reuters.com/reuters/worldNews', top: 3 },
+  { name: 'The Telegraph', url: 'https://www.telegraph.co.uk/rss.xml', top: 3 },
+  { name: 'Financial Times', url: 'https://www.ft.com/world?format=rss', top: 3 },
+  { name: 'The Independent', url: 'https://www.independent.co.uk/news/world/rss', top: 3 },
+  { name: 'The Economist', url: 'https://www.economist.com/international/rss.xml', top: 2 },
 ];
 
 const DOM_FEEDS = [
-  { name: 'BBC Politics', url: 'https://feeds.bbci.co.uk/news/politics/rss.xml', top: 5 },
+  { name: 'BBC Politics', url: 'https://feeds.bbci.co.uk/news/politics/rss.xml', top: 4 },
   { name: 'BBC UK', url: 'https://feeds.bbci.co.uk/news/uk/rss.xml', top: 3 },
   { name: 'Sky News', url: 'https://feeds.skynews.com/feeds/rss/politics.xml', top: 3 },
+  { name: 'The Telegraph', url: 'https://www.telegraph.co.uk/politics/rss.xml', top: 3 },
+  { name: 'Financial Times', url: 'https://www.ft.com/world/uk?format=rss', top: 3 },
+  { name: 'The Independent', url: 'https://www.independent.co.uk/news/uk/politics/rss', top: 3 },
+  { name: 'The Economist', url: 'https://www.economist.com/britain/rss.xml', top: 2 },
 ];
 
 // ── Helpers ──
