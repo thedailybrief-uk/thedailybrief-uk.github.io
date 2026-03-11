@@ -410,20 +410,39 @@
     }
 
     /* ── Feature 6: PMQs Summary (Wednesday evenings) ── */
+    .pmqs-wrapper {
+      margin: 16px 0 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .pmqs-wrapper summary {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 18px;
+      background: rgba(255,255,255,0.03);
+      cursor: pointer; list-style: none;
+      font-family: var(--sans); font-size: 11px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .pmqs-wrapper summary::-webkit-details-marker { display: none; }
+    .pmqs-wrapper summary::before {
+      content: ''; display: inline-block; width: 0; height: 0;
+      border-left: 5px solid rgba(255,255,255,0.4);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      transition: transform 0.2s ease;
+    }
+    .pmqs-wrapper[open] summary::before { transform: rotate(90deg); }
+    .pmqs-wrapper summary .pmqs-meta {
+      font-weight: 400; font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      margin-left: auto;
+    }
     .pmqs-summary {
-      margin-top: 22px; padding: 18px 20px;
-      background: rgba(255,255,255,0.04);
-      border-left: 3px solid rgba(139,109,74,0.5);
-      border-radius: 0 6px 6px 0;
-    }
-    .pmqs-heading {
-      font-family: var(--sans); font-size: 10px; font-weight: 700;
-      letter-spacing: 1.2px; text-transform: uppercase;
-      color: rgba(255,255,255,0.4); margin-bottom: 4px;
-    }
-    .pmqs-meta {
-      font-family: var(--sans); font-size: 11px;
-      color: rgba(255,255,255,0.35); margin-bottom: 14px;
+      padding: 14px 18px 18px;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
     .pmqs-exchange { margin-bottom: 14px; }
     .pmqs-exchange:last-child { margin-bottom: 0; }
@@ -1043,6 +1062,27 @@
           <li>FTSE 100 rebounds 1.59% to 10,412 &mdash; pension and ISA holders see partial recovery after three consecutive days of losses</li>
         </ul>
       </div>
+      <details class="pmqs-wrapper">
+        <summary>Prime Minister&rsquo;s Questions <span class="pmqs-meta">Wednesday 11 March 2026</span></summary>
+        <div class="pmqs-summary">
+          <div class="pmqs-exchange">
+            <h4>Badenoch Presses Starmer on Fuel Duty Rise</h4>
+            <p>The Conservative leader used all her questions to challenge the Prime Minister on the Chancellor&rsquo;s confirmation that the fuel duty freeze will end in September, arguing the Government &ldquo;thinks now is the time to increase the cost of petrol.&rdquo; Starmer deflected, attacking Badenoch&rsquo;s U-turn on the Iran war as &ldquo;the mother of all U-turns on the single most important position a prime minister ever has to take.&rdquo;</p>
+          </div>
+          <div class="pmqs-exchange">
+            <h4>Starmer Attacks Badenoch&rsquo;s &lsquo;Iran Amnesia&rsquo;</h4>
+            <p>The Prime Minister accused the Conservative leader of abandoning her initial position on British involvement in US-Israeli strikes within a week, saying she had &ldquo;totally abandoned her position.&rdquo; Labour backbenchers jeered as Badenoch struggled to respond; analysts described it as another difficult outing for the Tory leader.</p>
+          </div>
+          <div class="pmqs-exchange">
+            <h4>Davey Takes Aim at Farage on Handguns and Warmongering</h4>
+            <p>The Liberal Democrat leader used both his questions to attack Nigel Farage &mdash; first over Reform&rsquo;s position on handgun deregulation, then accusing him of competing with Badenoch to be &ldquo;Donald Trump&rsquo;s biggest cheerleader&rdquo; and supporting &ldquo;costly warmongering.&rdquo;</p>
+          </div>
+          <div class="pmqs-exchange">
+            <h4>Speaker Ejects Labour MP for Persistent Disruption</h4>
+            <p>Sir Lindsay Hoyle halted proceedings to eject Peter Swallow, Labour MP for Bracknell, delivering a sharp dressing-down: &ldquo;Mr Swallow, go out. I&rsquo;ve had enough. Week in, week out.&rdquo;</p>
+          </div>
+        </div>
+      </details>
       <div class="curated-grid">
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
@@ -1078,26 +1118,6 @@
         </div>
         <div class="curated-column">
           <h3><span class="dot dom"></span> UK Domestic Politics</h3>
-          <div class="pmqs-summary">
-            <h3 class="pmqs-heading">Prime Minister&rsquo;s Questions</h3>
-            <div class="pmqs-meta">Wednesday 11 March 2026 &mdash; House of Commons</div>
-            <div class="pmqs-exchange">
-              <h4>Badenoch Presses Starmer on Fuel Duty Rise</h4>
-              <p>The Conservative leader used all her questions to challenge the Prime Minister on the Chancellor&rsquo;s confirmation that the fuel duty freeze will end in September, arguing the Government &ldquo;thinks now is the time to increase the cost of petrol.&rdquo; Starmer deflected, attacking Badenoch&rsquo;s U-turn on the Iran war as &ldquo;the mother of all U-turns on the single most important position a prime minister ever has to take.&rdquo;</p>
-            </div>
-            <div class="pmqs-exchange">
-              <h4>Starmer Attacks Badenoch&rsquo;s &lsquo;Iran Amnesia&rsquo;</h4>
-              <p>The Prime Minister accused the Conservative leader of abandoning her initial position on British involvement in US-Israeli strikes within a week, saying she had &ldquo;totally abandoned her position.&rdquo; Labour backbenchers jeered as Badenoch struggled to respond; analysts described it as another difficult outing for the Tory leader.</p>
-            </div>
-            <div class="pmqs-exchange">
-              <h4>Davey Takes Aim at Farage on Handguns and Warmongering</h4>
-              <p>The Liberal Democrat leader used both his questions to attack Nigel Farage &mdash; first over Reform&rsquo;s position on handgun deregulation, then accusing him of competing with Badenoch to be &ldquo;Donald Trump&rsquo;s biggest cheerleader&rdquo; and supporting &ldquo;costly warmongering.&rdquo;</p>
-            </div>
-            <div class="pmqs-exchange">
-              <h4>Speaker Ejects Labour MP for Persistent Disruption</h4>
-              <p>Sir Lindsay Hoyle halted proceedings to eject Peter Swallow, Labour MP for Bracknell, delivering a sharp dressing-down: &ldquo;Mr Swallow, go out. I&rsquo;ve had enough. Week in, week out.&rdquo;</p>
-            </div>
-          </div>
           <div>
             <div class="curated-item">
               <h4>Home Secretary Bans Al Quds March in First Order Since 2012</h4>
