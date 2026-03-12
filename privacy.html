@@ -47,7 +47,11 @@
     <h2>2. Data Controller</h2>
     <p>The data controller for the purposes of UK GDPR is:</p>
     <p><strong>The Daily Brief</strong><br/>
-    Email: <a href="mailto:thedailybriefuk@gmail.com">thedailybriefuk@gmail.com</a></p>
+    Trading name of [YOUR FULL LEGAL NAME]<br/>
+    [YOUR CORRESPONDENCE ADDRESS]<br/>
+    Email: <a href="mailto:thedailybriefuk@gmail.com">thedailybriefuk@gmail.com</a><br/>
+    Telephone: [YOUR PHONE NUMBER]</p>
+    <p>The data protection contact for The Daily Brief is [YOUR FULL LEGAL NAME], contactable at the email address above.</p>
 
     <h2>3. Data We Collect</h2>
     <h3>3.1 Data Stored Locally (localStorage)</h3>
@@ -100,13 +104,19 @@
     <h3>3.3 HTTP Headers</h3>
     <p>When you visit the Site, standard HTTP headers (IP address, browser type, referring page) are processed by GitHub Pages' servers. We do not have direct access to these server logs.</p>
 
-    <h3>3.4 Future: Payment Data</h3>
-    <p>When premium subscriptions launch, payment data (card details, billing address) will be collected and processed exclusively by Stripe. We will never have access to your full card number. See Section 5 for details about Stripe's data handling.</p>
+    <h3>3.4 Future: Subscriber and Payment Data</h3>
+    <p>When premium subscriptions launch, the following additional data will be processed:</p>
+    <ul>
+      <li><strong>Data collected by us:</strong> email address, name, subscription status, billing history, cancellation date (if applicable).</li>
+      <li><strong>Data collected by Stripe:</strong> full card number, expiry date, CVC, billing address. This data is collected and stored exclusively by Stripe and never touches our servers.</li>
+      <li><strong>Data received from Stripe:</strong> last four digits of your card, card brand (e.g. Visa), expiry date, billing postcode, and transaction records (amount, date, status).</li>
+      <li><strong>Retention after cancellation:</strong> subscriber records will be retained for 6 years after the end of your subscription, as required by UK tax law (HMRC). After this period, records will be deleted.</li>
+    </ul>
 
     <h2>4. Lawful Basis for Processing</h2>
     <p>We process your data under the following lawful bases:</p>
     <ul>
-      <li><strong>Legitimate interest</strong> (Article 6(1)(f) UK GDPR) — for essential site functionality such as remembering your display preferences and caching market data to improve performance.</li>
+      <li><strong>Legitimate interest</strong> (Article 6(1)(f) UK GDPR) — for essential site functionality such as remembering your display preferences and caching market data to improve performance. We have conducted a Legitimate Interest Assessment (LIA) for each processing activity relying on this basis, weighing the purpose, necessity, and your rights. A copy is available on request.</li>
       <li><strong>Consent</strong> (Article 6(1)(a) UK GDPR) — for browser notifications and cookie consent. You can withdraw consent at any time.</li>
       <li><strong>Contractual necessity</strong> (Article 6(1)(b) UK GDPR) — for future subscription services, processing will be necessary for the performance of a contract.</li>
     </ul>
@@ -126,14 +136,26 @@
         <tr>
           <td>Google Fonts</td>
           <td>IP address, browser headers</td>
-          <td>Font delivery</td>
+          <td>Font delivery. When you load the Site, your browser connects to Google's servers to retrieve font files. This shares your IP address and browser information with Google. We are evaluating self-hosting fonts to eliminate this transfer.</td>
           <td><a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a></td>
         </tr>
         <tr>
-          <td>RSS2JSON / AllOrigins / CORSProxy</td>
+          <td>RSS2JSON (rss2json.com)</td>
           <td>IP address</td>
-          <td>RSS feed proxying</td>
-          <td>Various — proxy services for CORS</td>
+          <td>RSS feed proxying for live news feeds</td>
+          <td><a href="https://rss2json.com/privacy-policy" rel="noopener">RSS2JSON Privacy Policy</a></td>
+        </tr>
+        <tr>
+          <td>AllOrigins (allorigins.win)</td>
+          <td>IP address</td>
+          <td>CORS proxy for cross-origin feed requests</td>
+          <td><a href="https://allorigins.win/" rel="noopener">AllOrigins</a> (open-source, no formal policy)</td>
+        </tr>
+        <tr>
+          <td>CORSProxy (corsproxy.io)</td>
+          <td>IP address</td>
+          <td>Fallback CORS proxy</td>
+          <td><a href="https://corsproxy.io/" rel="noopener">CORSProxy</a> (no formal policy)</td>
         </tr>
         <tr>
           <td>Yahoo Finance</td>
