@@ -36,8 +36,16 @@
     "inLanguage": "en-GB"
   }
   </script>
+  <!-- #15: Preconnect hints for RSS proxy domains -->
+  <link rel="preconnect" href="https://api.rss2json.com" />
+  <link rel="preconnect" href="https://api.allorigins.win" />
+  <link rel="preconnect" href="https://corsproxy.io" />
+  <link rel="preconnect" href="https://query1.finance.yahoo.com" />
+  <link rel="preconnect" href="https://query2.finance.yahoo.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- #18: Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.rss2json.com https://api.allorigins.win https://corsproxy.io https://query1.finance.yahoo.com https://query2.finance.yahoo.com;" />
   <!-- #12 Font optimisation: added display=swap, subset to latin -->
   <link rel="preload" as="style" crossorigin href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" rel="stylesheet" />
@@ -863,9 +871,206 @@
       .wr-number { font-size: 22px; min-width: 24px; }
       .wr-content h4 { font-size: 13px; }
     }
+
+    /* ══════════════════════════════════════
+       PREVIEW FEATURES — NEW CSS
+       ══════════════════════════════════════ */
+
+    /* ── #1 Enhancement: Keyboard Shortcuts Overlay ── */
+    .kbd-overlay {
+      display: none; position: fixed; inset: 0; z-index: 250;
+      background: rgba(0,0,0,0.65); align-items: center; justify-content: center;
+    }
+    .kbd-overlay.open { display: flex; }
+    .kbd-inner {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px 32px; max-width: 420px; width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .kbd-inner h3 {
+      font-family: var(--serif); font-size: 18px; font-weight: 700;
+      margin-bottom: 16px; color: var(--text-primary);
+    }
+    .kbd-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid var(--border-light);
+      font-size: 13px; color: var(--text-secondary);
+    }
+    .kbd-row:last-child { border-bottom: none; }
+    .kbd-key {
+      display: inline-block; font-family: monospace; font-size: 11px; font-weight: 600;
+      background: var(--bg-section); border: 1px solid var(--border);
+      padding: 2px 8px; border-radius: 4px; min-width: 24px; text-align: center;
+    }
+
+    /* ── #3 Enhancement: Reading Progress Bar ── */
+    .reading-progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 110;
+      background: var(--accent-geo); width: 0%;
+      transition: width 0.1s linear; pointer-events: none;
+    }
+    body.has-breaking-banner .reading-progress { top: 48px; }
+    @media (max-width: 600px) { body.has-breaking-banner .reading-progress { top: 56px; } }
+
+    /* ── #4 Enhancement: Skeleton pulse refinement ── */
+    .skeleton-card { animation: skeletonPulse 2s ease-in-out infinite; }
+    @keyframes skeletonPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+    /* ── #5: Search Overlay ── */
+    .search-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.6); align-items: flex-start; justify-content: center;
+      padding-top: 12vh;
+    }
+    .search-overlay.open { display: flex; }
+    .search-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; width: 90%; max-width: 560px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+    }
+    .search-input-wrap {
+      display: flex; align-items: center; gap: 10px; padding: 14px 18px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .search-input-wrap svg { width: 18px; height: 18px; color: var(--text-tertiary); flex-shrink: 0; }
+    .search-input {
+      flex: 1; border: none; background: none; outline: none;
+      font-family: var(--sans); font-size: 15px; color: var(--text-primary);
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-results { max-height: 50vh; overflow-y: auto; padding: 0; }
+    .search-no-results {
+      padding: 24px 18px; text-align: center; font-size: 13px; color: var(--text-muted);
+    }
+    .search-result {
+      display: block; padding: 12px 18px; border-bottom: 1px solid var(--border-light);
+      cursor: pointer; transition: background 0.15s; text-decoration: none; color: inherit;
+    }
+    .search-result:hover { background: var(--bg-section); }
+    .search-result:last-child { border-bottom: none; }
+    .search-result-date {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px;
+    }
+    .search-result h4 {
+      font-family: var(--body-serif); font-size: 14px; font-weight: 600;
+      line-height: 1.35; color: var(--text-primary); margin-bottom: 3px;
+    }
+    .search-result p {
+      font-size: 12px; line-height: 1.45; color: var(--text-tertiary);
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .search-result mark { background: rgba(139,35,50,0.2); color: inherit; border-radius: 2px; padding: 0 1px; }
+    .search-hint {
+      padding: 8px 18px; font-size: 10px; color: var(--text-muted);
+      border-top: 1px solid var(--border-light); text-align: center;
+    }
+
+
+
+    /* ── #9: Share Buttons ── */
+    .share-row { display: flex; gap: 6px; margin-top: 8px; }
+    .share-btn {
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+      cursor: pointer; padding: 4px 10px; display: inline-flex; align-items: center; gap: 5px;
+      transition: all 0.2s;
+    }
+    .share-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.1); }
+    .share-btn svg { width: 12px; height: 12px; }
+    .share-copied {
+      font-size: 10px; color: #4ade80; font-weight: 600; padding: 4px 10px;
+      animation: copiedFade 2s ease forwards;
+    }
+    @keyframes copiedFade { 0%, 60% { opacity: 1; } 100% { opacity: 0; } }
+
+    /* ── #10: Bookmarks ── */
+    .bookmark-btn {
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+      cursor: pointer; padding: 4px 10px; display: inline-flex; align-items: center; gap: 5px;
+      transition: all 0.2s;
+    }
+    .bookmark-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.1); }
+    .bookmark-btn.bookmarked { color: #fbbf24; border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.08); }
+    .bookmark-btn svg { width: 12px; height: 12px; }
+    .bookmarks-nav-btn {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-secondary); background: none; border: none;
+      cursor: pointer; padding: 12px 4px 2px; min-height: 44px;
+      display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s;
+    }
+    .bookmarks-nav-btn:hover { color: var(--text-primary); }
+    .bookmarks-count {
+      font-size: 9px; background: var(--accent-geo); color: #fff;
+      border-radius: 10px; padding: 1px 6px; font-weight: 700;
+    }
+    .bookmarks-panel {
+      display: none; position: fixed; top: 0; right: 0; bottom: 0;
+      width: 380px; max-width: 90vw; z-index: 200;
+      background: var(--bg-card); border-left: 1px solid var(--border);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.2);
+      overflow-y: auto; transform: translateX(100%); transition: transform 0.3s ease;
+    }
+    .bookmarks-panel.open { display: block; transform: translateX(0); }
+    .bookmarks-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 20px 16px; border-bottom: 1px solid var(--border-light);
+    }
+    .bookmarks-panel-header h3 { font-family: var(--serif); font-size: 18px; font-weight: 700; }
+    .bookmarks-close {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-tertiary); font-size: 22px; padding: 4px 8px;
+      min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;
+    }
+    .bookmarks-close:hover { color: var(--text-primary); }
+    .bookmarks-list { padding: 0; }
+    .bookmarks-empty { padding: 40px 20px; text-align: center; font-size: 13px; color: var(--text-muted); }
+    .bookmark-item {
+      padding: 14px 20px; border-bottom: 1px solid var(--border-light); transition: background 0.15s;
+    }
+    .bookmark-item:hover { background: var(--bg-section); }
+    .bookmark-item-date {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px;
+    }
+    .bookmark-item h4 {
+      font-family: var(--body-serif); font-size: 14px; font-weight: 600;
+      line-height: 1.35; color: var(--text-primary); margin-bottom: 4px;
+    }
+    .bookmark-item p {
+      font-size: 12px; line-height: 1.45; color: var(--text-tertiary);
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .bookmark-remove {
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      color: var(--accent-red); background: none; border: none;
+      cursor: pointer; padding: 4px 0; margin-top: 6px;
+    }
+    .bookmark-remove:hover { text-decoration: underline; }
+    .bookmarks-backdrop { display: none; position: fixed; inset: 0; z-index: 199; background: rgba(0,0,0,0.4); }
+    .bookmarks-backdrop.open { display: block; }
+
+    /* ── #12: Enhanced Transitions ── */
+    #day-editions.slide-left { opacity: 0; transform: translateX(-20px); }
+    #day-editions.slide-right { opacity: 0; transform: translateX(20px); }
+
+    /* ── #19: ARIA focus styles ── */
+    [role="navigation"] a:focus-visible,
+    [role="navigation"] button:focus-visible,
+    .day-nav-btn:focus-visible,
+    .search-input:focus-visible {
+      outline: 2px solid var(--accent-geo); outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- #3: Reading Progress Bar -->
+  <div class="reading-progress" id="readingProgress"></div>
 
   <!-- Feature 1: Breaking Alert Banner -->
   <div class="breaking-banner" id="breakingBanner">
@@ -886,20 +1091,65 @@
     </div>
   </div>
 
+  <!-- #5: Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <div class="search-input-wrap">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search headlines and summaries..." autocomplete="off" />
+      </div>
+      <div class="search-results" id="searchResults"></div>
+      <div class="search-hint"><kbd class="kbd-key">/</kbd> to open &middot; <kbd class="kbd-key">Esc</kbd> to close</div>
+    </div>
+  </div>
+
+  <!-- #10: Bookmarks Panel -->
+  <div class="bookmarks-backdrop" id="bookmarksBackdrop"></div>
+  <div class="bookmarks-panel" id="bookmarksPanel">
+    <div class="bookmarks-panel-header">
+      <h3>Saved Stories</h3>
+      <button class="bookmarks-close" id="bookmarksClose">&times;</button>
+    </div>
+    <div class="bookmarks-list" id="bookmarksList"></div>
+  </div>
+
+  <!-- #1: Keyboard Shortcuts Overlay -->
+  <div class="kbd-overlay" id="kbdOverlay">
+    <div class="kbd-inner">
+      <h3>Keyboard Shortcuts</h3>
+      <div class="kbd-row"><span>Previous day</span> <span class="kbd-key">&larr;</span></div>
+      <div class="kbd-row"><span>Next day</span> <span class="kbd-key">&rarr;</span></div>
+      <div class="kbd-row"><span>Search editions</span> <span class="kbd-key">/</span></div>
+      <div class="kbd-row"><span>Open bookmarks</span> <span class="kbd-key">B</span></div>
+      <div class="kbd-row"><span>Toggle dark mode</span> <span class="kbd-key">D</span></div>
+      <div class="kbd-row"><span>Close / dismiss</span> <span class="kbd-key">Esc</span></div>
+      <div class="kbd-row"><span>Show shortcuts</span> <span class="kbd-key">?</span></div>
+    </div>
+  </div>
+
   <!-- Masthead -->
-  <header class="masthead">
+  <header class="masthead" role="banner">
     <div class="masthead-inner">
       <div class="masthead-top">
         <span class="masthead-date" id="currentDate"></span>
         <span class="masthead-date" id="editionLabel">LIVE EDITION</span>
       </div>
       <h1 class="masthead-title">The Daily Brief</h1>
-      <nav class="masthead-nav">
+      <nav class="masthead-nav" role="navigation" aria-label="Main navigation">
         <a href="#curated">Curated Briefings</a>
         <a href="#geopolitical" class="geo">Geopolitical</a>
         <a href="#domestic" class="dom">UK Domestic</a>
         <!-- #4 Dark mode toggle -->
         <button id="darkToggle" aria-label="Toggle dark mode"><span class="toggle-icon sun">&#9788;</span> Light / <span class="toggle-icon moon">&#9790;</span> Dark</button>
+        <!-- #5: Search button -->
+        <button class="masthead-nav a" id="searchBtn" style="background:none;border:none;cursor:pointer;color:var(--text-secondary);font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:12px 4px 2px;min-height:44px;display:inline-flex;align-items:center;gap:4px;transition:color 0.2s;" title="Search editions (/)">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          Search
+        </button>
+        <!-- #10: Bookmarks button -->
+        <button class="bookmarks-nav-btn" id="bookmarksBtn" title="Saved stories (B)">
+          Saved <span class="bookmarks-count" id="bookmarksCountBadge" style="display:none;">0</span>
+        </button>
         <!-- Feature 8: Notification Bell -->
         <button class="notify-btn" id="notifyBtn" title="Get notified when new editions are published">
           <svg class="notify-icon" viewBox="0 0 24 24" width="16" height="16">
@@ -945,7 +1195,7 @@
   <!-- ════════════════════════════════════════════ -->
   <!-- CURATED BRIEFINGS                           -->
   <!-- ════════════════════════════════════════════ -->
-  <div class="curated-section" id="curated">
+  <div class="curated-section" id="curated" role="main" aria-label="Curated briefings">
 
     <!-- ── DAY NAVIGATION ── -->
     <div class="day-nav" id="dayNav" style="display:none;">
@@ -1628,7 +1878,7 @@
   <main class="container">
 
     <!-- Geopolitical -->
-    <section class="section" id="geopolitical">
+    <section class="section" id="geopolitical" aria-label="Geopolitical news">
       <div class="section-header">
         <div class="section-accent geo"></div>
         <h2 class="section-title">Geopolitical</h2>
@@ -1653,7 +1903,7 @@
     </section>
 
     <!-- UK Domestic -->
-    <section class="section" id="domestic">
+    <section class="section" id="domestic" aria-label="UK domestic politics">
       <div class="section-header">
         <div class="section-accent dom"></div>
         <h2 class="section-title">UK Domestic Politics</h2>
@@ -1672,7 +1922,7 @@
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <p class="footer-brand">The Daily Brief</p>
     <p>Aggregated from BBC, Sky News, Al Jazeera, Reuters, The Telegraph, Financial Times, The Independent &amp; The Economist<br/>
     Live feeds refresh on each visit &middot; Curated briefings at 10:00 AM &amp; 5:00 PM</p>
@@ -1992,21 +2242,25 @@ window._marketData = {};
     dayNav.style.display = dates.length > 1 ? 'flex' : 'none';
     } // end renderContent
 
-    // Animate transition if switching days (not initial load)
+    // #12: Enhanced directional transitions
     if (animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       clearTimeout(_showDayTimer);
-      dayContainer.classList.add('fade-out');
+      // Determine slide direction based on navigation
+      const slideClass = index > _prevIndex ? 'slide-right' : 'slide-left';
+      dayContainer.classList.add(slideClass);
       _showDayTimer = setTimeout(() => {
         renderContent();
-        // Force reflow then fade in
-        dayContainer.offsetHeight;
-        dayContainer.classList.remove('fade-out');
+        dayContainer.offsetHeight; // force reflow
+        dayContainer.classList.remove(slideClass);
       }, 250);
     } else {
-      dayContainer.classList.remove('fade-out');
+      dayContainer.classList.remove('fade-out', 'slide-left', 'slide-right');
       renderContent();
     }
+    _prevIndex = index;
   }
+
+  let _prevIndex = 0;
 
   prevBtn.addEventListener('click', () => {
     if (currentIndex < dates.length - 1) showDay(currentIndex + 1, true);
@@ -2015,9 +2269,29 @@ window._marketData = {};
     if (currentIndex > 0) showDay(currentIndex - 1, true);
   });
 
-  // #11 Keyboard navigation
+  // #11 Keyboard navigation (enhanced with #1 shortcuts)
   document.addEventListener('keydown', (e) => {
+    // Escape closes any open overlay
+    if (e.key === 'Escape') {
+      document.getElementById('searchOverlay')?.classList.remove('open');
+      document.getElementById('kbdOverlay')?.classList.remove('open');
+      document.getElementById('notifyModal')?.classList.remove('open');
+      const bp = document.getElementById('bookmarksPanel');
+      const bb = document.getElementById('bookmarksBackdrop');
+      if (bp) bp.classList.remove('open');
+      if (bb) bb.classList.remove('open');
+      return;
+    }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    // "/" opens search
+    if (e.key === '/') { e.preventDefault(); document.getElementById('searchOverlay')?.classList.add('open'); setTimeout(() => document.getElementById('searchInput')?.focus(), 50); return; }
+    // "?" opens keyboard shortcuts
+    if (e.key === '?') { document.getElementById('kbdOverlay')?.classList.toggle('open'); return; }
+    // "b" opens bookmarks
+    if (e.key === 'b' || e.key === 'B') { document.getElementById('bookmarksBtn')?.click(); return; }
+    // "d" toggles dark mode
+    if (e.key === 'd' || e.key === 'D') { document.getElementById('darkToggle')?.click(); return; }
+    // Arrow keys for day navigation (only when curated section visible)
     const curated = document.getElementById('curated');
     if (curated) {
       const rect = curated.getBoundingClientRect();
@@ -2340,7 +2614,11 @@ sb.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' 
 
 // ── Service Worker ──
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
+  // #16: Auto-version service worker to bust stale caches on deploy
+  const swVersion = document.querySelector('script[id="embedded-markets"]')?.textContent
+    ? JSON.parse(document.querySelector('script[id="embedded-markets"]').textContent).ts || ''
+    : Date.now();
+  navigator.serviceWorker.register('/sw.js?v=' + encodeURIComponent(swVersion)).catch(() => {});
 }
 
 // ════════════════════════════════════════════
@@ -2666,6 +2944,296 @@ if ('serviceWorker' in navigator) {
 
   // Run once on initial load (showDay(0) has already fired)
   setTimeout(enhanceEditions, 100);
+})();
+
+// ════════════════════════════════════════════
+// NEW PREVIEW FEATURES JS
+// ════════════════════════════════════════════
+
+// ── #3: Reading Progress Bar ──
+(function() {
+  const bar = document.getElementById('readingProgress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    if (h > 0) bar.style.width = Math.min(100, (window.scrollY / h) * 100) + '%';
+  }, { passive: true });
+})();
+
+// ── #5: Search Across Editions ──
+(function() {
+  const overlay = document.getElementById('searchOverlay');
+  const input = document.getElementById('searchInput');
+  const resultsEl = document.getElementById('searchResults');
+  const searchBtn = document.getElementById('searchBtn');
+  if (!overlay || !input || !resultsEl) return;
+
+  // Build search index from all editions
+  const searchIndex = [];
+  document.querySelectorAll('#all-editions .curated-edition:not(.weekly)').forEach(ed => {
+    const date = ed.dataset.date;
+    const time = ed.dataset.time || '00:00';
+    const isMorning = parseInt(time.split(':')[0]) < 14;
+    const type = isMorning ? 'Morning' : 'Evening';
+    const d = new Date(date + 'T12:00:00');
+    const dateLabel = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) + ' — ' + type;
+
+    ed.querySelectorAll('.curated-item').forEach(item => {
+      const h4 = item.querySelector('h4');
+      const p = item.querySelector('p');
+      const deeper = item.querySelector('.deeper-content');
+      if (!h4) return;
+      searchIndex.push({
+        headline: h4.textContent.trim(),
+        summary: p ? p.textContent.trim() : '',
+        deeper: deeper ? deeper.textContent.trim() : '',
+        dateLabel, date, time
+      });
+    });
+  });
+
+  function highlightText(text, query) {
+    if (!query) return escHtml(text);
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return escHtml(text).replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
+  }
+
+  function doSearch(query) {
+    if (!query || query.length < 2) {
+      resultsEl.innerHTML = '<div class="search-no-results">Type to search across all editions...</div>';
+      return;
+    }
+    const q = query.toLowerCase();
+    const matches = searchIndex.filter(item =>
+      item.headline.toLowerCase().includes(q) ||
+      item.summary.toLowerCase().includes(q) ||
+      item.deeper.toLowerCase().includes(q)
+    ).slice(0, 12);
+
+    if (!matches.length) {
+      resultsEl.innerHTML = '<div class="search-no-results">No results for "' + escHtml(query) + '"</div>';
+      return;
+    }
+
+    resultsEl.innerHTML = matches.map(m => {
+      const summarySnippet = m.summary.length > 120 ? m.summary.slice(0, 120) + '...' : m.summary;
+      return '<div class="search-result" data-date="' + m.date + '">' +
+        '<div class="search-result-date">' + escHtml(m.dateLabel) + '</div>' +
+        '<h4>' + highlightText(m.headline, query) + '</h4>' +
+        '<p>' + highlightText(summarySnippet, query) + '</p>' +
+      '</div>';
+    }).join('');
+
+    // Click to navigate
+    resultsEl.querySelectorAll('.search-result').forEach(el => {
+      el.addEventListener('click', () => {
+        const targetDate = el.dataset.date;
+        const dates = window._briefDates;
+        const showDayFn = window._showDay;
+        if (dates && showDayFn) {
+          const idx = dates.indexOf(targetDate);
+          if (idx !== -1) showDayFn(idx, true);
+        }
+        overlay.classList.remove('open');
+        input.value = '';
+        resultsEl.innerHTML = '';
+        document.getElementById('curated').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  }
+
+  let debounceTimer;
+  input.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => doSearch(input.value.trim()), 150);
+  });
+
+  searchBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    setTimeout(() => input.focus(), 50);
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) { overlay.classList.remove('open'); input.value = ''; resultsEl.innerHTML = ''; }
+  });
+})();
+
+// ── #9: Share Buttons + #10: Bookmarks ──
+(function() {
+  const dayContainer = document.getElementById('day-editions');
+  if (!dayContainer) return;
+
+  // Bookmarks storage
+  function getBookmarks() {
+    try { return JSON.parse(localStorage.getItem('db_bookmarks') || '[]'); } catch(e) { return []; }
+  }
+  function saveBookmarks(bm) {
+    localStorage.setItem('db_bookmarks', JSON.stringify(bm));
+    updateBadge();
+  }
+  function isBookmarked(headline) {
+    return getBookmarks().some(b => b.headline === headline);
+  }
+
+  // Badge count
+  function updateBadge() {
+    const badge = document.getElementById('bookmarksCountBadge');
+    const count = getBookmarks().length;
+    if (badge) {
+      badge.textContent = count;
+      badge.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+  }
+  updateBadge();
+
+  // Bookmarks panel
+  const panel = document.getElementById('bookmarksPanel');
+  const backdrop = document.getElementById('bookmarksBackdrop');
+  const closeBtn = document.getElementById('bookmarksClose');
+  const listEl = document.getElementById('bookmarksList');
+  const openBtn = document.getElementById('bookmarksBtn');
+
+  function renderBookmarksPanel() {
+    const bm = getBookmarks();
+    if (!bm.length) {
+      listEl.innerHTML = '<div class="bookmarks-empty">No saved stories yet.<br>Bookmark items from the curated briefings.</div>';
+      return;
+    }
+    listEl.innerHTML = bm.map((b, i) => {
+      const summary = b.summary && b.summary.length > 100 ? b.summary.slice(0, 100) + '...' : (b.summary || '');
+      return '<div class="bookmark-item" data-idx="' + i + '">' +
+        '<div class="bookmark-item-date">' + escHtml(b.dateLabel || b.date || '') + '</div>' +
+        '<h4>' + escHtml(b.headline) + '</h4>' +
+        '<p>' + escHtml(summary) + '</p>' +
+        '<button class="bookmark-remove" data-idx="' + i + '">Remove</button>' +
+      '</div>';
+    }).join('');
+    listEl.querySelectorAll('.bookmark-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.idx);
+        const bm = getBookmarks();
+        bm.splice(idx, 1);
+        saveBookmarks(bm);
+        renderBookmarksPanel();
+        // Re-render current day to update bookmark buttons
+        if (window._showDay && window._briefDates) {
+          const curIdx = window._briefDates.indexOf(dayContainer.querySelector('.curated-edition')?.dataset.date);
+          // Just trigger mutation observer by re-adding items
+        }
+      });
+    });
+  }
+
+  function openBookmarks() {
+    renderBookmarksPanel();
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+  }
+  function closeBookmarks() {
+    panel.classList.remove('open');
+    backdrop.classList.remove('open');
+  }
+
+  if (openBtn) openBtn.addEventListener('click', openBookmarks);
+  if (closeBtn) closeBtn.addEventListener('click', closeBookmarks);
+  if (backdrop) backdrop.addEventListener('click', closeBookmarks);
+
+  // Add share + bookmark buttons to curated items after render
+  function addActionButtons() {
+    dayContainer.querySelectorAll('.curated-item').forEach(item => {
+      if (item.querySelector('.share-row')) return; // already added
+
+      const h4 = item.querySelector('h4');
+      const p = item.querySelector('p');
+      if (!h4) return;
+
+      // Get headline text (excluding "Updated" tag)
+      const updatedTag = h4.querySelector('.updated-tag');
+      let headline = h4.textContent.trim();
+      if (updatedTag) headline = headline.replace(updatedTag.textContent, '').trim();
+      const summary = p ? p.textContent.trim() : '';
+
+      // Get edition date for bookmarks
+      const edition = item.closest('.curated-edition');
+      const date = edition ? edition.dataset.date : '';
+      const time = edition ? (edition.dataset.time || '') : '';
+      const isMorning = parseInt((time || '00:00').split(':')[0]) < 14;
+      const d = date ? new Date(date + 'T12:00:00') : new Date();
+      const dateLabel = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) + ' — ' + (isMorning ? 'Morning' : 'Evening');
+
+      const row = document.createElement('div');
+      row.className = 'share-row';
+
+      // Copy button
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'share-btn';
+      copyBtn.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Copy';
+      copyBtn.addEventListener('click', () => {
+        const text = headline + '\n\n' + summary + '\n\n— The Daily Brief';
+        navigator.clipboard.writeText(text).then(() => {
+          const msg = document.createElement('span');
+          msg.className = 'share-copied';
+          msg.textContent = 'Copied!';
+          row.appendChild(msg);
+          setTimeout(() => msg.remove(), 2000);
+        });
+      });
+      row.appendChild(copyBtn);
+
+      // Share to X/Twitter
+      const xBtn = document.createElement('button');
+      xBtn.className = 'share-btn';
+      xBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Post';
+      xBtn.addEventListener('click', () => {
+        const url = 'https://thedailybrief-uk.github.io/';
+        const text = headline;
+        window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank', 'width=550,height=420');
+      });
+      row.appendChild(xBtn);
+
+      // Bookmark button
+      const bmBtn = document.createElement('button');
+      bmBtn.className = 'bookmark-btn' + (isBookmarked(headline) ? ' bookmarked' : '');
+      bmBtn.innerHTML = '<svg fill="' + (isBookmarked(headline) ? 'currentColor' : 'none') + '" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>' + (isBookmarked(headline) ? 'Saved' : 'Save');
+      bmBtn.addEventListener('click', () => {
+        const bm = getBookmarks();
+        const idx = bm.findIndex(b => b.headline === headline);
+        if (idx >= 0) {
+          bm.splice(idx, 1);
+          bmBtn.classList.remove('bookmarked');
+          bmBtn.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>Save';
+        } else {
+          bm.push({ headline, summary, date, dateLabel });
+          bmBtn.classList.add('bookmarked');
+          bmBtn.innerHTML = '<svg fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>Saved';
+        }
+        saveBookmarks(bm);
+      });
+      row.appendChild(bmBtn);
+
+      // Insert after dive-deeper or story-thread, or at end of item
+      const thread = item.querySelector('.story-thread');
+      const diveDeeper = item.querySelector('.dive-deeper');
+      if (thread) { thread.after(row); }
+      else if (diveDeeper) { diveDeeper.after(row); }
+      else { item.appendChild(row); }
+    });
+  }
+
+  // Run after mutations (when showDay renders new content)
+  const observer = new MutationObserver(() => setTimeout(addActionButtons, 150));
+  observer.observe(dayContainer, { childList: true });
+  setTimeout(addActionButtons, 250);
+})();
+
+// ── #1: Keyboard Shortcuts Overlay close on backdrop click ──
+(function() {
+  const overlay = document.getElementById('kbdOverlay');
+  if (!overlay) return;
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
 })();
 </script>
 
