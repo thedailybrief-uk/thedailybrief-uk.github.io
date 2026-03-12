@@ -156,14 +156,32 @@
 
     /* ── #1 Markets Bar ── */
     .markets-bar {
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      padding: 7px 12px; border-bottom: 1px solid var(--border-light);
+      display: flex; align-items: center; gap: 12px;
+      padding: 7px 0; border-bottom: 1px solid var(--border-light);
       font-size: 10px; font-weight: 500; color: var(--text-secondary);
-      overflow-x: auto; white-space: nowrap;
+      overflow: hidden; white-space: nowrap;
       background: var(--bg-section);
-      scrollbar-width: none; -ms-overflow-style: none;
+      position: relative;
     }
-    .markets-bar::-webkit-scrollbar { display: none; }
+    .markets-bar::before, .markets-bar::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 24px; z-index: 2; pointer-events: none;
+    }
+    .markets-bar::before { left: 0; background: linear-gradient(to right, var(--bg-section), transparent); }
+    .markets-bar::after { right: 0; background: linear-gradient(to left, var(--bg-section), transparent); }
+    .markets-track {
+      display: flex; align-items: center; gap: 12px;
+      animation: tickerScroll 30s linear infinite;
+      will-change: transform;
+    }
+    .markets-track:hover { animation-play-state: paused; }
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .markets-track { animation: none; }
+      .markets-bar { overflow-x: auto; }
+    }
     .market-item { display: flex; align-items: center; gap: 4px; }
     .market-label { color: var(--text-tertiary); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; font-size: 8px; }
     .market-value { font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -171,13 +189,10 @@
     .market-change.up { color: var(--accent-green); }
     .market-change.down { color: var(--accent-red); }
     .markets-bar .market-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
-    .market-context { font-size: 9px; color: var(--text-muted); font-style: italic; }
+    .market-context { font-size: 9px; color: var(--text-muted); font-style: italic; padding-right: 24px; }
     @media (max-width: 600px) {
-      .markets-bar {
-        gap: 16px; font-size: 10px; justify-content: flex-start;
-        mask-image: linear-gradient(to right, black 85%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
-      }
+      .markets-bar { font-size: 10px; }
+      .markets-track { gap: 16px; }
     }
 
     /* ── Container ── */
@@ -1187,21 +1202,23 @@
   <!-- Embedded market data (populated by update script, used as fallback) -->
   <script id="embedded-markets" type="application/json">{"FTSE":{"price":10826,"change":0.18},"SP":{"price":6776,"change":-0.08},"Brent":{"price":91.60,"change":5.07},"GBP":{"price":1.3407,"change":-0.01},"Gold":{"price":5163,"change":-0.31},"EURGBP":{"price":0.8631,"change":-0.27},"Gilt":{"price":4.55,"change":-0.87},"ts":"2026-03-12T07:57:00Z"}</script>
   <div class="markets-bar" id="marketsBar">
-    <div class="market-item"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
-    <span class="market-dot"></span>
-    <div class="market-item"><span class="market-label">S&amp;P 500</span> <span class="market-value" id="mSP">--</span> <span class="market-change" id="mSPc"></span></div>
-    <span class="market-dot"></span>
-    <div class="market-item"><span class="market-label">Brent Crude</span> <span class="market-value" id="mBrent">--</span> <span class="market-change" id="mBrentc"></span></div>
-    <span class="market-dot"></span>
-    <div class="market-item"><span class="market-label">GBP/USD</span> <span class="market-value" id="mGBP">--</span> <span class="market-change" id="mGBPc"></span></div>
-    <span class="market-dot"></span>
-    <div class="market-item"><span class="market-label">Gold</span> <span class="market-value" id="mGold">--</span> <span class="market-change" id="mGoldc"></span></div>
-    <span class="market-dot"></span>
-    <div class="market-item"><span class="market-label">EUR/GBP</span> <span class="market-value" id="mEURGBP">--</span> <span class="market-change" id="mEURGBPc"></span></div>
-    <span class="market-dot"></span>
-    <div class="market-item"><span class="market-label">UK 10Y Gilt</span> <span class="market-value" id="mGilt">--</span> <span class="market-change" id="mGiltc"></span></div>
-    <span class="market-dot"></span>
-    <span class="market-context" id="marketContext">(vs. prev. close)</span>
+    <div class="markets-track" id="marketsTrack">
+      <div class="market-item"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">S&amp;P 500</span> <span class="market-value" id="mSP">--</span> <span class="market-change" id="mSPc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">Brent Crude</span> <span class="market-value" id="mBrent">--</span> <span class="market-change" id="mBrentc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">GBP/USD</span> <span class="market-value" id="mGBP">--</span> <span class="market-change" id="mGBPc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">Gold</span> <span class="market-value" id="mGold">--</span> <span class="market-change" id="mGoldc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">EUR/GBP</span> <span class="market-value" id="mEURGBP">--</span> <span class="market-change" id="mEURGBPc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">UK 10Y Gilt</span> <span class="market-value" id="mGilt">--</span> <span class="market-change" id="mGiltc"></span></div>
+      <span class="market-dot"></span>
+      <span class="market-context" id="marketContext">(vs. prev. close)</span>
+    </div>
   </div>
   <div class="ref-figures" id="refFiguresBar">
     <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
@@ -2055,7 +2072,35 @@ window._marketData = {};
       try { localStorage.setItem('db_markets', JSON.stringify({ ts: Date.now(), data: window._marketData })); } catch(e) {}
     }
   }
-  fetchLive();
+  fetchLive().then(syncTickerClones);
+
+  // Duplicate track items for seamless infinite loop (strip IDs from clones)
+  function initTicker() {
+    const track = document.getElementById('marketsTrack');
+    if (!track || track.dataset.duplicated) return;
+    const originals = Array.from(track.children);
+    originals.forEach(el => {
+      const clone = el.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.querySelectorAll('[id]').forEach(c => c.removeAttribute('id'));
+      clone.classList.add('ticker-clone');
+      track.appendChild(clone);
+    });
+    track.dataset.duplicated = '1';
+  }
+
+  // Sync cloned values when live data updates
+  function syncTickerClones() {
+    const track = document.getElementById('marketsTrack');
+    if (!track) return;
+    const originals = Array.from(track.querySelectorAll(':scope > :not(.ticker-clone)'));
+    const clones = Array.from(track.querySelectorAll(':scope > .ticker-clone'));
+    originals.forEach((el, i) => {
+      if (clones[i]) clones[i].innerHTML = el.innerHTML;
+    });
+  }
+
+  initTicker();
 })();
 
 // ── Day Navigation ──
