@@ -25,17 +25,58 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "The Daily Brief",
-    "url": "https://thedailybrief-uk.github.io",
-    "description": "Curated geopolitical and UK domestic news briefings, updated daily at 08:00 and 18:00 GMT.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "The Daily Brief"
-    },
-    "inLanguage": "en-GB"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://thedailybrief-uk.github.io/#organization",
+        "name": "The Daily Brief",
+        "url": "https://thedailybrief-uk.github.io",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://thedailybrief-uk.github.io/icon-512.png",
+          "width": 512,
+          "height": 512
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://thedailybrief-uk.github.io/#website",
+        "name": "The Daily Brief",
+        "url": "https://thedailybrief-uk.github.io",
+        "description": "Curated geopolitical and UK domestic news briefings, updated daily at 08:00 and 18:00 GMT.",
+        "publisher": { "@id": "https://thedailybrief-uk.github.io/#organization" },
+        "inLanguage": "en-GB"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://thedailybrief-uk.github.io/#webpage",
+        "url": "https://thedailybrief-uk.github.io",
+        "name": "The Daily Brief — Curated News Briefings",
+        "isPartOf": { "@id": "https://thedailybrief-uk.github.io/#website" },
+        "about": { "@id": "https://thedailybrief-uk.github.io/#organization" },
+        "inLanguage": "en-GB"
+      }
+    ]
   }
   </script>
+  <!-- Uncomment when subscription pricing is confirmed:
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "The Daily Brief Premium",
+    "description": "Premium subscription to The Daily Brief curated news service.",
+    "brand": { "@type": "Organization", "name": "The Daily Brief" },
+    "offers": {
+      "@type": "Offer",
+      "price": "TBC",
+      "priceCurrency": "GBP",
+      "availability": "https://schema.org/PreOrder",
+      "url": "https://thedailybrief-uk.github.io/subscribe-terms.html"
+    }
+  }
+  </script>
+  -->
   <!-- #15: Preconnect hints for RSS proxy domains -->
   <link rel="preconnect" href="https://api.rss2json.com" />
   <link rel="preconnect" href="https://api.allorigins.win" />
@@ -44,8 +85,12 @@
   <link rel="preconnect" href="https://query2.finance.yahoo.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Stripe preconnect (uncomment when payments go live) -->
+  <!-- <link rel="preconnect" href="https://js.stripe.com" /> -->
+  <!-- <link rel="preconnect" href="https://api.stripe.com" /> -->
+  <!-- <script src="https://js.stripe.com/v3/" async></script> -->
   <!-- #18: Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.rss2json.com https://api.allorigins.win https://corsproxy.io https://query1.finance.yahoo.com https://query2.finance.yahoo.com;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.rss2json.com https://api.allorigins.win https://corsproxy.io https://query1.finance.yahoo.com https://query2.finance.yahoo.com https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com;" />
   <!-- #12 Font optimisation: added display=swap, subset to latin -->
   <link rel="preload" as="style" crossorigin href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" rel="stylesheet" />
@@ -1102,6 +1147,117 @@
     .search-input:focus-visible {
       outline: 2px solid var(--accent-geo); outline-offset: 2px;
     }
+
+    /* ── Footer Legal Nav ── */
+    .footer-legal {
+      display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .footer-legal a {
+      font-size: 11px; font-weight: 500; font-family: var(--sans);
+      color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-legal a:hover { color: var(--text-primary); }
+    .footer-sep { display: none; }
+    .footer-copy { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+
+    /* ── Cookie Consent Banner ── */
+    .cookie-banner {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 180;
+      background: var(--bg-card); border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      padding: 16px 24px;
+      transform: translateY(100%); transition: transform 0.4s ease;
+    }
+    .cookie-banner.visible { transform: translateY(0); }
+    .cookie-banner-inner {
+      max-width: 960px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .cookie-banner-text {
+      font-size: 13px; color: var(--text-secondary); line-height: 1.5;
+      font-family: var(--sans);
+    }
+    .cookie-banner-text a { color: var(--accent-geo); text-decoration: underline; text-underline-offset: 2px; }
+    .cookie-banner-accept {
+      background: var(--text-primary); color: var(--bg); border: none; border-radius: 6px;
+      padding: 8px 20px; font-size: 13px; font-weight: 600; font-family: var(--sans);
+      cursor: pointer; white-space: nowrap; transition: opacity 0.2s; min-height: 40px;
+    }
+    .cookie-banner-accept:hover { opacity: 0.85; }
+    @media (max-width: 600px) {
+      .cookie-banner-inner { flex-direction: column; text-align: center; gap: 12px; }
+      .cookie-banner-accept { width: 100%; }
+    }
+
+    /* ── Subscribe Button (Masthead) ── */
+    .masthead-nav button.subscribe-btn {
+      background: var(--accent-geo); color: #fff;
+      border: none; border-radius: 20px;
+      padding: 6px 16px 6px; font-size: 10px;
+      font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; cursor: pointer;
+      font-family: var(--sans); transition: background 0.2s, transform 0.15s;
+      min-height: 36px; display: inline-flex; align-items: center;
+    }
+    .masthead-nav button.subscribe-btn:hover { background: #6e1a28; color: #fff; transform: scale(1.03); }
+
+    /* ── Subscribe Modal ── */
+    .subscribe-modal {
+      display: none; position: fixed; inset: 0; z-index: 210;
+      background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
+    }
+    .subscribe-modal.open { display: flex; }
+    .subscribe-modal-inner {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 32px; max-width: 420px; width: 90%;
+      text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .subscribe-modal-close {
+      position: absolute; top: 12px; right: 16px;
+      background: none; border: none; font-size: 22px; cursor: pointer;
+      color: var(--text-muted); line-height: 1; padding: 4px;
+    }
+    .subscribe-modal-close:hover { color: var(--text-primary); }
+    .subscribe-modal-inner h3 {
+      font-family: var(--serif); font-size: 20px; font-weight: 700;
+      margin-bottom: 6px; color: var(--text-primary);
+    }
+    .subscribe-modal-inner .subscribe-subtitle {
+      font-size: 13px; color: var(--accent-geo); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+    }
+    .subscribe-modal-inner p {
+      font-size: 14px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 20px;
+    }
+    .subscribe-input-wrap {
+      display: flex; gap: 8px; margin-bottom: 12px;
+    }
+    .subscribe-input {
+      flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 14px; font-family: var(--sans); background: var(--bg);
+      color: var(--text-primary); outline: none; transition: border-color 0.2s;
+    }
+    .subscribe-input:focus { border-color: var(--accent-geo); }
+    .subscribe-input::placeholder { color: var(--text-muted); }
+    .subscribe-submit {
+      background: var(--accent-geo); color: #fff; border: none; border-radius: 8px;
+      padding: 10px 20px; font-size: 14px; font-weight: 600; font-family: var(--sans);
+      cursor: pointer; white-space: nowrap; transition: background 0.2s;
+    }
+    .subscribe-submit:hover { background: #6e1a28; }
+    .subscribe-privacy {
+      font-size: 11px; color: var(--text-muted); margin-top: 4px;
+    }
+    .subscribe-privacy a { color: var(--text-tertiary); text-decoration: underline; }
+    .subscribe-success {
+      font-size: 14px; color: var(--accent-green); font-weight: 600;
+    }
+    @media (max-width: 600px) {
+      .subscribe-input-wrap { flex-direction: column; }
+      .subscribe-submit { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -1165,6 +1321,7 @@
       <div class="kbd-row"><span>Open bookmarks</span> <span class="kbd-key">B</span></div>
       <div class="kbd-row"><span>Toggle dark mode</span> <span class="kbd-key">D</span></div>
       <div class="kbd-row"><span>Close / dismiss</span> <span class="kbd-key">Esc</span></div>
+      <div class="kbd-row"><span>Subscribe</span> <span class="kbd-key">S</span></div>
       <div class="kbd-row"><span>Show shortcuts</span> <span class="kbd-key">?</span></div>
     </div>
   </div>
@@ -1187,6 +1344,8 @@
         <button class="bookmarks-nav-btn" id="bookmarksBtn" title="Saved stories (B)">
           Saved <span class="bookmarks-count" id="bookmarksCountBadge" style="display:none;">0</span>
         </button>
+        <!-- Subscribe Button -->
+        <button class="subscribe-btn" id="subscribeBtn" title="Subscribe to premium (S)">Subscribe</button>
         <!-- Feature 8: Notification Bell -->
         <button class="notify-btn" id="notifyBtn" title="Get notified when new editions are published">
           <svg class="notify-icon" viewBox="0 0 24 24" width="16" height="16">
@@ -2061,6 +2220,13 @@
     <p class="footer-brand">The Daily Brief</p>
     <p>Aggregated from BBC, Sky News, Al Jazeera, Reuters, The Telegraph, Financial Times, The Independent &amp; The Economist<br/>
     Live feeds refresh on each visit &middot; Curated briefings at 10:00 AM &amp; 5:00 PM</p>
+    <nav class="footer-legal" aria-label="Legal">
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/cookies.html">Cookie Policy</a>
+      <a href="/subscribe-terms.html">Subscription Terms</a>
+    </nav>
+    <p class="footer-copy">&copy; 2026 The Daily Brief</p>
   </footer>
 
   <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
@@ -2068,6 +2234,32 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
     </svg>
   </button>
+
+  <!-- Subscribe Modal -->
+  <div class="subscribe-modal" id="subscribeModal" role="dialog" aria-modal="true" aria-label="Subscribe to premium">
+    <div class="subscribe-modal-inner">
+      <button class="subscribe-modal-close" id="subscribeClose" aria-label="Close">&times;</button>
+      <h3>Premium Subscriptions</h3>
+      <p class="subscribe-subtitle">Coming Soon</p>
+      <p>Be the first to know when premium launches. Enter your email and we'll notify you.</p>
+      <div id="subscribeFormWrap">
+        <form id="subscribeForm" class="subscribe-input-wrap">
+          <input type="email" class="subscribe-input" id="subscribeEmail" placeholder="you@example.com" required autocomplete="email" />
+          <button type="submit" class="subscribe-submit">Notify Me</button>
+        </form>
+        <p class="subscribe-privacy">We respect your privacy. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+      </div>
+      <p class="subscribe-success" id="subscribeSuccess" style="display:none;"></p>
+    </div>
+  </div>
+
+  <!-- Cookie Consent Banner -->
+  <div class="cookie-banner" id="cookieBanner" aria-live="polite">
+    <div class="cookie-banner-inner">
+      <p class="cookie-banner-text">This site uses essential cookies and localStorage for functionality. No tracking cookies are used. <a href="/cookies.html">Learn more</a></p>
+      <button class="cookie-banner-accept" id="cookieAccept">Accept</button>
+    </div>
+  </div>
 
 <script>
 // ── #4 Dark Mode ──
@@ -2535,6 +2727,7 @@ window._marketData = {};
       document.getElementById('searchOverlay')?.classList.remove('open');
       document.getElementById('kbdOverlay')?.classList.remove('open');
       document.getElementById('notifyModal')?.classList.remove('open');
+      document.getElementById('subscribeModal')?.classList.remove('open');
       const bp = document.getElementById('bookmarksPanel');
       const bb = document.getElementById('bookmarksBackdrop');
       if (bp) bp.classList.remove('open');
@@ -2550,6 +2743,8 @@ window._marketData = {};
     if (e.key === 'b' || e.key === 'B') { document.getElementById('bookmarksBtn')?.click(); return; }
     // "d" toggles dark mode
     if (e.key === 'd' || e.key === 'D') { document.getElementById('darkToggle')?.click(); return; }
+    // "s" opens subscribe modal
+    if (e.key === 's' || e.key === 'S') { document.getElementById('subscribeBtn')?.click(); return; }
     // Arrow keys for day navigation (only when curated section visible)
     const curated = document.getElementById('curated');
     if (curated) {
@@ -3481,6 +3676,65 @@ if ('serviceWorker' in navigator) {
   if (!overlay) return;
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) overlay.classList.remove('open');
+  });
+})();
+
+// ── Subscribe Modal ──
+(function() {
+  var btn = document.getElementById('subscribeBtn');
+  var modal = document.getElementById('subscribeModal');
+  var closeBtn = document.getElementById('subscribeClose');
+  var form = document.getElementById('subscribeForm');
+  var input = document.getElementById('subscribeEmail');
+  var formWrap = document.getElementById('subscribeFormWrap');
+  var successEl = document.getElementById('subscribeSuccess');
+  if (!btn || !modal) return;
+
+  // Check if already registered interest
+  var savedEmail = localStorage.getItem('db_subscribe_email');
+  if (savedEmail && formWrap && successEl) {
+    formWrap.style.display = 'none';
+    successEl.style.display = 'block';
+    successEl.textContent = 'You\u2019re on the list! We\u2019ll notify ' + savedEmail + ' when premium launches.';
+  }
+
+  function openModal() { modal.classList.add('open'); if (input && !savedEmail) setTimeout(function() { input.focus(); }, 50); }
+  function closeModal() { modal.classList.remove('open'); }
+
+  btn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var email = input.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        input.setCustomValidity('Please enter a valid email address');
+        input.reportValidity();
+        return;
+      }
+      localStorage.setItem('db_subscribe_email', email);
+      savedEmail = email;
+      formWrap.style.display = 'none';
+      successEl.style.display = 'block';
+      successEl.textContent = 'You\u2019re on the list! We\u2019ll notify ' + email + ' when premium launches.';
+    });
+    if (input) input.addEventListener('input', function() { input.setCustomValidity(''); });
+  }
+})();
+
+// ── Cookie Consent Banner ──
+(function() {
+  var banner = document.getElementById('cookieBanner');
+  var acceptBtn = document.getElementById('cookieAccept');
+  if (!banner || !acceptBtn) return;
+  if (!localStorage.getItem('db_cookie_consent')) {
+    setTimeout(function() { banner.classList.add('visible'); }, 500);
+  }
+  acceptBtn.addEventListener('click', function() {
+    localStorage.setItem('db_cookie_consent', JSON.stringify({ accepted: true, date: new Date().toISOString() }));
+    banner.classList.remove('visible');
   });
 })();
 </script>

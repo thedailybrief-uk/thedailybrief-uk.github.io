@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — The Daily Brief</title>
+  <meta name="description" content="Privacy policy for The Daily Brief. How we collect, use, and protect your data under UK GDPR." />
+  <link rel="canonical" href="https://thedailybrief-uk.github.io/privacy.html" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='16.8' y='21.5' text-anchor='middle' font-family='Georgia,Times,serif' font-weight='700' font-size='13' fill='%23f0ece4' letter-spacing='-0.5'>TDB</text></svg>" />
+  <link rel="preload" as="style" crossorigin href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" rel="stylesheet" />
+  <link rel="stylesheet" href="/legal-styles.css" />
+  <script>
+    var s = localStorage.getItem('theme');
+    if (s === 'dark' || (!s && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+</head>
+<body>
+
+  <header class="legal-masthead">
+    <div class="legal-masthead-inner">
+      <a href="/" class="legal-masthead-brand">The Daily Brief</a>
+      <button class="legal-dark-toggle" id="darkToggle" aria-label="Toggle dark mode">
+        <span class="toggle-icon sun">&#9788;</span> / <span class="toggle-icon moon">&#9790;</span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="legal-nav" aria-label="Legal pages">
+    <div class="legal-nav-inner">
+      <a href="/privacy.html" class="active">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/cookies.html">Cookies</a>
+      <a href="/subscribe-terms.html">Subscription Terms</a>
+    </div>
+  </nav>
+
+  <main class="legal-content">
+    <h1>Privacy Policy</h1>
+    <p class="legal-updated">Last updated: 12 March 2026</p>
+
+    <h2>1. Introduction</h2>
+    <p>This privacy policy explains how The Daily Brief ("we", "us", "our") collects, uses, and protects your personal data when you use our website at thedailybrief-uk.github.io (the "Site"). We are committed to protecting your privacy in accordance with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.</p>
+
+    <h2>2. Data Controller</h2>
+    <p>The data controller for the purposes of UK GDPR is:</p>
+    <p><strong>The Daily Brief</strong><br/>
+    Email: <a href="mailto:thedailybriefuk@gmail.com">thedailybriefuk@gmail.com</a></p>
+
+    <h2>3. Data We Collect</h2>
+    <h3>3.1 Data Stored Locally (localStorage)</h3>
+    <p>We store the following data in your browser's localStorage. This data never leaves your device unless otherwise stated:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Purpose</th>
+          <th>Data Stored</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>theme</code></td>
+          <td>Remember your light/dark mode preference</td>
+          <td>"light" or "dark"</td>
+        </tr>
+        <tr>
+          <td><code>db_bookmarks</code></td>
+          <td>Store your saved stories</td>
+          <td>JSON array of bookmarked article data</td>
+        </tr>
+        <tr>
+          <td><code>notifySubscribed</code></td>
+          <td>Track browser notification permission</td>
+          <td>"true" or "false"</td>
+        </tr>
+        <tr>
+          <td><code>db_markets</code></td>
+          <td>Cache market data to reduce API calls</td>
+          <td>JSON with market prices and timestamp</td>
+        </tr>
+        <tr>
+          <td><code>db_cookie_consent</code></td>
+          <td>Record your cookie consent</td>
+          <td>"accepted" with timestamp</td>
+        </tr>
+        <tr>
+          <td><code>db_subscribe_email</code></td>
+          <td>Store your email for subscription interest</td>
+          <td>Email address you provide</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>3.2 Browser Notification Permission</h3>
+    <p>If you enable edition notifications, your browser stores the notification permission. We do not operate a push notification server; notifications are triggered locally when you visit the site.</p>
+
+    <h3>3.3 HTTP Headers</h3>
+    <p>When you visit the Site, standard HTTP headers (IP address, browser type, referring page) are processed by GitHub Pages' servers. We do not have direct access to these server logs.</p>
+
+    <h3>3.4 Future: Payment Data</h3>
+    <p>When premium subscriptions launch, payment data (card details, billing address) will be collected and processed exclusively by Stripe. We will never have access to your full card number. See Section 5 for details about Stripe's data handling.</p>
+
+    <h2>4. Lawful Basis for Processing</h2>
+    <p>We process your data under the following lawful bases:</p>
+    <ul>
+      <li><strong>Legitimate interest</strong> (Article 6(1)(f) UK GDPR) — for essential site functionality such as remembering your display preferences and caching market data to improve performance.</li>
+      <li><strong>Consent</strong> (Article 6(1)(a) UK GDPR) — for browser notifications and cookie consent. You can withdraw consent at any time.</li>
+      <li><strong>Contractual necessity</strong> (Article 6(1)(b) UK GDPR) — for future subscription services, processing will be necessary for the performance of a contract.</li>
+    </ul>
+
+    <h2>5. Third-Party Services</h2>
+    <p>The Site uses the following third-party services:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Data Shared</th>
+          <th>Purpose</th>
+          <th>Privacy Policy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Google Fonts</td>
+          <td>IP address, browser headers</td>
+          <td>Font delivery</td>
+          <td><a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a></td>
+        </tr>
+        <tr>
+          <td>RSS2JSON / AllOrigins / CORSProxy</td>
+          <td>IP address</td>
+          <td>RSS feed proxying</td>
+          <td>Various — proxy services for CORS</td>
+        </tr>
+        <tr>
+          <td>Yahoo Finance</td>
+          <td>IP address</td>
+          <td>Market data</td>
+          <td><a href="https://legal.yahoo.com/us/en/yahoo/privacy/index.html" rel="noopener">Yahoo Privacy Policy</a></td>
+        </tr>
+        <tr>
+          <td>GitHub Pages</td>
+          <td>IP address, browser headers</td>
+          <td>Site hosting</td>
+          <td><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a></td>
+        </tr>
+        <tr>
+          <td>Stripe (future)</td>
+          <td>Payment details, billing address, email</td>
+          <td>Payment processing</td>
+          <td><a href="https://stripe.com/gb/privacy" rel="noopener">Stripe Privacy Policy</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. Data Retention</h2>
+    <ul>
+      <li><strong>localStorage data</strong> persists in your browser until you clear it manually or clear your browser data. We have no server-side access to this data.</li>
+      <li><strong>GitHub Pages logs</strong> are retained according to GitHub's data retention policies.</li>
+      <li><strong>Future Stripe data</strong> — transaction records will be retained for a minimum of 6 years in accordance with UK tax law (HMRC requirements) and Stripe's data retention policies.</li>
+    </ul>
+
+    <h2>7. Your Rights Under UK GDPR</h2>
+    <p>You have the following rights regarding your personal data:</p>
+    <ul>
+      <li><strong>Right of access</strong> — request a copy of the personal data we hold about you.</li>
+      <li><strong>Right to rectification</strong> — request correction of inaccurate personal data.</li>
+      <li><strong>Right to erasure</strong> — request deletion of your personal data.</li>
+      <li><strong>Right to restrict processing</strong> — request that we limit how we use your data.</li>
+      <li><strong>Right to data portability</strong> — receive your data in a structured, machine-readable format.</li>
+      <li><strong>Right to object</strong> — object to processing based on legitimate interests.</li>
+    </ul>
+    <p>To exercise any of these rights, please email <a href="mailto:thedailybriefuk@gmail.com">thedailybriefuk@gmail.com</a>. We will respond within one calendar month of receiving your request.</p>
+
+    <h2>8. International Transfers</h2>
+    <p>Some of our third-party services (GitHub, Google) may process data on servers located outside the United Kingdom. Where this occurs, transfers are protected by:</p>
+    <ul>
+      <li>UK adequacy decisions for the relevant jurisdiction, or</li>
+      <li>Standard Contractual Clauses (SCCs) approved by the ICO.</li>
+    </ul>
+
+    <h2>9. Children</h2>
+    <p>The Site is not directed at individuals under the age of 16. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us and we will take steps to delete it.</p>
+
+    <h2>10. Changes to This Policy</h2>
+    <p>We may update this privacy policy from time to time. The "last updated" date at the top of this page will be revised accordingly. Material changes will be communicated via a notice on the Site.</p>
+
+    <h2>11. Complaints</h2>
+    <p>If you are unhappy with how we handle your data, you have the right to lodge a complaint with the Information Commissioner's Office (ICO):</p>
+    <p>Information Commissioner's Office<br/>
+    Wycliffe House, Water Lane, Wilmslow, Cheshire SK9 5AF<br/>
+    Website: <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a><br/>
+    Telephone: 0303 123 1113</p>
+
+    <h2>12. Contact</h2>
+    <p>For any questions about this privacy policy or your personal data, please contact us at:<br/>
+    <a href="mailto:thedailybriefuk@gmail.com">thedailybriefuk@gmail.com</a></p>
+  </main>
+
+  <footer class="legal-footer">
+    <div class="legal-footer-inner">
+      <p class="footer-brand">The Daily Brief</p>
+      <nav class="legal-footer-nav" aria-label="Legal pages">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/cookies.html">Cookie Policy</a>
+        <a href="/subscribe-terms.html">Subscription Terms</a>
+      </nav>
+      <p class="footer-copy">&copy; 2026 The Daily Brief</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('darkToggle');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+</html>
