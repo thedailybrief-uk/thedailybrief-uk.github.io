@@ -1214,6 +1214,12 @@
       <span class="market-dot"></span>
       <div class="market-item"><span class="market-label">UK 10Y Gilt</span> <span class="market-value" id="mGilt">--</span> <span class="market-change" id="mGiltc"></span></div>
       <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">VIX</span> <span class="market-value" id="mVIX">--</span> <span class="market-change" id="mVIXc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">Bitcoin</span> <span class="market-value" id="mBTC">--</span> <span class="market-change" id="mBTCc"></span></div>
+      <span class="market-dot"></span>
+      <div class="market-item"><span class="market-label">US 10Y</span> <span class="market-value" id="mUST">--</span> <span class="market-change" id="mUSTc"></span></div>
+      <span class="market-dot"></span>
       <span class="market-context" id="marketContext">(vs. prev. close)</span>
     </div>
   </div>
@@ -2003,6 +2009,9 @@ window._marketData = {};
     { id: 'Gold', el: 'mGold', ch: 'mGoldc', sym: 'GC%3DF' },
     { id: 'EURGBP', el: 'mEURGBP', ch: 'mEURGBPc', sym: 'EURGBP%3DX' },
     { id: 'Gilt', el: 'mGilt', ch: 'mGiltc', sym: null }, // No Yahoo ticker — embedded data only
+    { id: 'VIX', el: 'mVIX', ch: 'mVIXc', sym: '%5EVIX' },
+    { id: 'BTC', el: 'mBTC', ch: 'mBTCc', sym: 'BTC-USD' },
+    { id: 'UST', el: 'mUST', ch: 'mUSTc', sym: '%5ETNX' },
   ];
 
   function displayItem(id, price, change) {
@@ -2010,7 +2019,9 @@ window._marketData = {};
     if (!s) return;
     window._marketData[id] = { price, change };
     const fmt = id === 'GBP' || id === 'EURGBP' ? price.toFixed(4)
-      : id === 'Gilt' ? price.toFixed(2) + '%'
+      : id === 'Gilt' || id === 'UST' ? price.toFixed(2) + '%'
+      : id === 'VIX' ? price.toFixed(1)
+      : id === 'BTC' ? '$' + Math.round(price).toLocaleString('en-GB')
       : price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
     document.getElementById(s.el).textContent = fmt;
     const chEl = document.getElementById(s.ch);
