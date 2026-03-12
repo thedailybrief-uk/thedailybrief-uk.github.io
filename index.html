@@ -170,16 +170,13 @@
     .markets-bar::after { right: 0; background: linear-gradient(to left, var(--bg-section), transparent); }
     .markets-track {
       display: flex; align-items: center; gap: 12px;
-      animation: tickerScroll 30s linear infinite;
       will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
     .markets-track:hover { animation-play-state: paused; }
-    @keyframes tickerScroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
     @media (prefers-reduced-motion: reduce) {
-      .markets-track { animation: none; }
+      .markets-track { animation: none !important; }
       .markets-bar { overflow-x: auto; }
     }
     .market-item { display: flex; align-items: center; gap: 4px; }
@@ -2072,12 +2069,18 @@ window._marketData = {};
       try { localStorage.setItem('db_markets', JSON.stringify({ ts: Date.now(), data: window._marketData })); } catch(e) {}
     }
   }
-  fetchLive().then(syncTickerClones);
+  fetchLive().then(setupTicker);
 
-  // Duplicate track items for seamless infinite loop (strip IDs from clones)
-  function initTicker() {
+  // Build seamless ticker: clone items, measure width, create pixel-based animation
+  function setupTicker() {
     const track = document.getElementById('marketsTrack');
-    if (!track || track.dataset.duplicated) return;
+    if (!track) return;
+
+    // Remove old clones if re-running
+    track.querySelectorAll('.ticker-clone').forEach(c => c.remove());
+    track.style.animation = 'none';
+
+    // Clone items for seamless loop
     const originals = Array.from(track.children);
     originals.forEach(el => {
       const clone = el.cloneNode(true);
@@ -2086,21 +2089,34 @@ window._marketData = {};
       clone.classList.add('ticker-clone');
       track.appendChild(clone);
     });
-    track.dataset.duplicated = '1';
-  }
 
-  // Sync cloned values when live data updates
-  function syncTickerClones() {
-    const track = document.getElementById('marketsTrack');
-    if (!track) return;
-    const originals = Array.from(track.querySelectorAll(':scope > :not(.ticker-clone)'));
-    const clones = Array.from(track.querySelectorAll(':scope > .ticker-clone'));
-    originals.forEach((el, i) => {
-      if (clones[i]) clones[i].innerHTML = el.innerHTML;
+    // Measure the width of the original set (first half)
+    requestAnimationFrame(() => {
+      let halfWidth = 0;
+      originals.forEach(el => {
+        halfWidth += el.offsetWidth;
+      });
+      // Add gaps between original items
+      const gap = parseFloat(getComputedStyle(track).gap) || 12;
+      halfWidth += gap * originals.length;
+
+      // Inject a pixel-based keyframe animation
+      const id = 'tickerScroll';
+      let sheet = document.getElementById('ticker-style');
+      if (sheet) sheet.remove();
+      sheet = document.createElement('style');
+      sheet.id = 'ticker-style';
+      sheet.textContent = `@keyframes ${id} { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-${halfWidth}px,0,0); } }`;
+      document.head.appendChild(sheet);
+
+      // Speed: ~50px/s on desktop, ~70px/s on mobile
+      const speed = window.innerWidth <= 600 ? 70 : 50;
+      const duration = halfWidth / speed;
+      track.style.animation = `${id} ${duration}s linear infinite`;
     });
   }
 
-  initTicker();
+  setupTicker();
 })();
 
 // ── Day Navigation ──
