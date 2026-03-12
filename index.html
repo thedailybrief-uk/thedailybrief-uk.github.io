@@ -880,7 +880,7 @@
   <div class="notify-modal" id="notifyModal">
     <div class="notify-modal-inner">
       <h3>Edition Notifications</h3>
-      <p>Get a browser notification when morning (08:00) and evening (18:00) editions are published.</p>
+      <p>Get a browser notification when you visit the site and a new edition is available.</p>
       <button class="notify-subscribe" id="notifySubscribe">Enable Notifications</button>
       <button class="notify-cancel" id="notifyCancel">Not now</button>
     </div>
@@ -1716,7 +1716,7 @@ window._marketData = {};
     { id: 'GBP', el: 'mGBP', ch: 'mGBPc', sym: 'GBPUSD%3DX' },
     { id: 'Gold', el: 'mGold', ch: 'mGoldc', sym: 'GC%3DF' },
     { id: 'EURGBP', el: 'mEURGBP', ch: 'mEURGBPc', sym: 'EURGBP%3DX' },
-    // Gilt yield has no Yahoo ticker — uses embedded data only (updated by briefing script)
+    { id: 'Gilt', el: 'mGilt', ch: 'mGiltc', sym: null }, // No Yahoo ticker — embedded data only
   ];
 
   function displayItem(id, price, change) {
@@ -1753,7 +1753,7 @@ window._marketData = {};
   // Then try live data via Yahoo v8 chart API (individual requests)
   async function fetchLive() {
     let anySuccess = false;
-    await Promise.allSettled(symbols.map(async (s) => {
+    await Promise.allSettled(symbols.filter(s => s.sym).map(async (s) => {
       const urls = [
         'https://query2.finance.yahoo.com/v8/finance/chart/' + s.sym + '?range=2d&interval=1d',
         'https://query1.finance.yahoo.com/v8/finance/chart/' + s.sym + '?range=2d&interval=1d',
@@ -1829,6 +1829,7 @@ window._marketData = {};
   // Dates sorted newest first
   const dates = Object.keys(byDate).sort().reverse();
   if (!dates.length) return;
+  window._briefDates = dates; // expose for thread navigation
 
   let currentIndex = 0;
   const now = new Date();
@@ -1847,6 +1848,7 @@ window._marketData = {};
   let _showDayTimer = null;
   function showDay(index, animate) {
     currentIndex = index;
+    window._showDay = showDay; // expose for thread navigation
     const dateStr = dates[index];
     const dayEditions = byDate[dateStr];
 
@@ -2108,11 +2110,19 @@ function parseXmlFeed(xmlText) {
 async function fetchFeed(feed, signal) {
   const limit = feed.top || 4;
   const perFeedTimeout = 8000;
+  // Polyfill AbortSignal.any for older browsers
+  function combinedSignal(signal) {
+    if (typeof AbortSignal.any === 'function') return AbortSignal.any([signal, AbortSignal.timeout(perFeedTimeout)]);
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), perFeedTimeout);
+    if (signal) signal.addEventListener('abort', () => { clearTimeout(timer); ac.abort(); }, { once: true });
+    return ac.signal;
+  }
   const strategies = [
     // Strategy 1: rss2json
     async () => {
       const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url);
-      const res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(perFeedTimeout)]) });
+      const res = await fetch(url, { signal: combinedSignal(signal) });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       if (data.status !== 'ok' || !data.items) throw new Error('Bad response');
@@ -2124,7 +2134,7 @@ async function fetchFeed(feed, signal) {
     // Strategy 2: allorigins raw XML, parsed client-side
     async () => {
       const url = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(feed.url);
-      const res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(perFeedTimeout)]) });
+      const res = await fetch(url, { signal: combinedSignal(signal) });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const xml = await res.text();
       const items = parseXmlFeed(xml);
@@ -2137,7 +2147,7 @@ async function fetchFeed(feed, signal) {
     // Strategy 3: corsproxy.io raw XML fallback
     async () => {
       const url = 'https://corsproxy.io/?' + encodeURIComponent(feed.url);
-      const res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(perFeedTimeout)]) });
+      const res = await fetch(url, { signal: combinedSignal(signal) });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const xml = await res.text();
       const items = parseXmlFeed(xml);
@@ -2397,8 +2407,11 @@ if ('serviceWorker' in navigator) {
       const match = findMatchingItem();
       if (match) {
         match.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Flash immediately and again after scroll settles
+        // Flash after scroll settles
+        let flashed = false;
         function flash() {
+          if (flashed) return;
+          flashed = true;
           match.classList.remove('highlight-flash');
           match.offsetHeight;
           match.classList.add('highlight-flash');
@@ -2469,7 +2482,7 @@ if ('serviceWorker' in navigator) {
         btn.classList.add('notify-active');
         localStorage.setItem('notifySubscribed', '1');
         new Notification('The Daily Brief', {
-          body: 'Morning edition is ready — you\'ll be notified at 08:00 and 18:00 GMT.',
+          body: 'Notifications enabled — you\'ll see alerts when new editions are available.',
           icon: '/icon-192.png'
         });
       }
@@ -2599,6 +2612,14 @@ if ('serviceWorker' in navigator) {
 
             if (!entry.isCurrent) {
               entryDiv.addEventListener('click', () => {
+                // Switch to the correct day before scrolling
+                const targetDate = entry.date;
+                const dates = window._briefDates;
+                const showDayFn = window._showDay;
+                if (dates && showDayFn) {
+                  const idx = dates.indexOf(targetDate);
+                  if (idx !== -1) showDayFn(idx, true);
+                }
                 document.getElementById('curated').scrollIntoView({ behavior: 'smooth' });
               });
             }
