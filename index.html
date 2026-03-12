@@ -138,6 +138,13 @@
       background: none; border: none; cursor: pointer; font-family: var(--sans);
       min-height: 44px; display: inline-flex; align-items: center;
     }
+    @media (max-width: 600px) {
+      .masthead-nav { gap: 6px 14px; padding: 8px 0; }
+      .masthead-nav a, .masthead-nav button { font-size: 10px; letter-spacing: 0.5px; padding: 6px 2px; min-height: 36px; }
+      .masthead-title { padding: 10px 0; }
+      .masthead-top { padding: 10px 0 8px; }
+      .masthead-inner { padding: 0 16px; }
+    }
     .masthead-nav a:hover, .masthead-nav button:hover { color: var(--text-primary); }
     .toggle-icon { display: inline-block; vertical-align: -2px; line-height: 1; font-size: 16px; }
     .toggle-icon.sun { color: var(--text-primary); }
