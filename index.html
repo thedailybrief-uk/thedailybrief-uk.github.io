@@ -359,17 +359,24 @@
       padding: 6px 24px; margin: 0; text-align: center;
       border-bottom: 1px solid var(--border-light);
       background: var(--bg-section);
-      font-size: 11px; color: rgba(255,255,255,0.5);
+      font-size: 11px; color: rgba(0,0,0,0.5);
       font-family: var(--sans);
     }
     .ref-figure { display: flex; align-items: center; gap: 5px; }
-    .ref-figure strong { color: rgba(255,255,255,0.7); font-weight: 600; }
+    .ref-figure strong { color: rgba(0,0,0,0.75); font-weight: 600; }
     .ref-figure .ref-change { font-size: 9px; font-weight: 600; margin-left: 1px; }
-    .ref-figure .ref-change.up { color: #4ade80; }
-    .ref-figure .ref-change.down { color: #f87171; }
-    .ref-figure .ref-change.flat { color: rgba(255,255,255,0.35); }
-    .ref-figure-sep { color: rgba(255,255,255,0.15); }
-    .ref-context { font-size: 9px; color: rgba(255,255,255,0.35); font-style: italic; white-space: nowrap; }
+    .ref-figure .ref-change.up { color: #16a34a; }
+    .ref-figure .ref-change.down { color: #dc2626; }
+    .ref-figure .ref-change.flat { color: rgba(0,0,0,0.35); }
+    .ref-figure-sep { color: rgba(0,0,0,0.15); }
+    .ref-context { font-size: 9px; color: rgba(0,0,0,0.35); font-style: italic; white-space: nowrap; }
+    [data-theme="dark"] .ref-figures { color: rgba(255,255,255,0.5); }
+    [data-theme="dark"] .ref-figure strong { color: rgba(255,255,255,0.7); }
+    [data-theme="dark"] .ref-figure .ref-change.up { color: #4ade80; }
+    [data-theme="dark"] .ref-figure .ref-change.down { color: #f87171; }
+    [data-theme="dark"] .ref-figure .ref-change.flat { color: rgba(255,255,255,0.35); }
+    [data-theme="dark"] .ref-figure-sep { color: rgba(255,255,255,0.15); }
+    [data-theme="dark"] .ref-context { color: rgba(255,255,255,0.35); }
     @media (max-width: 600px) { .ref-figures { font-size: 10px; gap: 10px; } }
 
     /* ── Feature 4: One To Read ── */
