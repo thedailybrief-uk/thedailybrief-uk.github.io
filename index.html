@@ -173,8 +173,11 @@
       will-change: transform;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
+      cursor: grab;
     }
+    .markets-track:active { cursor: grabbing; }
     .markets-track:hover { animation-play-state: paused; }
+    .markets-track.dragging { animation-play-state: paused !important; }
     @media (prefers-reduced-motion: reduce) {
       .markets-track { animation: none !important; }
       .markets-bar { overflow-x: auto; }
@@ -1197,7 +1200,7 @@
 
   <!-- #1 Markets snapshot bar -->
   <!-- Embedded market data (populated by update script, used as fallback) -->
-  <script id="embedded-markets" type="application/json">{"FTSE":{"price":10826,"change":0.18},"SP":{"price":6776,"change":-0.08},"Brent":{"price":91.60,"change":5.07},"GBP":{"price":1.3407,"change":-0.01},"Gold":{"price":5163,"change":-0.31},"EURGBP":{"price":0.8631,"change":-0.27},"Gilt":{"price":4.55,"change":-0.87},"ts":"2026-03-12T07:57:00Z"}</script>
+  <script id="embedded-markets" type="application/json">{"FTSE":{"price":10826,"change":0.18},"SP":{"price":6776,"change":-0.08},"Brent":{"price":91.60,"change":5.07},"GBP":{"price":1.3407,"change":-0.01},"Gold":{"price":5163,"change":-0.31},"EURGBP":{"price":0.8631,"change":-0.27},"Gilt":{"price":4.55,"change":-0.87},"VIX":{"price":24.58,"change":-1.40},"BTC":{"price":69780,"change":0.32},"UST":{"price":4.23,"change":0.12},"ts":"2026-03-12T14:00:00Z"}</script>
   <div class="markets-bar" id="marketsBar">
     <div class="markets-track" id="marketsTrack">
       <div class="market-item"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
@@ -2120,11 +2123,83 @@ window._marketData = {};
       sheet.textContent = `@keyframes ${id} { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-${halfWidth}px,0,0); } }`;
       document.head.appendChild(sheet);
 
-      // Speed: ~50px/s on desktop, ~70px/s on mobile
-      const speed = window.innerWidth <= 600 ? 70 : 50;
+      // Speed: ~50px/s on desktop, ~55px/s on mobile
+      const speed = window.innerWidth <= 600 ? 55 : 50;
       const duration = halfWidth / speed;
       track.style.animation = `${id} ${duration}s linear infinite`;
+
+      // Touch/mouse drag to scrub ticker
+      initTickerDrag(track, halfWidth);
     });
+  }
+
+  function initTickerDrag(track, halfWidth) {
+    let dragging = false, startX = 0, startOffset = 0;
+
+    function getAnimOffset() {
+      const ct = getComputedStyle(track).transform;
+      if (!ct || ct === 'none') return 0;
+      const m = ct.match(/matrix.*\((.+)\)/);
+      if (!m) return 0;
+      const vals = m[1].split(',');
+      return parseFloat(vals[4]) || 0;
+    }
+
+    function onStart(e) {
+      dragging = true;
+      startX = e.touches ? e.touches[0].clientX : e.clientX;
+      startOffset = getAnimOffset();
+      track.style.animation = 'none';
+      track.style.transform = `translate3d(${startOffset}px,0,0)`;
+      track.classList.add('dragging');
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      let offset = startOffset + (x - startX);
+      // Wrap around seamlessly
+      if (offset > 0) offset -= halfWidth;
+      if (offset < -halfWidth) offset += halfWidth;
+      track.style.transform = `translate3d(${offset}px,0,0)`;
+    }
+
+    function onEnd() {
+      if (!dragging) return;
+      dragging = false;
+      track.classList.remove('dragging');
+      // Resume animation from current position
+      const current = getAnimOffset();
+      // Calculate what percentage through the animation we are
+      const progress = Math.abs(current) / halfWidth;
+      const speed = window.innerWidth <= 600 ? 55 : 50;
+      const fullDuration = halfWidth / speed;
+      const remaining = fullDuration * (1 - progress);
+      // Create a one-shot animation from current to end, then loop
+      let resume = document.getElementById('ticker-resume');
+      if (resume) resume.remove();
+      resume = document.createElement('style');
+      resume.id = 'ticker-resume';
+      resume.textContent = `@keyframes tickerResume { 0% { transform: translate3d(${current}px,0,0); } 100% { transform: translate3d(-${halfWidth}px,0,0); } }`;
+      document.head.appendChild(resume);
+      track.style.transform = '';
+      track.style.animation = `tickerResume ${remaining}s linear 1`;
+      track.addEventListener('animationend', function restart() {
+        track.removeEventListener('animationend', restart);
+        let sheet = document.getElementById('ticker-style');
+        if (sheet) {
+          track.style.animation = `tickerScroll ${fullDuration}s linear infinite`;
+        }
+        if (resume) resume.remove();
+      });
+    }
+
+    track.addEventListener('mousedown', onStart);
+    track.addEventListener('touchstart', onStart, { passive: true });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchend', onEnd);
   }
 
   setupTicker();
