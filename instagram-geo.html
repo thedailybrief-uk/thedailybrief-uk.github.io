@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Daily Brief — Instagram Geopolitical</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 40px;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* ── COVER SLIDE ── */
+  .slide.cover {
+    background: linear-gradient(155deg, #2a0a10 0%, #8b2332 40%, #2a0a10 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 70px 70px 80px;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(168,50,72,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139,35,50,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover .brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+
+  .cover .date-pill {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+    padding: 10px 22px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
+  }
+
+  .cover .center-block {
+    position: relative;
+    z-index: 1;
+    margin-bottom: auto;
+  }
+
+  .cover .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .cover .big-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.05);
+    line-height: 0.85;
+    position: absolute;
+    right: -10px;
+    top: -30px;
+    letter-spacing: -6px;
+  }
+
+  .cover .hook {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 82px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 30px;
+  }
+
+  .cover .hook em {
+    font-style: normal;
+    color: #f5a0a0;
+  }
+
+  .cover .sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+    max-width: 700px;
+  }
+
+  .cover .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover .swipe {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cover .swipe-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    font-size: 20px;
+  }
+
+  .cover .dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cover .dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .cover .dots span:first-child {
+    background: #f5a0a0;
+    width: 28px;
+    border-radius: 5px;
+  }
+
+  /* ── HEADLINE SLIDES ── */
+  .slide.headline {
+    background: #0c0c14;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 70px 70px;
+  }
+
+  .headline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(180deg, #8b2332, #c43e54, #8b2332);
+  }
+
+  .headline .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding-left: 16px;
+  }
+
+  .headline .num-block {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .headline .slide-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 120px;
+    font-weight: 900;
+    color: #8b2332;
+    line-height: 1;
+    letter-spacing: -4px;
+  }
+
+  .headline .of-total {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.15);
+  }
+
+  .headline .tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #f5a0a0;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: rgba(139,35,50,0.15);
+    padding: 10px 22px;
+    border-radius: 4px;
+    margin-top: 14px;
+  }
+
+  .headline .content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 16px;
+  }
+
+  .headline h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 62px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.12;
+    margin-bottom: 32px;
+  }
+
+  .headline h2 em {
+    font-style: normal;
+    color: #f5a0a0;
+  }
+
+  .headline .summary {
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  .headline .stat-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .headline .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .headline .stat-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    color: #f5a0a0;
+    line-height: 1.1;
+  }
+
+  .headline .stat-value.down {
+    color: #e85454;
+  }
+
+  .headline .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .headline .bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 16px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .headline .bottom-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 1px;
+  }
+
+  .headline .save-cue {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── CTA SLIDE ── */
+  .slide.cta {
+    background: linear-gradient(155deg, #2a0a10 0%, #8b2332 40%, #2a0a10 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(168,50,72,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta .cta-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-divider {
+    width: 60px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-hook {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 60px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 36px;
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-hook em {
+    font-style: normal;
+    color: #f5a0a0;
+  }
+
+  .cta .cta-url {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    padding: 20px 48px;
+    border-radius: 50px;
+    border: 2px solid rgba(255,255,255,0.2);
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+  }
+
+  .cta .cta-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-actions {
+    display: flex;
+    gap: 40px;
+    margin-top: 50px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-action {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* Scale for preview */
+  @media screen {
+    .slide { transform: scale(0.35); transform-origin: top left; margin-bottom: -877px; margin-right: -702px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide cover">
+  <div class="top-row">
+    <div class="brand">The Daily Brief</div>
+    <div class="date-pill">Fri 13 March 2026</div>
+  </div>
+  <div class="center-block">
+    <div class="label">Daily Briefing</div>
+    <div class="big-number">TOP5</div>
+    <div class="hook">Today&rsquo;s Top 5 <em>Geopolitical</em> Headlines</div>
+    <div class="sub">The Iran war, Ukraine, and the stories shaping the world &mdash; in under 2 minutes.</div>
+  </div>
+  <div class="bottom-row">
+    <div class="swipe">Swipe <span class="swipe-arrow">&rarr;</span></div>
+    <div class="dots"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide headline">
+  <div class="top-section">
+    <div class="num-block">
+      <div class="slide-num">01</div>
+      <div class="of-total">/05</div>
+    </div>
+    <div class="tag">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>Israel Launches <em>&lsquo;Broad Wave&rsquo;</em> of Strikes on Tehran</h2>
+    <div class="summary">200+ targets hit in western and central Iran. Explosion at Al Quds Day rally attended by President Pezeshkian. Hegseth claims new supreme leader &ldquo;wounded.&rdquo;</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">7,600</div>
+        <div class="stat-label">Israeli strikes in Iran</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">1,444</div>
+        <div class="stat-label">Killed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">18,551</div>
+        <div class="stat-label">Injured</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Save for later &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide headline">
+  <div class="top-section">
+    <div class="num-block">
+      <div class="slide-num">02</div>
+      <div class="of-total">/05</div>
+    </div>
+    <div class="tag">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>All Six KC-135 Crew <em>Confirmed Dead</em></h2>
+    <div class="summary">US refuelling tanker crashed in western Iraq. Iran-aligned militia claims responsibility. Pentagon says not hostile fire &mdash; possible mid-air collision. Total American death toll now 13.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value down">6</div>
+        <div class="stat-label">Crew killed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">13</div>
+        <div class="stat-label">US total deaths</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$11.3bn</div>
+        <div class="stat-label">Spent in 6 days</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Save for later &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide headline">
+  <div class="top-section">
+    <div class="num-block">
+      <div class="slide-num">03</div>
+      <div class="of-total">/05</div>
+    </div>
+    <div class="tag">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>Israel Warns Lebanon Faces <em>Gaza-Scale</em> Destruction</h2>
+    <div class="summary">Litani River bridge destroyed. Leaflets dropped over Beirut. 25+ killed on Friday alone. Israeli strikes now hitting areas of Beirut not targeted in this conflict or the 2024 war.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value down">773</div>
+        <div class="stat-label">Killed in Lebanon</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">800,000+</div>
+        <div class="stat-label">Displaced</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1 in 7</div>
+        <div class="stat-label">Of population</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Save for later &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide headline">
+  <div class="top-section">
+    <div class="num-block">
+      <div class="slide-num">04</div>
+      <div class="of-total">/05</div>
+    </div>
+    <div class="tag">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>Gulf States Demand Iran <em>Halt Attacks</em> at the UN</h2>
+    <div class="summary">All six GCC nations submit a Security Council resolution demanding Iran &ldquo;immediately and unconditionally&rdquo; stop striking neighbouring countries. Oman opens diplomatic channel with Tehran.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">6</div>
+        <div class="stat-label">GCC states united</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$101</div>
+        <div class="stat-label">Brent crude / barrel</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">2,200</div>
+        <div class="stat-label">US Marines deploying</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Save for later &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide headline">
+  <div class="top-section">
+    <div class="num-block">
+      <div class="slide-num">05</div>
+      <div class="of-total">/05</div>
+    </div>
+    <div class="tag">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>Putin <em>Rejects Ceasefire</em>; Russia Fires 559 Drones &amp; Missiles</h2>
+    <div class="summary">Putin tells US envoy there are &ldquo;issues to resolve.&rdquo; Hours later, 519 drones and 40 missiles hit Kyiv. Residential buildings destroyed. Parts of the capital left without power or heating.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value down">559</div>
+        <div class="stat-label">Drones + missiles</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$70+</div>
+        <div class="stat-label">Urals blend / barrel</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">10+</div>
+        <div class="stat-label">Buildings hit</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Save for later &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 7: CTA -->
+<div class="slide cta">
+  <div class="cta-brand">The Daily Brief</div>
+  <div class="cta-divider"></div>
+  <div class="cta-hook">Get the <em>full story</em> with every headline</div>
+  <div class="cta-url">thedailybrief.co.uk</div>
+  <div class="cta-sub">Daily briefings, market data, and deeper analysis &mdash; free, every day.</div>
+  <div class="cta-actions">
+    <div class="cta-action">&#9654; Follow</div>
+    <div class="cta-action">&#9735; Save</div>
+    <div class="cta-action">&#8634; Share</div>
+  </div>
+</div>
+
+</body>
+</html>
