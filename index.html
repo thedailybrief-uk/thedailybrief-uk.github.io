@@ -1179,15 +1179,19 @@
       font-family: var(--sans);
     }
     .cookie-banner-text a { color: var(--accent-geo); text-decoration: underline; text-underline-offset: 2px; }
-    .cookie-banner-accept {
-      background: var(--text-primary); color: var(--bg); border: none; border-radius: 6px;
+    .cookie-banner-buttons { display: flex; gap: 8px; }
+    .cookie-banner-accept, .cookie-banner-reject {
+      border: none; border-radius: 6px;
       padding: 8px 20px; font-size: 13px; font-weight: 600; font-family: var(--sans);
       cursor: pointer; white-space: nowrap; transition: opacity 0.2s; min-height: 40px;
     }
-    .cookie-banner-accept:hover { opacity: 0.85; }
+    .cookie-banner-accept { background: var(--text-primary); color: var(--bg); }
+    .cookie-banner-reject { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+    .cookie-banner-accept:hover, .cookie-banner-reject:hover { opacity: 0.85; }
     @media (max-width: 600px) {
       .cookie-banner-inner { flex-direction: column; text-align: center; gap: 12px; }
-      .cookie-banner-accept { width: 100%; }
+      .cookie-banner-buttons { width: 100%; }
+      .cookie-banner-accept, .cookie-banner-reject { flex: 1; }
     }
 
     /* ── Subscribe Button (Masthead) ── */
@@ -2168,7 +2172,10 @@
   <div class="cookie-banner" id="cookieBanner" aria-live="polite">
     <div class="cookie-banner-inner">
       <p class="cookie-banner-text">This site uses essential cookies and localStorage for functionality. No tracking cookies are used. <a href="cookies.html">Learn more</a></p>
-      <button class="cookie-banner-accept" id="cookieAccept">Accept</button>
+      <div class="cookie-banner-buttons">
+        <button class="cookie-banner-reject" id="cookieReject">Reject</button>
+        <button class="cookie-banner-accept" id="cookieAccept">Accept</button>
+      </div>
     </div>
   </div>
 
@@ -3639,6 +3646,7 @@ if ('serviceWorker' in navigator) {
 (function() {
   var banner = document.getElementById('cookieBanner');
   var acceptBtn = document.getElementById('cookieAccept');
+  var rejectBtn = document.getElementById('cookieReject');
   if (!banner || !acceptBtn) return;
   if (!localStorage.getItem('db_cookie_consent')) {
     setTimeout(function() { banner.classList.add('visible'); }, 500);
@@ -3647,6 +3655,13 @@ if ('serviceWorker' in navigator) {
     localStorage.setItem('db_cookie_consent', JSON.stringify({ accepted: true, date: new Date().toISOString() }));
     banner.classList.remove('visible');
   });
+  if (rejectBtn) {
+    rejectBtn.addEventListener('click', function() {
+      localStorage.setItem('db_cookie_consent', JSON.stringify({ accepted: false, date: new Date().toISOString() }));
+      localStorage.removeItem('db_markets');
+      banner.classList.remove('visible');
+    });
+  }
 })();
 </script>
 
