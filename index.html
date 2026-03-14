@@ -2526,17 +2526,19 @@ window._marketData = {};
 
   // #2 Time-aware ordering within each day
   const currentHour = new Date().getHours();
-  Object.values(byDate).forEach(arr => {
+  const todayStr = new Date().getFullYear() + '-' + String(new Date().getMonth()+1).padStart(2,'0') + '-' + String(new Date().getDate()).padStart(2,'0');
+  Object.entries(byDate).forEach(([dateStr, arr]) => {
     arr.sort((a, b) => {
       const ta = a.dataset.time || '00:00';
       const tb = b.dataset.time || '00:00';
       const ha = parseInt(ta.split(':')[0]);
       const hb = parseInt(tb.split(':')[0]);
-      // Before 14:00, show morning first; after 14:00, show evening first
-      if (currentHour < 14) {
-        return ha - hb; // morning (10:00) before evening (18:00)
+      // Only show morning first if viewing today's editions before 14:00
+      // For past days (or today after 14:00), show evening first (newest on top)
+      if (dateStr === todayStr && currentHour < 14) {
+        return ha - hb; // morning first during the morning
       } else {
-        return hb - ha; // evening first
+        return hb - ha; // evening first (default)
       }
     });
   });
