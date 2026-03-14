@@ -305,14 +305,14 @@
     @media (max-width: 768px) { .curated-grid { grid-template-columns: 1fr; } }
     .curated-column {
       padding: 16px; border-radius: 10px;
-      display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 8px;
+      display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 0;
     }
     .curated-column > div {
       display: contents;
     }
     @media (max-width: 768px) {
       .curated-column { display: flex; flex-direction: column; grid-row: auto; }
-      .curated-column > div { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+      .curated-column > div { display: flex; flex-direction: column; flex: 1; }
     }
     .curated-column:first-child {
       background: rgba(139, 35, 50, 0.12); border: 1px solid rgba(139, 35, 50, 0.25);
@@ -333,10 +333,9 @@
     .curated-column:first-child h3 { color: rgba(200, 140, 150, 0.7); }
     .curated-column:last-child h3 { color: rgba(130, 170, 200, 0.7); }
     .curated-item {
-      padding: 10px 12px; border-radius: 6px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
     }
+    .curated-item:last-child { border-bottom: none; }
     .curated-item h4 {
       font-family: var(--body-serif); font-size: 14px; font-weight: 600;
       line-height: 1.35; margin: 0 0 6px;
