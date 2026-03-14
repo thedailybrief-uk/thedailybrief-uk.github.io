@@ -301,14 +301,14 @@
       padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle;
     }
 
-    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 768px) { .curated-grid { grid-template-columns: 1fr; } }
     .curated-column {
       padding: 16px; border-radius: 10px;
       display: flex; flex-direction: column;
     }
     .curated-column > div {
-      display: flex; flex-direction: column; gap: 8px;
+      display: flex; flex-direction: column; gap: 8px; flex: 1;
     }
     .curated-column:first-child {
       background: rgba(139, 35, 50, 0.12); border: 1px solid rgba(139, 35, 50, 0.25);
@@ -330,8 +330,8 @@
     .curated-column:last-child h3 { color: rgba(130, 170, 200, 0.7); }
     .curated-item {
       padding: 10px 12px; border-radius: 6px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
     }
     .curated-item h4 {
       font-family: var(--body-serif); font-size: 14px; font-weight: 600;
@@ -817,7 +817,7 @@
       color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
       cursor: pointer; padding: 5px 10px; display: inline-flex; align-items: center; gap: 7px;
-      transition: all 0.2s;
+      transition: all 0.2s; margin-top: 6px; margin-right: 6px;
     }
     .thread-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.18); }
     .thread-btn .thread-chevron {
@@ -1063,7 +1063,7 @@
 
 
     /* ── #9: Share Buttons ── */
-    .share-row { display: flex; gap: 6px; margin-top: 8px; }
+    .share-row { display: inline-flex; gap: 6px; margin-top: 6px; }
     .share-btn {
       font-family: var(--sans); font-size: 10px; font-weight: 600;
       color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06);
