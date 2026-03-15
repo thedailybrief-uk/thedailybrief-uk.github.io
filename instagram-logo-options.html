@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Daily Brief — Instagram Logo Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111;
+    color: #f0ece4;
+    font-family: 'Inter', sans-serif;
+    padding: 60px 40px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    margin-bottom: 50px;
+  }
+  .options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 50px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .option {
+    text-align: center;
+  }
+  .option h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: rgba(255,255,255,0.8);
+  }
+  .option .desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 20px;
+  }
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+  .logo-full {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+  .logo-small {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .size-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 8px;
+    text-align: center;
+  }
+  .logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── OPTION A: TDB Monogram ── */
+  .logo-a {
+    background: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  .logo-a .letters {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    color: #f0ece4;
+    letter-spacing: -1px;
+  }
+  .logo-full .logo-a .letters { font-size: 96px; }
+  .logo-small .logo-a .letters { font-size: 33px; }
+
+  /* ── OPTION B: Stacked wordmark ── */
+  .logo-b {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    gap: 0;
+  }
+  .logo-b .the {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: rgba(240,236,228,0.5);
+  }
+  .logo-b .daily {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: #f0ece4;
+    line-height: 0.9;
+  }
+  .logo-b .brief {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: #f0ece4;
+    line-height: 0.9;
+  }
+  .logo-b .line {
+    width: 40%;
+    height: 2px;
+    background: #8b2332;
+  }
+  .logo-full .logo-b .the { font-size: 14px; letter-spacing: 8px; margin-bottom: 4px; }
+  .logo-full .logo-b .daily { font-size: 52px; }
+  .logo-full .logo-b .brief { font-size: 52px; margin-bottom: 6px; }
+  .logo-full .logo-b .line { height: 3px; }
+  .logo-small .logo-b .the { font-size: 5px; letter-spacing: 3px; margin-bottom: 1px; }
+  .logo-small .logo-b .daily { font-size: 18px; }
+  .logo-small .logo-b .brief { font-size: 18px; margin-bottom: 2px; }
+  .logo-small .logo-b .line { height: 1px; }
+
+  /* ── OPTION C: DB with accent bar ── */
+  .logo-c {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  .logo-c .bar {
+    background: #8b2332;
+    border-radius: 2px;
+  }
+  .logo-c .initials {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: #f0ece4;
+    letter-spacing: 4px;
+  }
+  .logo-c .sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(240,236,228,0.4);
+  }
+  .logo-full .logo-c .bar { width: 50px; height: 4px; margin-bottom: 16px; }
+  .logo-full .logo-c .initials { font-size: 100px; letter-spacing: 8px; }
+  .logo-full .logo-c .sub { font-size: 11px; letter-spacing: 5px; margin-top: 8px; }
+  .logo-small .logo-c .bar { width: 17px; height: 2px; margin-bottom: 5px; }
+  .logo-small .logo-c .initials { font-size: 34px; letter-spacing: 3px; }
+  .logo-small .logo-c .sub { font-size: 4px; letter-spacing: 2px; margin-top: 3px; }
+
+  /* ── OPTION D: Burgundy background ── */
+  .logo-d {
+    background: linear-gradient(145deg, #6b1a28 0%, #8b2332 50%, #6b1a28 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  .logo-d .letters {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: #f0ece4;
+  }
+  .logo-d .tagline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(240,236,228,0.6);
+  }
+  .logo-full .logo-d .letters { font-size: 100px; letter-spacing: -2px; }
+  .logo-full .logo-d .tagline { font-size: 11px; letter-spacing: 5px; margin-top: 6px; }
+  .logo-small .logo-d .letters { font-size: 34px; letter-spacing: -1px; }
+  .logo-small .logo-d .tagline { font-size: 4px; letter-spacing: 2px; margin-top: 2px; }
+
+  /* ── OPTION E: Minimal serif ── */
+  .logo-e {
+    background: #0c0c14;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  .logo-e .top-line, .logo-e .bot-line {
+    background: rgba(139, 35, 50, 0.6);
+  }
+  .logo-e .word {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    color: #f0ece4;
+    line-height: 1;
+  }
+  .logo-full .logo-e .top-line { width: 60%; height: 2px; margin-bottom: 18px; }
+  .logo-full .logo-e .bot-line { width: 60%; height: 2px; margin-top: 18px; }
+  .logo-full .logo-e .word { font-size: 38px; }
+  .logo-small .logo-e .top-line { width: 60%; height: 1px; margin-bottom: 6px; }
+  .logo-small .logo-e .bot-line { width: 60%; height: 1px; margin-top: 6px; }
+  .logo-small .logo-e .word { font-size: 13px; }
+
+  /* ── OPTION F: Bold single letter ── */
+  .logo-f {
+    background: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .logo-f .big-b {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: #f0ece4;
+    line-height: 1;
+  }
+  .logo-f .accent-dot {
+    background: #8b2332;
+    border-radius: 50%;
+    position: absolute;
+  }
+  .logo-full .logo-f .big-b { font-size: 200px; }
+  .logo-full .logo-f .accent-dot { width: 18px; height: 18px; bottom: 65px; right: 85px; }
+  .logo-small .logo-f .big-b { font-size: 69px; }
+  .logo-small .logo-f .accent-dot { width: 6px; height: 6px; bottom: 22px; right: 29px; }
+</style>
+</head>
+<body>
+
+<h1>Instagram Profile Picture Options</h1>
+<p class="subtitle">Each shown at full size (320px) and actual display size (110px) &mdash; cropped to circle</p>
+
+<div class="options">
+
+  <!-- OPTION A -->
+  <div class="option">
+    <h2>Option A &mdash; TDB Monogram</h2>
+    <div class="desc">Classic monogram on dark navy. Matches the favicon.</div>
+    <div class="logo-wrap">
+      <div class="logo-container">
+        <div class="logo-full"><div class="logo-a"><span class="letters">TDB</span></div></div>
+        <div class="size-label">320 &times; 320</div>
+      </div>
+      <div class="logo-container">
+        <div class="logo-small"><div class="logo-a"><span class="letters">TDB</span></div></div>
+        <div class="size-label">110 &times; 110</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="option">
+    <h2>Option B &mdash; Stacked Wordmark</h2>
+    <div class="desc">Full name stacked with burgundy accent line. Editorial feel.</div>
+    <div class="logo-wrap">
+      <div class="logo-container">
+        <div class="logo-full"><div class="logo-b">
+          <span class="the">THE</span>
+          <span class="daily">Daily</span>
+          <span class="brief">Brief</span>
+          <div class="line"></div>
+        </div></div>
+        <div class="size-label">320 &times; 320</div>
+      </div>
+      <div class="logo-container">
+        <div class="logo-small"><div class="logo-b">
+          <span class="the">THE</span>
+          <span class="daily">Daily</span>
+          <span class="brief">Brief</span>
+          <div class="line"></div>
+        </div></div>
+        <div class="size-label">110 &times; 110</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION C -->
+  <div class="option">
+    <h2>Option C &mdash; DB Initials</h2>
+    <div class="desc">Bold initials with burgundy accent bar. Clean and modern.</div>
+    <div class="logo-wrap">
+      <div class="logo-container">
+        <div class="logo-full"><div class="logo-c">
+          <div class="bar"></div>
+          <span class="initials">DB</span>
+          <span class="sub">The Daily Brief</span>
+        </div></div>
+        <div class="size-label">320 &times; 320</div>
+      </div>
+      <div class="logo-container">
+        <div class="logo-small"><div class="logo-c">
+          <div class="bar"></div>
+          <span class="initials">DB</span>
+          <span class="sub">The Daily Brief</span>
+        </div></div>
+        <div class="size-label">110 &times; 110</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION D -->
+  <div class="option">
+    <h2>Option D &mdash; Burgundy TDB</h2>
+    <div class="desc">TDB on burgundy gradient. Bold, stands out in feeds.</div>
+    <div class="logo-wrap">
+      <div class="logo-container">
+        <div class="logo-full"><div class="logo-d">
+          <span class="letters">TDB</span>
+          <span class="tagline">The Daily Brief</span>
+        </div></div>
+        <div class="size-label">320 &times; 320</div>
+      </div>
+      <div class="logo-container">
+        <div class="logo-small"><div class="logo-d">
+          <span class="letters">TDB</span>
+          <span class="tagline">The Daily Brief</span>
+        </div></div>
+        <div class="size-label">110 &times; 110</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION E -->
+  <div class="option">
+    <h2>Option E &mdash; Minimal Serif</h2>
+    <div class="desc">Full name on dark background with accent rules. Understated and editorial.</div>
+    <div class="logo-wrap">
+      <div class="logo-container">
+        <div class="logo-full"><div class="logo-e">
+          <div class="top-line"></div>
+          <span class="word">The Daily</span>
+          <span class="word">Brief</span>
+          <div class="bot-line"></div>
+        </div></div>
+        <div class="size-label">320 &times; 320</div>
+      </div>
+      <div class="logo-container">
+        <div class="logo-small"><div class="logo-e">
+          <div class="top-line"></div>
+          <span class="word">The Daily</span>
+          <span class="word">Brief</span>
+          <div class="bot-line"></div>
+        </div></div>
+        <div class="size-label">110 &times; 110</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION F -->
+  <div class="option">
+    <h2>Option F &mdash; Bold B</h2>
+    <div class="desc">Single oversized B with burgundy dot. Minimal, iconic, instantly recognisable.</div>
+    <div class="logo-wrap">
+      <div class="logo-container">
+        <div class="logo-full"><div class="logo-f">
+          <span class="big-b">B</span>
+          <div class="accent-dot"></div>
+        </div></div>
+        <div class="size-label">320 &times; 320</div>
+      </div>
+      <div class="logo-container">
+        <div class="logo-small"><div class="logo-f">
+          <span class="big-b">B</span>
+          <div class="accent-dot"></div>
+        </div></div>
+        <div class="size-label">110 &times; 110</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

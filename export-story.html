@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Export Breaking News Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px; }
+  .status { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 30px; }
+  .btn { background: #c0392b; color: #fff; border: none; padding: 16px 40px; font-size: 16px; font-weight: 700; border-radius: 8px; cursor: pointer; letter-spacing: 1px; margin-bottom: 30px; }
+  .btn:hover { background: #e74c3c; }
+
+  /* ── Full-size story (no scaling) ── */
+  .story {
+    width: 1080px;
+    height: 1920px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #0c0c14;
+  }
+
+  .red-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 10px; background: #c0392b;
+  }
+  .red-bar-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 10px; background: #c0392b;
+  }
+  .side-accent {
+    position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: #c0392b;
+  }
+  .red-glow {
+    position: absolute; top: -200px; right: -200px; width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(192,57,43,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .story-header {
+    position: absolute; top: 60px; left: 0; right: 0; text-align: center;
+  }
+  .brand {
+    font-family: 'Playfair Display', Georgia, serif; font-size: 32px; font-weight: 800; color: #fff; letter-spacing: 1px;
+  }
+
+  .breaking-banner {
+    position: absolute; top: 140px; left: 0; right: 0; background: #c0392b;
+    padding: 52px 80px; display: flex; align-items: center; justify-content: center; gap: 28px;
+    box-shadow: 0 8px 40px rgba(192,57,43,0.5), 0 0 120px rgba(192,57,43,0.2);
+  }
+  .breaking-banner .breaking-icon {
+    width: 22px; height: 22px; background: #fff; border-radius: 50%; flex-shrink: 0;
+  }
+  .breaking-banner .breaking-text {
+    font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 900;
+    letter-spacing: 14px; text-transform: uppercase; color: #fff;
+  }
+
+  .timestamp {
+    position: absolute; top: 320px; left: 80px; right: 80px;
+    font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700;
+    color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; padding-top: 20px;
+  }
+
+  .story-content {
+    position: absolute; top: 50%; left: 80px; right: 80px; transform: translateY(-50%);
+  }
+  .story-content .category {
+    font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700;
+    letter-spacing: 5px; text-transform: uppercase; color: #e74c3c; margin-bottom: 20px;
+  }
+  .story-content h1 {
+    font-family: 'Playfair Display', Georgia, serif; font-size: 72px; font-weight: 900;
+    color: #fff; line-height: 1.08; margin-bottom: 36px;
+  }
+  .story-content h1 em { font-style: normal; color: #e74c3c; }
+  .story-content .divider {
+    width: 100px; height: 5px; background: #c0392b; border-radius: 2px; margin-bottom: 36px;
+  }
+  .story-content .summary {
+    font-family: 'Inter', sans-serif; font-size: 30px; font-weight: 400;
+    color: rgba(255,255,255,0.6); line-height: 1.55;
+  }
+  .story-content .key-facts {
+    display: flex; gap: 60px; margin-top: 44px; padding-top: 36px;
+    border-top: 2px solid rgba(192,57,43,0.3);
+  }
+  .story-content .fact { display: flex; flex-direction: column; }
+  .story-content .fact-value {
+    font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 900; color: #e74c3c; line-height: 1.1;
+  }
+  .story-content .fact-label {
+    font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+    color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px;
+  }
+
+  .story-footer {
+    position: absolute; bottom: 80px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 800;
+    color: rgba(255,255,255,0.5); letter-spacing: 1px;
+  }
+  .footer-url {
+    font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800;
+    color: #e74c3c; letter-spacing: 1.5px;
+  }
+
+  /* Scroll into view but no scaling */
+  @media screen {
+    .story { transform: scale(0.4); transform-origin: top center; margin-bottom: -1132px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="status" id="status">Loading fonts...</div>
+<button class="btn" id="downloadBtn" style="display:none;">Download Image</button>
+
+<div class="story" id="storyCapture">
+  <div class="red-bar"></div>
+  <div class="side-accent"></div>
+  <div class="red-glow"></div>
+  <div class="story-header">
+    <div class="brand">The Daily Brief</div>
+  </div>
+  <div class="breaking-banner">
+    <div class="breaking-icon"></div>
+    <div class="breaking-text">Breaking News</div>
+  </div>
+  <div class="timestamp">15 March 2026 — 07:55 GMT</div>
+
+  <div class="story-content">
+    <div class="category">Geopolitical</div>
+    <h1>US & Israeli Jets Strike <em>Isfahan, Shiraz & Tehran</em></h1>
+    <div class="divider"></div>
+    <div class="summary">B-52 bombers and Israeli F-35s have carried out the heaviest overnight bombardment of the war, striking targets across Isfahan, Shiraz and Tehran. The coordinated assault marks a dramatic escalation in the military campaign against Iran.</div>
+    <div class="key-facts">
+      <div class="fact">
+        <div class="fact-value">3</div>
+        <div class="fact-label">Cities struck</div>
+      </div>
+      <div class="fact">
+        <div class="fact-value">B-52s</div>
+        <div class="fact-label">US bombers</div>
+      </div>
+      <div class="fact">
+        <div class="fact-value">F-35s</div>
+        <div class="fact-label">Israeli jets</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-footer">
+    <div class="footer-brand">The Daily Brief</div>
+    <div class="footer-url">thedailybrief.co.uk</div>
+  </div>
+  <div class="red-bar-bottom"></div>
+</div>
+
+<script>
+document.fonts.ready.then(function() {
+  var status = document.getElementById('status');
+  var btn = document.getElementById('downloadBtn');
+  status.textContent = 'Ready to export!';
+  btn.style.display = 'block';
+
+  btn.addEventListener('click', function() {
+    status.textContent = 'Rendering...';
+    btn.style.display = 'none';
+    var el = document.getElementById('storyCapture');
+    // Remove preview scaling temporarily
+    el.style.transform = 'none';
+    el.style.marginBottom = '0';
+    html2canvas(el, {
+      width: 1080,
+      height: 1920,
+      scale: 1,
+      backgroundColor: '#0c0c14',
+      useCORS: true
+    }).then(function(canvas) {
+      canvas.toBlob(function(blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'breaking-news-story.png';
+        a.click();
+        URL.revokeObjectURL(url);
+        status.textContent = 'Downloaded! Check your Downloads folder.';
+        btn.textContent = 'Download Again';
+        btn.style.display = 'block';
+        // Restore preview scaling
+        el.style.transform = '';
+        el.style.marginBottom = '';
+      }, 'image/png');
+    });
+  });
+});
+</script>
+</body>
+</html>

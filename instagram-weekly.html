@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Daily Brief — Instagram Weekly Roundup</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 40px;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* ── COVER SLIDE ── */
+  .slide.cover {
+    background: linear-gradient(155deg, #0f1f1f 0%, #1e3a3a 35%, #2a4a4a 60%, #0f1f1f 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 70px 70px 80px;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(42,100,100,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(30,80,80,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover .brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+
+  .cover .date-pill {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+    padding: 10px 22px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
+  }
+
+  .cover .center-block {
+    position: relative;
+    z-index: 1;
+    margin-bottom: auto;
+  }
+
+  .cover .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .cover .big-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 140px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.05);
+    line-height: 0.85;
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    letter-spacing: -4px;
+  }
+
+  .cover .hook {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 82px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 30px;
+  }
+
+  .cover .hook em {
+    font-style: normal;
+    color: #7ecfcf;
+  }
+
+  .cover .sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+    max-width: 700px;
+  }
+
+  .cover .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover .swipe {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cover .swipe-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    font-size: 20px;
+  }
+
+  .cover .dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cover .dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .cover .dots span:first-child {
+    background: #7ecfcf;
+    width: 28px;
+    border-radius: 5px;
+  }
+
+  /* ── HEADLINE SLIDES ── */
+  .slide.headline {
+    background: #0c0c14;
+    display: flex;
+    flex-direction: column;
+    padding: 55px 70px 50px;
+  }
+
+  .headline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+  }
+
+  /* Section colours */
+  .headline.forward::before { background: linear-gradient(180deg, #1a7a5a, #2ecc71, #1a7a5a); }
+  .headline.stalled::before { background: linear-gradient(180deg, #b8860b, #e6a817, #b8860b); }
+  .headline.watch::before { background: linear-gradient(180deg, #1e3a3a, #3a7a7a, #1e3a3a); }
+
+  /* ── Fixed-height header zone ── */
+  .headline .slide-header {
+    position: absolute;
+    top: 55px;
+    left: 70px;
+    right: 70px;
+  }
+
+  /* ── Top bar: number + tag ── */
+  .headline .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-left: 16px;
+    flex-shrink: 0;
+  }
+
+  .headline .num-block {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .headline .slide-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .headline.forward .slide-num { color: #1a7a5a; }
+  .headline.stalled .slide-num { color: #b8860b; }
+  .headline.watch .slide-num { color: #2a5a5a; }
+
+  .headline .of-total {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.15);
+  }
+
+  .headline .tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border-radius: 4px;
+  }
+
+  .headline.forward .tag { color: #5ddb9e; background: rgba(46,204,113,0.12); }
+  .headline.stalled .tag { color: #e6c44d; background: rgba(184,134,11,0.12); }
+  .headline.watch .tag { color: #7ecfcf; background: rgba(42,100,100,0.15); }
+
+  /* ── Category label ── */
+  .headline .category {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    padding-left: 16px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── Content area: headline + summary ── */
+  .headline .content {
+    position: absolute;
+    top: 50%;
+    left: 86px;
+    right: 70px;
+    transform: translateY(-50%);
+  }
+
+  .headline h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.14;
+    margin-bottom: 28px;
+  }
+
+  .headline h2 em { font-style: normal; }
+  .headline.forward h2 em { color: #5ddb9e; }
+  .headline.stalled h2 em { color: #e6c44d; }
+  .headline.watch h2 em { color: #7ecfcf; }
+
+  .headline .summary {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  /* ── Stats: always at bottom of content area ── */
+  .headline .stat-row {
+    display: flex;
+    gap: 48px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .headline .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .headline .stat-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .headline.forward .stat-value { color: #5ddb9e; }
+  .headline.stalled .stat-value { color: #e6c44d; }
+  .headline.watch .stat-value { color: #7ecfcf; }
+
+  .headline .stat-value.down { color: #e85454; }
+
+  .headline .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* ── Bottom bar ── */
+  .headline .bottom-bar {
+    position: absolute;
+    bottom: 50px;
+    left: 86px;
+    right: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    flex-shrink: 0;
+  }
+
+  .headline .bottom-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 1px;
+  }
+
+  .headline .save-cue {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── CTA SLIDE ── */
+  .slide.cta {
+    background: linear-gradient(155deg, #0f1f1f 0%, #1e3a3a 35%, #2a4a4a 60%, #0f1f1f 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(42,100,100,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta .cta-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-divider {
+    width: 60px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-hook {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 60px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 36px;
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-hook em {
+    font-style: normal;
+    color: #7ecfcf;
+  }
+
+  .cta .cta-url {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    padding: 20px 48px;
+    border-radius: 50px;
+    border: 2px solid rgba(255,255,255,0.2);
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+  }
+
+  .cta .cta-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-actions {
+    display: flex;
+    gap: 40px;
+    margin-top: 50px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .cta-action {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION TITLE BANNER ── */
+  .section-title {
+    padding: 16px 16px 20px 16px;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+
+  .section-title .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 8px;
+  }
+
+  .section-title .section-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-title .section-rule {
+    height: 3px;
+    border-radius: 2px;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .headline.forward .section-title .section-name { color: #5ddb9e; }
+  .headline.forward .section-title .section-rule { background: #5ddb9e; }
+
+  .headline.stalled .section-title .section-name { color: #e6c44d; }
+  .headline.stalled .section-title .section-rule { background: #e6c44d; }
+
+  .headline.watch .section-title .section-name { color: #7ecfcf; }
+  .headline.watch .section-title .section-rule { background: #7ecfcf; }
+
+  /* Scale for preview */
+  @media screen {
+    .slide { transform: scale(0.35); transform-origin: top left; margin-bottom: -877px; margin-right: -702px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide cover">
+  <div class="top-row">
+    <div class="brand">The Daily Brief</div>
+    <div class="date-pill">Week of 9&ndash;15 March 2026</div>
+  </div>
+  <div class="center-block">
+    <div class="label">Weekly Roundup</div>
+    <div class="big-number">WEEK</div>
+    <div class="hook">The Stories That <em>Defined</em> This Week</div>
+    <div class="sub">What moved forward, what stalled, and what to watch next week.</div>
+  </div>
+  <div class="bottom-row">
+    <div class="swipe">Swipe <span class="swipe-arrow">&rarr;</span></div>
+    <div class="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- ── WHAT MOVED FORWARD ── -->
+
+<!-- SLIDE 2 -->
+<div class="slide headline forward">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">01</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&uarr; Moved Forward</div>
+    </div>
+    <div class="section-title">
+      <div class="section-label">This Week</div>
+      <div class="section-name">What Moved Forward <div class="section-rule"></div></div>
+    </div>
+    <div class="category">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>Ukraine&ndash;US Peace Framework <em>Nears Completion</em></h2>
+    <div class="summary">Trump and Zelenskyy confirmed agreement on 90&ndash;95% of a ceasefire framework in Jeddah &mdash; the most concrete advance since Istanbul 2022. Ukraine recaptured 244 km&sup2; while Russian gains fell to a 20-month low.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">95%</div>
+        <div class="stat-label">Framework agreed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">244 km&sup2;</div>
+        <div class="stat-label">Recaptured</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide headline forward">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">02</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&uarr; Moved Forward</div>
+    </div>
+    <div class="category">Domestic</div>
+  </div>
+  <div class="content">
+    <h2>Hereditary Peers Bill <em>Clears Final Hurdle</em></h2>
+    <div class="summary">Parliament&rsquo;s biggest constitutional reform in a generation passed its final stage. 92 hereditary peers will leave the Lords after 700 years. Workers&rsquo; rights reforms also confirmed for April &mdash; sick pay from day one for 1.3 million.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">92</div>
+        <div class="stat-label">Peers removed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1.3m</div>
+        <div class="stat-label">Workers gain rights</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide headline forward">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">03</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&uarr; Moved Forward</div>
+    </div>
+    <div class="category">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>EU Opens <em>Backdoor Diplomacy</em> With Tehran</h2>
+    <div class="summary">France and Italy began discreet negotiations with Iran &mdash; the first significant European diplomatic initiative since the conflict began on 28 February. Talks focus on humanitarian corridors and a potential ceasefire framework.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">Day 16</div>
+        <div class="stat-label">Of the conflict</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1,444</div>
+        <div class="stat-label">Iran war dead</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- ── WHAT STALLED ── -->
+
+<!-- SLIDE 5 -->
+<div class="slide headline stalled">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">04</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&bull; Stalled</div>
+    </div>
+    <div class="section-title">
+      <div class="section-label">This Week</div>
+      <div class="section-name">What Stalled <div class="section-rule"></div></div>
+    </div>
+    <div class="category">Markets</div>
+  </div>
+  <div class="content">
+    <h2>Oil Surges 17% as <em>Hormuz Blockade</em> Tightens</h2>
+    <div class="summary">Brent crude surged from $88 to $103 in four trading days. The IEA released a record 400 million barrels of emergency stocks &mdash; three times the previous record &mdash; yet prices continued to climb. Rate cuts effectively shelved.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value down">$103</div>
+        <div class="stat-label">Brent crude</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">+17%</div>
+        <div class="stat-label">In four days</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">400m</div>
+        <div class="stat-label">Barrels released</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide headline stalled">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">05</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&bull; Stalled</div>
+    </div>
+    <div class="category">Domestic</div>
+  </div>
+  <div class="content">
+    <h2>UK Economy <em>Flatlines</em> for Sixth Month</h2>
+    <div class="summary">GDP showed zero growth in January &mdash; stalled since June. The OBR halved its 2026 growth forecast to 1.1%. Sterling fell below $1.33. Heating oil doubled in a fortnight to &pound;1,322. Energy cap set to surge 10% in July.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value down">0%</div>
+        <div class="stat-label">GDP growth</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">1.1%</div>
+        <div class="stat-label">OBR forecast</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="slide headline stalled">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">06</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&bull; Stalled</div>
+    </div>
+    <div class="category">Domestic</div>
+  </div>
+  <div class="content">
+    <h2>Labour Hits <em>Record Low</em> as Immigration Revolt Deepens</h2>
+    <div class="summary">100+ Labour MPs revolted against immigration reforms, forcing a delay from April to autumn. Polling shows Labour at 20% &mdash; down from 35% when these seats were last contested. 37 councils projected to change hands in May.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value down">20%</div>
+        <div class="stat-label">Labour polling</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">100+</div>
+        <div class="stat-label">MPs rebelled</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value down">37</div>
+        <div class="stat-label">Councils at risk</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- ── WHAT TO WATCH ── -->
+
+<!-- SLIDE 8 -->
+<div class="slide headline watch">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">07</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&rarr; Watch Next Week</div>
+    </div>
+    <div class="section-title">
+      <div class="section-label">Coming Up</div>
+      <div class="section-name">What To Watch <div class="section-rule"></div></div>
+    </div>
+    <div class="category">Markets</div>
+  </div>
+  <div class="content">
+    <h2>Bank of England <em>Rate Decision</em> &mdash; Thursday</h2>
+    <div class="summary">The MPC meets with the worst cross-currents in years: six months of zero growth vs. an oil-driven inflation surge. A hold is expected. Markets price just a 28% chance of a cut.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">5&ndash;4</div>
+        <div class="stat-label">Feb vote split</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">Thu 19</div>
+        <div class="stat-label">March</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 9 -->
+<div class="slide headline watch">
+  <div class="slide-header">
+    <div class="top-section">
+      <div class="num-block">
+        <div class="slide-num">08</div>
+        <div class="of-total">/08</div>
+      </div>
+      <div class="tag">&rarr; Watch Next Week</div>
+    </div>
+    <div class="category">Geopolitical</div>
+  </div>
+  <div class="content">
+    <h2>Trump&rsquo;s <em>Coalition Flotilla</em> &mdash; Who Signs Up?</h2>
+    <div class="summary">The President has called on Britain, France, Japan, South Korea and China to send warships to force Hormuz open. No country has publicly committed. Starmer faces acute pressure: joining risks deeper entanglement; refusing risks the transatlantic relationship.</div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Nations called on</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Have committed</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-brand">The Daily Brief</div>
+    <div class="save-cue">Swipe &nbsp;&#9654;</div>
+  </div>
+</div>
+
+<!-- SLIDE 10: CTA -->
+<div class="slide cta">
+  <div class="cta-brand">The Daily Brief</div>
+  <div class="cta-divider"></div>
+  <div class="cta-hook">Get the <em>full story</em> with every headline</div>
+  <div class="cta-url">thedailybrief.co.uk</div>
+  <div class="cta-sub">Daily briefings, market data, and deeper analysis &mdash; free, every day.</div>
+  <div class="cta-actions">
+    <div class="cta-action">&#9654; Follow</div>
+    <div class="cta-action">&#9735; Save</div>
+    <div class="cta-action">&#8634; Share</div>
+  </div>
+</div>
+
+</body>
+</html>

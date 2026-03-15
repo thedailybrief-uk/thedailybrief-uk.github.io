@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  body { background: #111; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: 'Inter', sans-serif; color: #fff; }
+  canvas { border-radius: 8px; margin-bottom: 20px; }
+  .status { font-size: 14px; color: rgba(255,255,255,0.6); }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1080"></canvas>
+<div class="status" id="status">Rendering...</div>
+<script>
+// Wait for fonts to load
+document.fonts.ready.then(() => {
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  const w = 1080, h = 1080;
+
+  // Background
+  ctx.fillStyle = '#1a1a2e';
+  ctx.fillRect(0, 0, w, h);
+
+  // "THE"
+  ctx.font = '600 46px Inter';
+  ctx.fillStyle = 'rgba(240,236,228,0.5)';
+  ctx.textAlign = 'center';
+  ctx.letterSpacing = '24px';
+  ctx.fillText('THE', w/2 + 12, 410);
+
+  // "Daily"
+  ctx.font = '900 172px "Playfair Display"';
+  ctx.fillStyle = '#f0ece4';
+  ctx.letterSpacing = '0px';
+  ctx.fillText('Daily', w/2, 570);
+
+  // "Brief"
+  ctx.fillText('Brief', w/2, 720);
+
+  // Burgundy accent line
+  const lineW = w * 0.35;
+  ctx.fillStyle = '#8b2332';
+  ctx.fillRect((w - lineW) / 2, 748, lineW, 8);
+
+  // Export
+  c.toBlob(function(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'the-daily-brief-logo.png';
+    a.click();
+    document.getElementById('status').textContent = 'Downloaded! Check your Downloads folder.';
+  }, 'image/png');
+});
+</script>
+</body>
+</html>
