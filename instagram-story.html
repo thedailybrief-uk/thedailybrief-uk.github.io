@@ -26,6 +26,13 @@
     background: #0c0c14;
   }
 
+  /*
+    INSTAGRAM STORY SAFE ZONES (9:16, 1080x1920):
+    - Top 200px: username, profile pic, story progress bars
+    - Bottom 250px: reply bar, share button, message input
+    - All critical content between y:200 and y:1670
+  */
+
   /* ── Red top bar ── */
   .red-bar {
     position: absolute;
@@ -47,8 +54,7 @@
   }
 
   /* ── Red side accent ── */
-  .story::before {
-    content: '';
+  .side-accent {
     position: absolute;
     top: 0;
     left: 0;
@@ -58,8 +64,7 @@
   }
 
   /* ── Red glow ── */
-  .story::after {
-    content: '';
+  .red-glow {
     position: absolute;
     top: -200px;
     right: -200px;
@@ -69,10 +74,10 @@
     pointer-events: none;
   }
 
-  /* ── Top bar ── */
+  /* ── Top bar — pushed below IG overlay ── */
   .story-header {
     position: absolute;
-    top: 60px;
+    top: 220px;
     left: 0;
     right: 0;
     text-align: center;
@@ -86,10 +91,10 @@
     letter-spacing: 1px;
   }
 
-  /* ── Breaking news banner ── */
+  /* ── Breaking news banner — below header ── */
   .breaking-banner {
     position: absolute;
-    top: 140px;
+    top: 300px;
     left: 0;
     right: 0;
     background: #c0392b;
@@ -128,7 +133,7 @@
   /* ── Time stamp ── */
   .timestamp {
     position: absolute;
-    top: 320px;
+    top: 480px;
     left: 80px;
     right: 80px;
     font-family: 'Inter', sans-serif;
@@ -140,10 +145,10 @@
     padding-top: 20px;
   }
 
-  /* ── Content: centred vertically ── */
+  /* ── Content: centred in safe zone ── */
   .story-content {
     position: absolute;
-    top: 50%;
+    top: 935px;
     left: 80px;
     right: 80px;
     transform: translateY(-50%);
@@ -220,10 +225,10 @@
     margin-top: 6px;
   }
 
-  /* ── Bottom bar ── */
+  /* ── Bottom bar — above IG reply zone ── */
   .story-footer {
     position: absolute;
-    bottom: 80px;
+    bottom: 280px;
     left: 80px;
     right: 80px;
     display: flex;
@@ -249,20 +254,6 @@
     letter-spacing: 1.5px;
   }
 
-  .footer-swipe {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.25);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    text-align: center;
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-  }
-
   /* Scale for preview */
   @media screen {
     .story { transform: scale(0.35); transform-origin: top left; margin-bottom: -1248px; margin-right: -702px; }
@@ -274,6 +265,8 @@
 <!-- BREAKING NEWS STORY -->
 <div class="story">
   <div class="red-bar"></div>
+  <div class="side-accent"></div>
+  <div class="red-glow"></div>
   <div class="story-header">
     <div class="brand">The Daily Brief</div>
   </div>
@@ -281,25 +274,25 @@
     <div class="breaking-icon"></div>
     <div class="breaking-text">Breaking News</div>
   </div>
-  <div class="timestamp">15 March 2026 &mdash; 07:55 GMT</div>
+  <div class="timestamp">16 March 2026 &mdash; 10:00 GMT</div>
 
   <div class="story-content">
     <div class="category">Geopolitical</div>
-    <h1>US &amp; Israeli Jets Strike <em>Isfahan, Shiraz &amp; Tehran</em></h1>
+    <h1>Israel Launches <em>Ground Operations</em> in Lebanon</h1>
     <div class="divider"></div>
-    <div class="summary">B-52 bombers and Israeli F-35s have carried out the heaviest overnight bombardment of the war, striking targets across Isfahan, Shiraz and Tehran. The coordinated assault marks a dramatic escalation in the military campaign against Iran.</div>
+    <div class="summary">The IDF has begun &ldquo;limited and targeted ground operations&rdquo; in southern Lebanon against Hezbollah. Troops have crossed the border with plans to seize the area south of the Litani River. At least five killed including a child.</div>
     <div class="key-facts">
       <div class="fact">
-        <div class="fact-value">3</div>
-        <div class="fact-label">Cities struck</div>
+        <div class="fact-value">91st</div>
+        <div class="fact-label">Division deployed</div>
       </div>
       <div class="fact">
-        <div class="fact-value">B-52s</div>
-        <div class="fact-label">US bombers</div>
+        <div class="fact-value">Litani</div>
+        <div class="fact-label">River target line</div>
       </div>
       <div class="fact">
-        <div class="fact-value">F-35s</div>
-        <div class="fact-label">Israeli jets</div>
+        <div class="fact-value">Day 17</div>
+        <div class="fact-label">Of Iran conflict</div>
       </div>
     </div>
   </div>
