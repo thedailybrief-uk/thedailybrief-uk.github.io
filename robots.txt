@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /node_modules/
+Disallow: /export-slides.js
+Disallow: /export-weekly.html
+Disallow: /export-logo.html
+Disallow: /export-story.html
+Disallow: /instagram-*.html
+
+Sitemap: https://thedailybrief.co.uk/sitemap.xml

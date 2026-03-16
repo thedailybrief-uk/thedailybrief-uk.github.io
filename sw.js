@@ -1,4 +1,4 @@
-const CACHE_NAME = 'daily-brief-v4';
+const CACHE_NAME = 'daily-brief-v5';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -9,6 +9,8 @@ const STATIC_ASSETS = [
   '/terms.html',
   '/cookies.html',
   '/subscribe-terms.html',
+  '/sitemap.xml',
+  '/robots.txt',
 ];
 const FONT_CACHE = 'daily-brief-fonts-v1';
 
