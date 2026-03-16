@@ -2802,6 +2802,8 @@ window._marketData = {};
 
     content.innerHTML = html;
     modal.classList.add('open');
+    // Pause ticker while modal is open — don't resume until modal closes
+    if (window._tickerPause) window._tickerPause();
   }
 
   // Click handlers on market items
