@@ -2641,9 +2641,11 @@ window._marketData = {};
   }
 
   function initTickerDrag(track, halfWidth) {
-    let dragging = false, startX = 0, startOffset = 0, hasMoved = false;
+    let dragging = false, startX = 0, startOffset = 0;
     let paused = false, resumeTimer = null, modalOpen = false;
+    var wasDrag = false; // exposed for click handler
     const RESUME_DELAY = 4000;
+    const DRAG_THRESHOLD = 5; // px — ignore tiny movements
 
     function getAnimOffset() {
       const ct = getComputedStyle(track).transform;
@@ -2664,7 +2666,6 @@ window._marketData = {};
 
     function scheduleResume() {
       clearTimeout(resumeTimer);
-      // Never auto-resume while a modal is open
       if (modalOpen) return;
       resumeTimer = setTimeout(function() { resumeAnimation(); }, RESUME_DELAY);
     }
@@ -2708,50 +2709,47 @@ window._marketData = {};
       scheduleResume();
     };
 
-    // Record which element was under the pointer at mousedown
-    var downTarget = null;
-
     function onStart(e) {
-      downTarget = e.target;
       dragging = true;
-      hasMoved = false;
+      wasDrag = false;
       clearTimeout(resumeTimer);
       startX = e.touches ? e.touches[0].clientX : e.clientX;
       startOffset = getAnimOffset();
-      track.style.animation = 'none';
-      track.style.transform = `translate3d(${startOffset}px,0,0)`;
-      paused = true;
-      track.classList.add('dragging');
+      pauseAtCurrentPos();
     }
 
     function onMove(e) {
       if (!dragging) return;
-      hasMoved = true;
       const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const dx = Math.abs(x - startX);
+      if (dx > DRAG_THRESHOLD) wasDrag = true;
+      if (!wasDrag) return; // don't move track until threshold exceeded
       let offset = startOffset + (x - startX);
       if (offset > 0) offset -= halfWidth;
       if (offset < -halfWidth) offset += halfWidth;
       track.style.transform = `translate3d(${offset}px,0,0)`;
     }
 
-    function onEnd(e) {
+    function onEnd() {
       if (!dragging) return;
       dragging = false;
-
-      // If user didn't drag, check if they clicked a market item
-      if (!hasMoved && downTarget) {
-        var item = downTarget.closest('.market-item[data-market]');
-        if (item && window.openMarketModal) {
-          window.openMarketModal(item.dataset.market);
-          downTarget = null;
-          return; // modal will handle pause — don't schedule resume
-        }
-      }
-      downTarget = null;
-
-      // For plain clicks or drags, schedule resume after 4s
-      scheduleResume();
+      // Don't schedule resume here if it was a click — the click handler will decide
+      if (wasDrag) scheduleResume();
     }
+
+    // Delegated click handler — fires after mouseup, uses browser hit-testing
+    track.addEventListener('click', function(e) {
+      if (wasDrag) return; // was a drag, not a click
+      var item = e.target.closest('.market-item[data-market]');
+      if (item && window.openMarketModal) {
+        e.stopPropagation();
+        window.openMarketModal(item.dataset.market);
+        // modal pauses ticker via _tickerPause, no resume needed
+      } else {
+        // Clicked on gap/separator — just schedule resume
+        scheduleResume();
+      }
+    });
 
     track.addEventListener('mousedown', onStart);
     track.addEventListener('touchstart', onStart, { passive: true });
@@ -2831,8 +2829,7 @@ window._marketData = {};
     if (window._tickerPause) window._tickerPause();
   }
 
-  // Ticker market-item clicks are handled via onEnd in initTickerDrag
-  // to avoid conflicts with the drag mousedown/mouseup cycle.
+  // Ticker market-item clicks are handled via delegated click handler in initTickerDrag.
 
   // Expose globally so briefing key-figures and ref-figures can use it
   window.openMarketModal = openMarketModal;
