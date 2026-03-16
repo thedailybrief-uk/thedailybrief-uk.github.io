@@ -5,6 +5,26 @@
 
 ---
 
+## Week of 16–21 March 2026
+
+### Monday 16 March
+
+_Morning — Geopolitical:_
+1. Iran War Enters Day 17 — Isfahan strikes continue, conflict spreads to Kuwait and Saudi Arabia; US death toll reaches 13
+2. Hormuz Crisis Sends Oil Past $104 — tanker traffic near zero, 150+ vessels anchored outside strait
+3. Zelensky Accuses EU of 'Blackmail' — Hungary and Slovakia threaten to block aid over Druzhba pipeline
+4. North Korea Fires 10+ Ballistic Missiles — largest single-day volley during US-South Korea Freedom Shield drills
+5. Cuba Erupts — protesters storm and torch Communist Party HQ in Moron over power and food shortages
+
+_Morning — UK Domestic:_
+1. £1 Billion Youth Jobs Package — 200,000 roles targeted, £3,000 grants for hiring 18–24 year olds; youth unemployment at 16.1%
+2. Grenfell Tower Memorial Bill Fast-Tracked — all Commons stages in single 4-hour sitting
+3. Student Visa 'Emergency Brake' — bans study visas from Afghanistan, Cameroon, Myanmar, Sudan from 26 March
+4. MPs Debate Defection By-Elections — 129,333-signature petition, driven by Tory-to-Reform crossings
+5. Reform UK Leads Polls at 23% — Labour at record low 17% in YouGov; Greens level with Conservatives at 19%
+
+---
+
 ## Week of 10–14 March 2026
 
 ### Monday 10 March
