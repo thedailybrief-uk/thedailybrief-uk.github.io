@@ -608,6 +608,23 @@
     /* #10 Per-section timestamp */
     .section-time { font-size: 10px; color: var(--text-muted); margin-left: 8px; white-space: nowrap; }
 
+    /* ── Live badge ── */
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--sans); font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-muted); margin-left: 12px;
+    }
+    .live-dot {
+      width: 8px; height: 8px; background: #c0392b;
+      border-radius: 50%; animation: livePulse 1.5s ease-in-out infinite;
+      box-shadow: 0 0 6px rgba(192,57,43,0.5);
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
     /* ── Top stories (large cards) ── */
     .top-stories { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 32px; }
     @media (max-width: 740px) { .top-stories { grid-template-columns: 1fr; } }
@@ -1297,6 +1314,73 @@
       .subscribe-input-wrap { flex-direction: column; }
       .subscribe-submit { width: 100%; }
     }
+
+    /* ── Market Detail Modal ── */
+    .market-modal {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 9999; align-items: center; justify-content: center;
+    }
+    .market-modal.open { display: flex; }
+    .market-modal-inner {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 32px 36px; max-width: 520px; width: 92%; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;
+    }
+    .market-modal-close {
+      position: absolute; top: 14px; right: 16px; background: none; border: none;
+      font-size: 28px; cursor: pointer; color: var(--text-tertiary); line-height: 1;
+    }
+    .market-modal-close:hover { color: var(--text-primary); }
+    .market-modal-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    }
+    .market-modal-name {
+      font-family: var(--serif); font-size: 22px; font-weight: 700;
+    }
+    .market-modal-price {
+      font-family: var(--mono, var(--sans)); font-size: 18px; font-weight: 600;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .market-modal-price .price-val { color: var(--text-primary); }
+    .market-modal-price .price-chg {
+      font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    }
+    .market-modal-price .price-chg.up { color: var(--accent-green); background: rgba(39,174,96,0.1); }
+    .market-modal-price .price-chg.down { color: var(--accent-red); background: rgba(192,57,43,0.1); }
+    .market-modal-desc {
+      font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 20px;
+    }
+    .market-modal-section {
+      margin-bottom: 16px;
+    }
+    .market-modal-section-title {
+      font-family: var(--sans); font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .market-modal-section-title .arrow-up { color: var(--accent-green); }
+    .market-modal-section-title .arrow-down { color: var(--accent-red); }
+    .market-driver {
+      font-size: 13px; line-height: 1.55; color: var(--text-secondary);
+      padding: 6px 0 6px 16px; position: relative;
+    }
+    .market-driver::before {
+      content: ''; position: absolute; left: 0; top: 12px;
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .market-driver.up::before { background: var(--accent-green); }
+    .market-driver.down::before { background: var(--accent-red); }
+    .market-modal-updated {
+      font-size: 11px; color: var(--text-muted); margin-top: 16px;
+      padding-top: 12px; border-top: 1px solid var(--border);
+    }
+    .market-item { cursor: pointer; transition: opacity 0.15s; }
+    .market-item:hover { opacity: 0.7; }
+    @media (max-width: 520px) {
+      .market-modal-inner { padding: 24px 20px; }
+      .market-modal-header { flex-direction: column; gap: 8px; }
+    }
   </style>
 </head>
 <body>
@@ -1399,27 +1483,99 @@
   <!-- #1 Markets snapshot bar -->
   <!-- Embedded market data (populated by update script, used as fallback) -->
   <script id="embedded-markets" type="application/json">{"FTSE":{"price":10254,"change":-0.50},"SP":{"price":6632,"change":-0.61},"Brent":{"price":106.36,"change":3.12},"GBP":{"price":1.3258,"change":0.16},"Gold":{"price":5017,"change":-0.32},"EURGBP":{"price":0.8630,"change":-0.12},"Gilt":{"price":4.72,"change":0.43},"VIX":{"price":27.19,"change":-0.37},"BTC":{"price":72386,"change":-0.61},"UST":{"price":4.25,"change":-0.70},"ts":"2026-03-16T08:00:00Z"}</script>
+  <script id="market-descriptions" type="application/json">{
+    "FTSE": {
+      "name": "FTSE 100",
+      "desc": "The UK's benchmark stock index, tracking the 100 largest companies listed on the London Stock Exchange by market capitalisation. Includes Shell, AstraZeneca, HSBC and Unilever.",
+      "drivers_up": ["Defence stocks rallying on increased UK military spending commitments", "Energy majors benefiting from oil above $100"],
+      "drivers_down": ["Iran conflict uncertainty weighing on risk appetite", "BoE rate hold expected Thursday, limiting growth optimism"],
+      "updated": "16 March 2026 08:00"
+    },
+    "SP": {
+      "name": "S&P 500",
+      "desc": "America's leading stock market index, tracking 500 of the largest US-listed companies. Dominated by mega-cap tech (Apple, Microsoft, Nvidia) but spans all sectors.",
+      "drivers_up": ["AI infrastructure spending continues to drive tech earnings", "Strong US labour market data supporting consumer confidence"],
+      "drivers_down": ["Escalating Middle East tensions raising geopolitical risk premium", "Fed signalling higher-for-longer rates amid persistent inflation"],
+      "updated": "16 March 2026 08:00"
+    },
+    "Brent": {
+      "name": "Brent Crude Oil",
+      "desc": "The global benchmark for crude oil pricing, produced from oil fields in the North Sea. Used to price roughly two-thirds of the world's traded oil.",
+      "drivers_up": ["Iran-Israel escalation threatening Strait of Hormuz supply routes", "OPEC+ maintaining production cuts through Q2 2026"],
+      "drivers_down": ["China economic slowdown dampening demand forecasts", "US strategic reserve releases adding supply"],
+      "updated": "16 March 2026 08:00"
+    },
+    "GBP": {
+      "name": "GBP/USD",
+      "desc": "The exchange rate between the British pound and the US dollar, commonly known as 'cable'. Reflects relative economic strength and interest rate differentials between the UK and US.",
+      "drivers_up": ["UK inflation remaining sticky, supporting BoE hawkish stance", "Improved UK growth outlook after Q4 GDP beat"],
+      "drivers_down": ["Dollar strength from safe-haven flows amid geopolitical crisis", "UK fiscal concerns following Spring Statement spending plans"],
+      "updated": "16 March 2026 08:00"
+    },
+    "Gold": {
+      "name": "Gold (XAU/USD)",
+      "desc": "The spot price of gold in US dollars per troy ounce. The world's oldest safe-haven asset, traditionally rising during periods of uncertainty, inflation and currency debasement.",
+      "drivers_up": ["Central bank gold buying at record levels, led by China and India", "Geopolitical risk premium from Middle East and Ukraine conflicts"],
+      "drivers_down": ["Higher real yields making non-yielding gold less attractive", "Profit-taking after recent push above $5,000"],
+      "updated": "16 March 2026 08:00"
+    },
+    "EURGBP": {
+      "name": "EUR/GBP",
+      "desc": "The exchange rate between the euro and the British pound. Key for UK-EU trade pricing. A falling rate means sterling is strengthening against the euro.",
+      "drivers_up": ["ECB rate cuts outpacing BoE, weakening euro relative to sterling", "Eurozone manufacturing recession deepening"],
+      "drivers_down": ["UK political uncertainty ahead of local elections", "EU fiscal stimulus package boosting euro sentiment"],
+      "updated": "16 March 2026 08:00"
+    },
+    "Gilt": {
+      "name": "UK 10-Year Gilt Yield",
+      "desc": "The yield on 10-year UK government bonds (gilts). A key benchmark for UK borrowing costs, mortgage rates and pension fund valuations. Rising yields mean falling bond prices.",
+      "drivers_up": ["BoE signalling caution on rate cuts amid sticky services inflation", "Increased gilt supply from Spring Statement borrowing plans"],
+      "drivers_down": ["Flight to safety from Middle East escalation", "Pension fund demand for long-duration gilts"],
+      "updated": "16 March 2026 08:00"
+    },
+    "VIX": {
+      "name": "VIX (Volatility Index)",
+      "desc": "The CBOE Volatility Index, often called the 'fear gauge'. Measures expected S&P 500 volatility over the next 30 days. Readings above 20 suggest elevated anxiety; above 30 signals acute stress.",
+      "drivers_up": ["Iran-Israel conflict escalation injecting uncertainty", "Options market pricing larger daily moves ahead of Fed decision"],
+      "drivers_down": ["Markets digesting geopolitical news, reducing tail-risk pricing", "Strong corporate earnings season providing fundamental support"],
+      "updated": "16 March 2026 08:00"
+    },
+    "BTC": {
+      "name": "Bitcoin (BTC/USD)",
+      "desc": "The price of Bitcoin in US dollars. The largest cryptocurrency by market cap, increasingly viewed as digital gold by institutional investors since spot ETF approvals.",
+      "drivers_up": ["Institutional inflows via spot ETFs continuing at record pace", "Halving supply dynamics supporting price floor"],
+      "drivers_down": ["Risk-off sentiment from geopolitical crisis hitting crypto", "Regulatory concerns over DeFi and stablecoin legislation"],
+      "updated": "16 March 2026 08:00"
+    },
+    "UST": {
+      "name": "US 10-Year Treasury Yield",
+      "desc": "The yield on 10-year US government bonds, the global risk-free rate benchmark. Influences mortgage rates, corporate borrowing and equity valuations worldwide.",
+      "drivers_up": ["Persistent US inflation reducing rate-cut expectations", "Record Treasury issuance to fund growing deficit"],
+      "drivers_down": ["Safe-haven demand amid Middle East military escalation", "Global growth slowdown expectations pulling yields lower"],
+      "updated": "16 March 2026 08:00"
+    }
+  }</script>
   <div class="markets-bar" id="marketsBar">
     <div class="markets-track" id="marketsTrack">
-      <div class="market-item"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
+      <div class="market-item" data-market="FTSE"><span class="market-label">FTSE 100</span> <span class="market-value" id="mFTSE">--</span> <span class="market-change" id="mFTSEc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">S&amp;P 500</span> <span class="market-value" id="mSP">--</span> <span class="market-change" id="mSPc"></span></div>
+      <div class="market-item" data-market="SP"><span class="market-label">S&amp;P 500</span> <span class="market-value" id="mSP">--</span> <span class="market-change" id="mSPc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">Brent Crude</span> <span class="market-value" id="mBrent">--</span> <span class="market-change" id="mBrentc"></span></div>
+      <div class="market-item" data-market="Brent"><span class="market-label">Brent Crude</span> <span class="market-value" id="mBrent">--</span> <span class="market-change" id="mBrentc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">GBP/USD</span> <span class="market-value" id="mGBP">--</span> <span class="market-change" id="mGBPc"></span></div>
+      <div class="market-item" data-market="GBP"><span class="market-label">GBP/USD</span> <span class="market-value" id="mGBP">--</span> <span class="market-change" id="mGBPc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">Gold</span> <span class="market-value" id="mGold">--</span> <span class="market-change" id="mGoldc"></span></div>
+      <div class="market-item" data-market="Gold"><span class="market-label">Gold</span> <span class="market-value" id="mGold">--</span> <span class="market-change" id="mGoldc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">EUR/GBP</span> <span class="market-value" id="mEURGBP">--</span> <span class="market-change" id="mEURGBPc"></span></div>
+      <div class="market-item" data-market="EURGBP"><span class="market-label">EUR/GBP</span> <span class="market-value" id="mEURGBP">--</span> <span class="market-change" id="mEURGBPc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">UK 10Y Gilt</span> <span class="market-value" id="mGilt">--</span> <span class="market-change" id="mGiltc"></span></div>
+      <div class="market-item" data-market="Gilt"><span class="market-label">UK 10Y Gilt</span> <span class="market-value" id="mGilt">--</span> <span class="market-change" id="mGiltc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">VIX</span> <span class="market-value" id="mVIX">--</span> <span class="market-change" id="mVIXc"></span></div>
+      <div class="market-item" data-market="VIX"><span class="market-label">VIX</span> <span class="market-value" id="mVIX">--</span> <span class="market-change" id="mVIXc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">Bitcoin</span> <span class="market-value" id="mBTC">--</span> <span class="market-change" id="mBTCc"></span></div>
+      <div class="market-item" data-market="BTC"><span class="market-label">Bitcoin</span> <span class="market-value" id="mBTC">--</span> <span class="market-change" id="mBTCc"></span></div>
       <span class="market-dot"></span>
-      <div class="market-item"><span class="market-label">US 10Y</span> <span class="market-value" id="mUST">--</span> <span class="market-change" id="mUSTc"></span></div>
+      <div class="market-item" data-market="UST"><span class="market-label">US 10Y</span> <span class="market-value" id="mUST">--</span> <span class="market-change" id="mUSTc"></span></div>
       <span class="market-dot"></span>
       <span class="market-context" id="marketContext">(vs. prev. close)</span>
     </div>
@@ -2195,6 +2351,7 @@
       <div class="section-header">
         <div class="section-accent geo"></div>
         <h2 class="section-title">Geopolitical</h2>
+        <span class="live-badge"><span class="live-dot"></span>LIVE</span>
         <span class="section-subtitle">World affairs, diplomacy &amp; conflict</span>
         <span class="section-time" id="geoTime"></span>
       </div>
@@ -2220,6 +2377,7 @@
       <div class="section-header">
         <div class="section-accent dom"></div>
         <h2 class="section-title">UK Domestic Politics</h2>
+        <span class="live-badge"><span class="live-dot"></span>LIVE</span>
         <span class="section-subtitle">Westminster, policy &amp; governance</span>
         <span class="section-time" id="domTime"></span>
       </div>
@@ -2275,6 +2433,14 @@
         <p class="subscribe-privacy">We respect your privacy. See our <a href="privacy.html">Privacy Policy</a>.</p>
       </div>
       <p class="subscribe-success" id="subscribeSuccess" style="display:none;"></p>
+    </div>
+  </div>
+
+  <!-- Market Detail Modal -->
+  <div class="market-modal" id="marketModal" role="dialog" aria-modal="true" aria-label="Market instrument details">
+    <div class="market-modal-inner">
+      <button class="market-modal-close" id="marketModalClose" aria-label="Close">&times;</button>
+      <div id="marketModalContent"></div>
     </div>
   </div>
 
@@ -2513,6 +2679,83 @@ window._marketData = {};
   }
 
   setupTicker();
+})();
+
+// ── Market Detail Modal ──
+(function() {
+  const modal = document.getElementById('marketModal');
+  const content = document.getElementById('marketModalContent');
+  const closeBtn = document.getElementById('marketModalClose');
+  let descriptions = {};
+  try {
+    descriptions = JSON.parse(document.getElementById('market-descriptions').textContent);
+  } catch(e) {}
+
+  function formatPrice(id, price) {
+    if (['GBP','EURGBP'].includes(id)) return price.toFixed(4);
+    if (['Gilt','UST','VIX'].includes(id)) return price.toFixed(2);
+    if (id === 'Brent') return '$' + price.toFixed(2);
+    if (id === 'Gold') return '$' + price.toLocaleString('en-GB', {maximumFractionDigits:0});
+    if (id === 'BTC') return '$' + price.toLocaleString('en-GB', {maximumFractionDigits:0});
+    if (['FTSE','SP'].includes(id)) return price.toLocaleString('en-GB', {maximumFractionDigits:0});
+    return price.toString();
+  }
+
+  function openMarketModal(id) {
+    const info = descriptions[id];
+    if (!info) return;
+    const live = window._marketData && window._marketData[id];
+    const price = live ? live.price : null;
+    const change = live ? live.change : null;
+    const isUp = change !== null && change >= 0;
+    const chgClass = isUp ? 'up' : 'down';
+    const chgSign = isUp ? '+' : '';
+
+    let html = '<div class="market-modal-header">';
+    html += '<div class="market-modal-name">' + info.name + '</div>';
+    if (price !== null) {
+      html += '<div class="market-modal-price">';
+      html += '<span class="price-val">' + formatPrice(id, price) + '</span>';
+      html += '<span class="price-chg ' + chgClass + '">' + chgSign + change.toFixed(2) + '%</span>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '<div class="market-modal-desc">' + info.desc + '</div>';
+
+    if (info.drivers_up && info.drivers_up.length) {
+      html += '<div class="market-modal-section">';
+      html += '<div class="market-modal-section-title"><span class="arrow-up">\u25B2</span> What\'s driving it up</div>';
+      info.drivers_up.forEach(function(d) { html += '<div class="market-driver up">' + d + '</div>'; });
+      html += '</div>';
+    }
+
+    if (info.drivers_down && info.drivers_down.length) {
+      html += '<div class="market-modal-section">';
+      html += '<div class="market-modal-section-title"><span class="arrow-down">\u25BC</span> What\'s driving it down</div>';
+      info.drivers_down.forEach(function(d) { html += '<div class="market-driver down">' + d + '</div>'; });
+      html += '</div>';
+    }
+
+    html += '<div class="market-modal-updated">Last updated: ' + info.updated + '</div>';
+
+    content.innerHTML = html;
+    modal.classList.add('open');
+  }
+
+  // Click handlers on market items
+  document.querySelectorAll('.market-item[data-market]').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openMarketModal(item.dataset.market);
+    });
+  });
+
+  // Close handlers
+  closeBtn.addEventListener('click', function() { modal.classList.remove('open'); });
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) modal.classList.remove('open');
+  });
 })();
 
 // ── Day Navigation ──
@@ -2758,6 +3001,7 @@ window._marketData = {};
       document.getElementById('kbdOverlay')?.classList.remove('open');
       document.getElementById('notifyModal')?.classList.remove('open');
       document.getElementById('subscribeModal')?.classList.remove('open');
+      document.getElementById('marketModal')?.classList.remove('open');
       const bp = document.getElementById('bookmarksPanel');
       const bb = document.getElementById('bookmarksBackdrop');
       if (bp) bp.classList.remove('open');
