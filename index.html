@@ -2709,16 +2709,22 @@ window._marketData = {};
       scheduleResume();
     };
 
-    // Don't pause animation on mousedown — only pause if user actually drags.
-    // This ensures the click event fires correctly (pausing on mousedown
-    // shifts the track and breaks click target detection).
+    // The ticker animates via CSS transform, so the track moves between
+    // mousedown and mouseup. This means the browser's click event fires
+    // on the track (common ancestor) instead of the market item. We solve
+    // this by capturing the target element at mousedown time and using it
+    // at mouseup to open the modal.
+
+    var downTarget = null;
 
     function onStart(e) {
+      var raw = e.touches ? e.touches[0] : e;
+      // Find the market item under the pointer at this instant
+      downTarget = document.elementFromPoint(raw.clientX, raw.clientY);
       dragging = true;
       wasDrag = false;
       clearTimeout(resumeTimer);
-      startX = e.touches ? e.touches[0].clientX : e.clientX;
-      // Don't pause yet — wait to see if it's a drag
+      startX = raw.clientX;
     }
 
     function onMove(e) {
@@ -2726,7 +2732,6 @@ window._marketData = {};
       const x = e.touches ? e.touches[0].clientX : e.clientX;
       const dx = Math.abs(x - startX);
       if (dx > DRAG_THRESHOLD && !wasDrag) {
-        // First time crossing threshold — now pause and start dragging
         wasDrag = true;
         startOffset = getAnimOffset();
         pauseAtCurrentPos();
@@ -2741,23 +2746,28 @@ window._marketData = {};
     function onEnd() {
       if (!dragging) return;
       dragging = false;
-      if (wasDrag) scheduleResume();
-    }
 
-    // Delegated click handler — fires after mouseup, uses browser hit-testing.
-    // Animation is still running during click so e.target is correct.
-    track.addEventListener('click', function(e) {
-      if (wasDrag) return;
-      var item = e.target.closest('.market-item[data-market]');
-      if (item && window.openMarketModal) {
-        e.stopPropagation();
-        window.openMarketModal(item.dataset.market);
-        // openMarketModal calls _tickerPause which freezes ticker + sets modalOpen
-      } else {
-        // Clicked on gap — just pause and schedule resume
+      if (!wasDrag && downTarget) {
+        // Simple click (no drag) — use the element captured at mousedown
+        var item = downTarget.closest('.market-item[data-market]');
+        if (item && window.openMarketModal) {
+          window.openMarketModal(item.dataset.market);
+          downTarget = null;
+          return; // modal calls _tickerPause
+        }
+        // Clicked on gap — pause ticker, resume after 4s
         pauseAtCurrentPos();
         scheduleResume();
+      } else if (wasDrag) {
+        scheduleResume();
       }
+
+      downTarget = null;
+    }
+
+    // Suppress click events on the track — we handle everything via mouseup
+    track.addEventListener('click', function(e) {
+      e.stopPropagation();
     });
 
     track.addEventListener('mousedown', onStart);
