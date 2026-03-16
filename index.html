@@ -238,7 +238,6 @@
       cursor: grab;
     }
     .markets-track:active { cursor: grabbing; }
-    .markets-track:hover { animation-play-state: paused; }
     .markets-track.dragging { animation-play-state: paused !important; }
     @media (prefers-reduced-motion: reduce) {
       .markets-track { animation: none !important; }
@@ -302,6 +301,8 @@
     .key-figure {
       font-size: 12px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 6px;
     }
+    .key-figure[data-market] { cursor: pointer; transition: opacity 0.15s; }
+    .key-figure[data-market]:hover { opacity: 0.7; }
     .key-figure strong { color: rgba(255,255,255,0.95); font-weight: 700; }
     .key-figure-change { font-size: 10px; font-weight: 700; margin-left: 2px; }
     .key-figure-change.up { color: #4ade80; }
@@ -465,6 +466,8 @@
       font-family: var(--sans);
     }
     .ref-figure { display: flex; align-items: center; gap: 5px; }
+    .ref-figure[data-market] { cursor: pointer; transition: opacity 0.15s; }
+    .ref-figure[data-market]:hover { opacity: 0.7; }
     .ref-figure strong { color: rgba(0,0,0,0.75); font-weight: 600; }
     .ref-figure .ref-change { font-size: 9px; font-weight: 600; margin-left: 1px; }
     .ref-figure .ref-change.up { color: #16a34a; }
@@ -617,12 +620,12 @@
     }
     .live-dot {
       width: 8px; height: 8px; background: #c0392b;
-      border-radius: 50%; animation: livePulse 1.5s ease-in-out infinite;
-      box-shadow: 0 0 6px rgba(192,57,43,0.5);
+      border-radius: 50%; animation: livePulse 2s ease-in-out infinite;
+      box-shadow: 0 0 4px rgba(192,57,43,0.3);
     }
     @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
     }
 
     /* ── Top stories (large cards) ── */
@@ -1397,7 +1400,7 @@
   <div class="breaking-banner" id="breakingBanner">
     <div class="breaking-inner">
       <span class="breaking-label">BREAKING</span>
-      <span class="breaking-text">Israel launches &lsquo;limited and targeted&rsquo; ground operations in southern Lebanon against Hezbollah; IDF troops cross border south of Litani River &mdash; 10:00 GMT</span>
+      <span class="breaking-text">Iran launches fatal missile strike on Abu Dhabi and drone attacks near Dubai Airport; UAE air defences intercept 6 ballistic missiles and 21 drones on Day 17 of war &mdash; 14:23 GMT</span>
       <button class="breaking-dismiss" id="breakingDismiss">&times;</button>
     </div>
   </div>
@@ -1553,6 +1556,34 @@
       "drivers_up": ["Persistent US inflation reducing rate-cut expectations", "Record Treasury issuance to fund growing deficit"],
       "drivers_down": ["Safe-haven demand amid Middle East military escalation", "Global growth slowdown expectations pulling yields lower"],
       "updated": "16 March 2026 08:00"
+    },
+    "baseRate": {
+      "name": "UK Base Rate",
+      "desc": "The Bank of England's benchmark interest rate, set by the nine-member Monetary Policy Committee. Directly influences mortgage rates, savings returns and the cost of borrowing across the UK economy.",
+      "drivers_up": ["Sticky services inflation keeping the MPC cautious on cuts", "Oil price surge from Iran conflict adding to inflationary pressure"],
+      "drivers_down": ["Six consecutive months of zero GDP growth arguing for stimulus", "Mortgage approvals falling 10% year-on-year, housing market cooling"],
+      "updated": "16 March 2026 08:00"
+    },
+    "cpi": {
+      "name": "UK CPI Inflation",
+      "desc": "The Consumer Prices Index measures the annual rate of change in prices paid by UK households for a basket of goods and services. The Bank of England targets 2% CPI inflation over the medium term.",
+      "drivers_up": ["Energy prices rising sharply as Brent crude surges past $100", "Food price pressures from supply chain disruption"],
+      "drivers_down": ["Base effects from last year's energy spike dropping out of calculations", "Weak consumer demand amid cost-of-living pressures"],
+      "updated": "16 March 2026 08:00"
+    },
+    "unemployment": {
+      "name": "UK Unemployment Rate",
+      "desc": "The proportion of the economically active population aged 16+ who are without work but seeking and available for employment, measured by the ONS Labour Force Survey.",
+      "drivers_up": ["Economic stagnation squeezing hiring across services sector", "Public sector recruitment freeze amid fiscal tightening"],
+      "drivers_down": ["Record job vacancies in defence and security sectors", "Seasonal hiring in hospitality ahead of summer"],
+      "updated": "16 March 2026 08:00"
+    },
+    "gdpGrowth": {
+      "name": "UK GDP Growth",
+      "desc": "The quarterly change in the UK's gross domestic product, measuring total economic output. The Office for Budget Responsibility halved its 2026 growth forecast to 1.1% amid geopolitical headwinds.",
+      "drivers_up": ["Defence spending acceleration providing fiscal stimulus", "Services sector showing early signs of stabilisation"],
+      "drivers_down": ["Oil shock squeezing business margins and consumer spending", "Trade disruption from Strait of Hormuz closure hitting exports"],
+      "updated": "16 March 2026 08:00"
     }
   }</script>
   <div class="markets-bar" id="marketsBar">
@@ -1581,13 +1612,13 @@
     </div>
   </div>
   <div class="ref-figures" id="refFiguresBar">
-    <span class="ref-figure"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
+    <span class="ref-figure" data-market="baseRate"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change down">&#9660; 0.25pp</span></span>
     <span class="ref-figure-sep">|</span>
-    <span class="ref-figure"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
+    <span class="ref-figure" data-market="cpi"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change down">&#9660; 0.4pp</span></span>
     <span class="ref-figure-sep">|</span>
-    <span class="ref-figure"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
+    <span class="ref-figure" data-market="unemployment"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change up">&#9650; 0.2pp</span></span>
     <span class="ref-figure-sep">|</span>
-    <span class="ref-figure"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change down">&#9660; 0.1pp</span></span>
+    <span class="ref-figure" data-market="gdpGrowth"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change down">&#9660; 0.1pp</span></span>
     <span class="ref-context">(vs. previous period)</span>
   </div>
 
@@ -2610,7 +2641,9 @@ window._marketData = {};
   }
 
   function initTickerDrag(track, halfWidth) {
-    let dragging = false, startX = 0, startOffset = 0;
+    let dragging = false, startX = 0, startOffset = 0, hasMoved = false;
+    let paused = false, resumeTimer = null;
+    const RESUME_DELAY = 4000;
 
     function getAnimOffset() {
       const ct = getComputedStyle(track).transform;
@@ -2621,43 +2654,35 @@ window._marketData = {};
       return parseFloat(vals[4]) || 0;
     }
 
-    function onStart(e) {
-      dragging = true;
-      startX = e.touches ? e.touches[0].clientX : e.clientX;
-      startOffset = getAnimOffset();
+    function pauseAtCurrentPos() {
+      const offset = getAnimOffset();
       track.style.animation = 'none';
-      track.style.transform = `translate3d(${startOffset}px,0,0)`;
+      track.style.transform = `translate3d(${offset}px,0,0)`;
+      paused = true;
       track.classList.add('dragging');
     }
 
-    function onMove(e) {
-      if (!dragging) return;
-      const x = e.touches ? e.touches[0].clientX : e.clientX;
-      let offset = startOffset + (x - startX);
-      // Wrap around seamlessly
-      if (offset > 0) offset -= halfWidth;
-      if (offset < -halfWidth) offset += halfWidth;
-      track.style.transform = `translate3d(${offset}px,0,0)`;
+    function scheduleResume() {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(function() { resumeAnimation(); }, RESUME_DELAY);
     }
 
-    function onEnd() {
-      if (!dragging) return;
-      dragging = false;
+    function resumeAnimation() {
+      clearTimeout(resumeTimer);
+      if (!paused) return;
+      paused = false;
       track.classList.remove('dragging');
-      // Resume animation from current position
       const current = getAnimOffset();
-      // Calculate what percentage through the animation we are
       const progress = Math.abs(current) / halfWidth;
       const speed = window.innerWidth <= 600 ? 55 : 50;
       const fullDuration = halfWidth / speed;
       const remaining = fullDuration * (1 - progress);
-      // Create a one-shot animation from current to end, then loop
-      let resume = document.getElementById('ticker-resume');
-      if (resume) resume.remove();
-      resume = document.createElement('style');
-      resume.id = 'ticker-resume';
-      resume.textContent = `@keyframes tickerResume { 0% { transform: translate3d(${current}px,0,0); } 100% { transform: translate3d(-${halfWidth}px,0,0); } }`;
-      document.head.appendChild(resume);
+      let rs = document.getElementById('ticker-resume');
+      if (rs) rs.remove();
+      rs = document.createElement('style');
+      rs.id = 'ticker-resume';
+      rs.textContent = `@keyframes tickerResume { 0% { transform: translate3d(${current}px,0,0); } 100% { transform: translate3d(-${halfWidth}px,0,0); } }`;
+      document.head.appendChild(rs);
       track.style.transform = '';
       track.style.animation = `tickerResume ${remaining}s linear 1`;
       track.addEventListener('animationend', function restart() {
@@ -2666,8 +2691,41 @@ window._marketData = {};
         if (sheet) {
           track.style.animation = `tickerScroll ${fullDuration}s linear infinite`;
         }
-        if (resume) resume.remove();
+        if (rs) rs.remove();
       });
+    }
+
+    // Expose for market modal to use
+    window._tickerPause = function() { pauseAtCurrentPos(); clearTimeout(resumeTimer); };
+    window._tickerScheduleResume = scheduleResume;
+
+    function onStart(e) {
+      dragging = true;
+      hasMoved = false;
+      clearTimeout(resumeTimer);
+      startX = e.touches ? e.touches[0].clientX : e.clientX;
+      startOffset = getAnimOffset();
+      track.style.animation = 'none';
+      track.style.transform = `translate3d(${startOffset}px,0,0)`;
+      paused = true;
+      track.classList.add('dragging');
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      hasMoved = true;
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      let offset = startOffset + (x - startX);
+      if (offset > 0) offset -= halfWidth;
+      if (offset < -halfWidth) offset += halfWidth;
+      track.style.transform = `translate3d(${offset}px,0,0)`;
+    }
+
+    function onEnd() {
+      if (!dragging) return;
+      dragging = false;
+      // Whether dragged or just clicked, stay paused and schedule resume
+      scheduleResume();
     }
 
     track.addEventListener('mousedown', onStart);
@@ -2701,9 +2759,10 @@ window._marketData = {};
     return price.toString();
   }
 
-  function openMarketModal(id) {
+  function openMarketModal(id, opts) {
     const info = descriptions[id];
     if (!info) return;
+    opts = opts || {};
     const live = window._marketData && window._marketData[id];
     const price = live ? live.price : null;
     const change = live ? live.change : null;
@@ -2718,6 +2777,8 @@ window._marketData = {};
       html += '<span class="price-val">' + formatPrice(id, price) + '</span>';
       html += '<span class="price-chg ' + chgClass + '">' + chgSign + change.toFixed(2) + '%</span>';
       html += '</div>';
+    } else if (opts.staticVal) {
+      html += '<div class="market-modal-price"><span class="price-val">' + opts.staticVal + '</span></div>';
     }
     html += '</div>';
 
@@ -2751,10 +2812,28 @@ window._marketData = {};
     });
   });
 
-  // Close handlers
-  closeBtn.addEventListener('click', function() { modal.classList.remove('open'); });
+  // Expose globally so briefing key-figures and ref-figures can use it
+  window.openMarketModal = openMarketModal;
+
+  // Click handler for reference figures bar (UK Base Rate, CPI, etc.)
+  var refBar = document.getElementById('refFiguresBar');
+  if (refBar) {
+    refBar.addEventListener('click', function(e) {
+      var fig = e.target.closest('.ref-figure[data-market]');
+      if (!fig) return;
+      var val = fig.querySelector('strong');
+      openMarketModal(fig.dataset.market, { staticVal: val ? val.textContent : '' });
+    });
+  }
+
+  // Close handlers — also schedule ticker resume
+  function closeModal() {
+    modal.classList.remove('open');
+    if (window._tickerScheduleResume) window._tickerScheduleResume();
+  }
+  closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', function(e) {
-    if (e.target === modal) modal.classList.remove('open');
+    if (e.target === modal) closeModal();
   });
 })();
 
@@ -2896,6 +2975,7 @@ window._marketData = {};
 
       // Take top 3
       const figures = scored.slice(0, 3).map(m => ({
+        key: m.key,
         label: m.label,
         val: m.format(m.data.price),
         change: m.data.change
@@ -2912,7 +2992,7 @@ window._marketData = {};
             const arrow = f.change >= 0 ? '▲' : '▼';
             changeHtml = ' <span class="key-figure-change ' + cls + '">' + arrow + ' ' + sign + f.change.toFixed(2) + '%</span>';
           }
-          return '<span class="key-figure"><span>' + escHtml(f.label) + ':</span> <strong>' + escHtml(f.val) + '</strong>' + changeHtml + '</span>';
+          return '<span class="key-figure" data-market="' + f.key + '"><span>' + escHtml(f.label) + ':</span> <strong>' + escHtml(f.val) + '</strong>' + changeHtml + '</span>';
         }).join('<span class="key-figure-sep">|</span>');
         const hasAnyChange = figures.some(f => f.change !== null && f.change !== undefined && !isNaN(f.change));
         if (hasAnyChange) {
@@ -2927,6 +3007,11 @@ window._marketData = {};
         }
         const meta = clone.querySelector('.curated-meta');
         if (meta) meta.after(strip);
+        // Click handler for key-figure market modals
+        strip.addEventListener('click', function(e) {
+          const fig = e.target.closest('.key-figure[data-market]');
+          if (fig && window.openMarketModal) window.openMarketModal(fig.dataset.market);
+        });
       }
 
       // Mobile per-column expand/collapse buttons
@@ -3001,7 +3086,8 @@ window._marketData = {};
       document.getElementById('kbdOverlay')?.classList.remove('open');
       document.getElementById('notifyModal')?.classList.remove('open');
       document.getElementById('subscribeModal')?.classList.remove('open');
-      document.getElementById('marketModal')?.classList.remove('open');
+      var mm = document.getElementById('marketModal');
+      if (mm && mm.classList.contains('open')) { mm.classList.remove('open'); if (window._tickerScheduleResume) window._tickerScheduleResume(); }
       const bp = document.getElementById('bookmarksPanel');
       const bb = document.getElementById('bookmarksBackdrop');
       if (bp) bp.classList.remove('open');
