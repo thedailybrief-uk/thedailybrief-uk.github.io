@@ -2806,13 +2806,17 @@ window._marketData = {};
     if (window._tickerPause) window._tickerPause();
   }
 
-  // Click handlers on market items
-  document.querySelectorAll('.market-item[data-market]').forEach(function(item) {
-    item.addEventListener('click', function(e) {
-      e.stopPropagation();
-      openMarketModal(item.dataset.market);
+  // Click handler on market items (delegated so cloned ticker items also work)
+  var tickerTrack = document.getElementById('marketsTrack');
+  if (tickerTrack) {
+    tickerTrack.addEventListener('click', function(e) {
+      var item = e.target.closest('.market-item[data-market]');
+      if (item) {
+        e.stopPropagation();
+        openMarketModal(item.dataset.market);
+      }
     });
-  });
+  }
 
   // Expose globally so briefing key-figures and ref-figures can use it
   window.openMarketModal = openMarketModal;
