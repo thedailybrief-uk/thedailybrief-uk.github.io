@@ -2642,7 +2642,7 @@ window._marketData = {};
 
   function initTickerDrag(track, halfWidth) {
     let dragging = false, startX = 0, startOffset = 0, hasMoved = false;
-    let paused = false, resumeTimer = null;
+    let paused = false, resumeTimer = null, modalOpen = false;
     const RESUME_DELAY = 4000;
 
     function getAnimOffset() {
@@ -2664,12 +2664,14 @@ window._marketData = {};
 
     function scheduleResume() {
       clearTimeout(resumeTimer);
+      // Never auto-resume while a modal is open
+      if (modalOpen) return;
       resumeTimer = setTimeout(function() { resumeAnimation(); }, RESUME_DELAY);
     }
 
     function resumeAnimation() {
       clearTimeout(resumeTimer);
-      if (!paused) return;
+      if (!paused || modalOpen) return;
       paused = false;
       track.classList.remove('dragging');
       const current = getAnimOffset();
@@ -2696,10 +2698,21 @@ window._marketData = {};
     }
 
     // Expose for market modal to use
-    window._tickerPause = function() { pauseAtCurrentPos(); clearTimeout(resumeTimer); };
-    window._tickerScheduleResume = scheduleResume;
+    window._tickerPause = function() {
+      modalOpen = true;
+      clearTimeout(resumeTimer);
+      pauseAtCurrentPos();
+    };
+    window._tickerScheduleResume = function() {
+      modalOpen = false;
+      scheduleResume();
+    };
+
+    // Record which element was under the pointer at mousedown
+    var downTarget = null;
 
     function onStart(e) {
+      downTarget = e.target;
       dragging = true;
       hasMoved = false;
       clearTimeout(resumeTimer);
@@ -2721,10 +2734,22 @@ window._marketData = {};
       track.style.transform = `translate3d(${offset}px,0,0)`;
     }
 
-    function onEnd() {
+    function onEnd(e) {
       if (!dragging) return;
       dragging = false;
-      // Whether dragged or just clicked, stay paused and schedule resume
+
+      // If user didn't drag, check if they clicked a market item
+      if (!hasMoved && downTarget) {
+        var item = downTarget.closest('.market-item[data-market]');
+        if (item && window.openMarketModal) {
+          window.openMarketModal(item.dataset.market);
+          downTarget = null;
+          return; // modal will handle pause — don't schedule resume
+        }
+      }
+      downTarget = null;
+
+      // For plain clicks or drags, schedule resume after 4s
       scheduleResume();
     }
 
@@ -2806,17 +2831,8 @@ window._marketData = {};
     if (window._tickerPause) window._tickerPause();
   }
 
-  // Click handler on market items (delegated so cloned ticker items also work)
-  var tickerTrack = document.getElementById('marketsTrack');
-  if (tickerTrack) {
-    tickerTrack.addEventListener('click', function(e) {
-      var item = e.target.closest('.market-item[data-market]');
-      if (item) {
-        e.stopPropagation();
-        openMarketModal(item.dataset.market);
-      }
-    });
-  }
+  // Ticker market-item clicks are handled via onEnd in initTickerDrag
+  // to avoid conflicts with the drag mousedown/mouseup cycle.
 
   // Expose globally so briefing key-figures and ref-figures can use it
   window.openMarketModal = openMarketModal;
