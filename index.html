@@ -243,7 +243,7 @@
       .markets-track { animation: none !important; }
       .markets-bar { overflow-x: auto; }
     }
-    .market-item { display: flex; align-items: center; gap: 4px; }
+    .market-item { display: flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; }
     .market-label { color: var(--text-tertiary); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; font-size: 8px; }
     .market-value { font-weight: 600; font-variant-numeric: tabular-nums; }
     .market-change { font-size: 10px; font-weight: 600; }
@@ -1378,8 +1378,13 @@
       font-size: 11px; color: var(--text-muted); margin-top: 16px;
       padding-top: 12px; border-top: 1px solid var(--border);
     }
-    .market-item { cursor: pointer; transition: opacity 0.15s; }
-    .market-item:hover { opacity: 0.7; }
+    .market-item { cursor: pointer; transition: background-color 0.2s; }
+    .market-item:hover { background: rgba(255, 255, 255, 0.08); }
+    .market-item:active { background: rgba(255, 255, 255, 0.14); }
+    @media (max-width: 600px) {
+      .market-item { background: rgba(255, 255, 255, 0.05); }
+      .market-item:active { background: rgba(255, 255, 255, 0.14); }
+    }
     @media (max-width: 520px) {
       .market-modal-inner { padding: 24px 20px; }
       .market-modal-header { flex-direction: column; gap: 8px; }
