@@ -2709,21 +2709,29 @@ window._marketData = {};
       scheduleResume();
     };
 
+    // Don't pause animation on mousedown — only pause if user actually drags.
+    // This ensures the click event fires correctly (pausing on mousedown
+    // shifts the track and breaks click target detection).
+
     function onStart(e) {
       dragging = true;
       wasDrag = false;
       clearTimeout(resumeTimer);
       startX = e.touches ? e.touches[0].clientX : e.clientX;
-      startOffset = getAnimOffset();
-      pauseAtCurrentPos();
+      // Don't pause yet — wait to see if it's a drag
     }
 
     function onMove(e) {
       if (!dragging) return;
       const x = e.touches ? e.touches[0].clientX : e.clientX;
       const dx = Math.abs(x - startX);
-      if (dx > DRAG_THRESHOLD) wasDrag = true;
-      if (!wasDrag) return; // don't move track until threshold exceeded
+      if (dx > DRAG_THRESHOLD && !wasDrag) {
+        // First time crossing threshold — now pause and start dragging
+        wasDrag = true;
+        startOffset = getAnimOffset();
+        pauseAtCurrentPos();
+      }
+      if (!wasDrag) return;
       let offset = startOffset + (x - startX);
       if (offset > 0) offset -= halfWidth;
       if (offset < -halfWidth) offset += halfWidth;
@@ -2733,20 +2741,21 @@ window._marketData = {};
     function onEnd() {
       if (!dragging) return;
       dragging = false;
-      // Don't schedule resume here if it was a click — the click handler will decide
       if (wasDrag) scheduleResume();
     }
 
-    // Delegated click handler — fires after mouseup, uses browser hit-testing
+    // Delegated click handler — fires after mouseup, uses browser hit-testing.
+    // Animation is still running during click so e.target is correct.
     track.addEventListener('click', function(e) {
-      if (wasDrag) return; // was a drag, not a click
+      if (wasDrag) return;
       var item = e.target.closest('.market-item[data-market]');
       if (item && window.openMarketModal) {
         e.stopPropagation();
         window.openMarketModal(item.dataset.market);
-        // modal pauses ticker via _tickerPause, no resume needed
+        // openMarketModal calls _tickerPause which freezes ticker + sets modalOpen
       } else {
-        // Clicked on gap/separator — just schedule resume
+        // Clicked on gap — just pause and schedule resume
+        pauseAtCurrentPos();
         scheduleResume();
       }
     });
