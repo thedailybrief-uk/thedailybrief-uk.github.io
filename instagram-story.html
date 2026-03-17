@@ -24,6 +24,23 @@
     overflow: hidden;
     flex-shrink: 0;
     background: #0c0c14;
+    --default-bg: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1080&q=80');
+    --slide-bg: var(--default-bg);
+  }
+
+  /* ── Background photo layer ── */
+  .story::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--slide-bg) center/cover no-repeat;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .story > * {
+    position: relative;
+    z-index: 1;
   }
 
   /*
@@ -188,7 +205,7 @@
 
   .story-content .summary {
     font-family: 'Inter', sans-serif;
-    font-size: 30px;
+    font-size: 34px;
     font-weight: 400;
     color: rgba(255,255,255,0.6);
     line-height: 1.55;
@@ -263,7 +280,7 @@
 <body>
 
 <!-- BREAKING NEWS STORY -->
-<div class="story">
+<div class="story" style="--slide-bg: url('https://images.unsplash.com/photo-1613835579153-9bfe32e50da6?w=1080&q=80')">
   <div class="red-bar"></div>
   <div class="side-accent"></div>
   <div class="red-glow"></div>

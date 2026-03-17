@@ -56,6 +56,16 @@
     pointer-events: none;
   }
 
+  /* ── Cover background photo layer ── */
+  .bg-photo {
+    position: absolute;
+    inset: 0;
+    background: var(--slide-bg) center/cover no-repeat;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .cover .top-row {
     display: flex;
     justify-content: space-between;
@@ -99,17 +109,6 @@
     letter-spacing: 5px;
     text-transform: uppercase;
     margin-bottom: 28px;
-  }
-
-  .cover .big-number {
-    font-family: 'Inter', sans-serif;
-    font-size: 200px;
-    font-weight: 900;
-    color: rgba(255,255,255,0.06);
-    line-height: 0.85;
-    position: absolute;
-    right: -10px;
-    top: -40px;
   }
 
   .cover .hook {
@@ -190,6 +189,8 @@
     display: flex;
     flex-direction: column;
     padding: 60px 70px 70px;
+    --default-bg: url('https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=1080&q=80');
+    --slide-bg: var(--default-bg);
   }
 
   /* Side accent bar */
@@ -201,6 +202,22 @@
     width: 8px;
     height: 100%;
     background: linear-gradient(180deg, #1b4f72, #2a7ab5, #1b4f72);
+    z-index: 1;
+  }
+
+  /* ── Background photo layer ── */
+  .slide.headline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--slide-bg) center/cover no-repeat;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .slide.headline > * {
+    position: relative;
+    z-index: 1;
   }
 
   .headline .top-section {
@@ -270,7 +287,7 @@
 
   .headline .summary {
     font-family: 'Inter', sans-serif;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 400;
     color: rgba(255,255,255,0.55);
     line-height: 1.6;
@@ -449,14 +466,14 @@
 <body>
 
 <!-- SLIDE 1: COVER -->
-<div class="slide cover">
+<div class="slide cover" style="--slide-bg: url('https://images.unsplash.com/photo-1759433568886-e4ed123ca431?w=1080&q=80')">
+  <div class="bg-photo"></div>
   <div class="top-row">
     <div class="brand">The Daily Brief</div>
     <div class="date-pill">Mon 16 March 2026</div>
   </div>
   <div class="center-block">
     <div class="label">Daily Briefing</div>
-    <div class="big-number">UK</div>
     <div class="hook">Today&rsquo;s Top 5 <em>UK</em> Stories</div>
     <div class="sub">The stories shaping Britain today &mdash; in under 2 minutes.</div>
   </div>
@@ -467,7 +484,7 @@
 </div>
 
 <!-- SLIDE 2 -->
-<div class="slide headline">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1711037868819-0ece7012330a?w=1080&q=80')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">01</div>
@@ -500,7 +517,7 @@
 </div>
 
 <!-- SLIDE 3 -->
-<div class="slide headline">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1669251921941-ae3645715017?w=1080&q=80')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">02</div>
@@ -533,7 +550,7 @@
 </div>
 
 <!-- SLIDE 4 -->
-<div class="slide headline">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1758518730250-9fde74eb4757?w=1080&q=80')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">03</div>
@@ -566,7 +583,7 @@
 </div>
 
 <!-- SLIDE 5 -->
-<div class="slide headline">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1593781493303-d7b13f162af6?w=1080&q=80')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">04</div>
@@ -599,7 +616,7 @@
 </div>
 
 <!-- SLIDE 6 -->
-<div class="slide headline">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1552376865-27e2890ae563?w=1080&q=80')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">05</div>

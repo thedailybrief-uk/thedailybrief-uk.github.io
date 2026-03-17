@@ -55,6 +55,16 @@
     pointer-events: none;
   }
 
+  /* ── Cover background photo layer ── */
+  .bg-photo {
+    position: absolute;
+    inset: 0;
+    background: var(--slide-bg) center/cover no-repeat;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .cover .top-row {
     display: flex;
     justify-content: space-between;
@@ -98,18 +108,6 @@
     letter-spacing: 5px;
     text-transform: uppercase;
     margin-bottom: 28px;
-  }
-
-  .cover .big-number {
-    font-family: 'Inter', sans-serif;
-    font-size: 140px;
-    font-weight: 900;
-    color: rgba(255,255,255,0.05);
-    line-height: 0.85;
-    position: absolute;
-    right: -10px;
-    top: -20px;
-    letter-spacing: -4px;
   }
 
   .cover .hook {
@@ -190,6 +188,8 @@
     display: flex;
     flex-direction: column;
     padding: 55px 70px 50px;
+    --default-bg: url('https://images.unsplash.com/photo-1504711434969-e33886168d3c?w=1080&q=80');
+    --slide-bg: var(--default-bg);
   }
 
   .headline::before {
@@ -199,6 +199,22 @@
     left: 0;
     width: 8px;
     height: 100%;
+    z-index: 1;
+  }
+
+  /* ── Background photo layer ── */
+  .slide.headline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--slide-bg) center/cover no-repeat;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .slide.headline > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* Section colours */
@@ -301,7 +317,7 @@
 
   .headline .summary {
     font-family: 'Inter', sans-serif;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 400;
     color: rgba(255,255,255,0.55);
     line-height: 1.6;
@@ -531,14 +547,14 @@
 <body>
 
 <!-- SLIDE 1: COVER -->
-<div class="slide cover">
+<div class="slide cover" style="--slide-bg: url('https://images.unsplash.com/photo-1579532536935-619928decd08?w=1080&q=80')">
+  <div class="bg-photo"></div>
   <div class="top-row">
     <div class="brand">The Daily Brief</div>
     <div class="date-pill">Week of 9&ndash;15 March 2026</div>
   </div>
   <div class="center-block">
     <div class="label">Weekly Roundup</div>
-    <div class="big-number">WEEK</div>
     <div class="hook">The Stories That <em>Defined</em> This Week</div>
     <div class="sub">What moved forward, what stalled, and what to watch next week.</div>
   </div>
@@ -551,7 +567,7 @@
 <!-- ── WHAT MOVED FORWARD ── -->
 
 <!-- SLIDE 2 -->
-<div class="slide headline forward">
+<div class="slide headline forward" style="--slide-bg: url('https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
@@ -587,7 +603,7 @@
 </div>
 
 <!-- SLIDE 3 -->
-<div class="slide headline forward">
+<div class="slide headline forward" style="--slide-bg: url('https://images.unsplash.com/photo-1755756383877-ae81a014986b?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
@@ -619,7 +635,7 @@
 </div>
 
 <!-- SLIDE 4 -->
-<div class="slide headline forward">
+<div class="slide headline forward" style="--slide-bg: url('https://images.unsplash.com/photo-1594810205183-18a8b0ce6c13?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
@@ -653,7 +669,7 @@
 <!-- ── WHAT STALLED ── -->
 
 <!-- SLIDE 5 -->
-<div class="slide headline stalled">
+<div class="slide headline stalled" style="--slide-bg: url('https://images.unsplash.com/photo-1530890448995-4d82724f702c?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
@@ -693,7 +709,7 @@
 </div>
 
 <!-- SLIDE 6 -->
-<div class="slide headline stalled">
+<div class="slide headline stalled" style="--slide-bg: url('https://images.unsplash.com/photo-1659707124402-1fdbd5a8e9c7?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
@@ -725,7 +741,7 @@
 </div>
 
 <!-- SLIDE 7 -->
-<div class="slide headline stalled">
+<div class="slide headline stalled" style="--slide-bg: url('https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
@@ -763,7 +779,7 @@
 <!-- ── WHAT TO WATCH ── -->
 
 <!-- SLIDE 8 -->
-<div class="slide headline watch">
+<div class="slide headline watch" style="--slide-bg: url('https://images.unsplash.com/photo-1725726009991-ae536f6fb8be?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
@@ -799,7 +815,7 @@
 </div>
 
 <!-- SLIDE 9 -->
-<div class="slide headline watch">
+<div class="slide headline watch" style="--slide-bg: url('https://images.unsplash.com/photo-1508530786855-dfea35260b8d?w=1080&q=80')">
   <div class="slide-header">
     <div class="top-section">
       <div class="num-block">
