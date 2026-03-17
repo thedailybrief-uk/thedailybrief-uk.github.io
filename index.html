@@ -236,6 +236,8 @@
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       cursor: grab;
+      user-select: none; -webkit-user-select: none;
+      touch-action: pan-y;
     }
     .markets-track:active { cursor: grabbing; }
     .markets-track.dragging { animation-play-state: paused !important; }
@@ -2854,6 +2856,7 @@ window._marketData = {};
 
     function onStart(e) {
       var raw = e.touches ? e.touches[0] : e;
+      if (!e.touches) e.preventDefault(); // prevent text selection on desktop
       // Find the market item under the pointer at this instant
       downTarget = document.elementFromPoint(raw.clientX, raw.clientY);
       dragging = true;
@@ -2872,6 +2875,7 @@ window._marketData = {};
         pauseAtCurrentPos();
       }
       if (!wasDrag) return;
+      if (e.cancelable) e.preventDefault(); // prevent page scroll on mobile
       let offset = startOffset + (x - startX);
       if (offset > 0) offset -= halfWidth;
       if (offset < -halfWidth) offset += halfWidth;
@@ -2908,7 +2912,7 @@ window._marketData = {};
     track.addEventListener('mousedown', onStart);
     track.addEventListener('touchstart', onStart, { passive: true });
     window.addEventListener('mousemove', onMove);
-    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('mouseup', onEnd);
     window.addEventListener('touchend', onEnd);
   }
