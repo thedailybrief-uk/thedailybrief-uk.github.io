@@ -23,6 +23,34 @@ _Morning — UK Domestic:_
 4. MPs Debate Defection By-Elections — 129,333-signature petition, driven by Tory-to-Reform crossings
 5. Reform UK Leads Polls at 23% — Labour at record low 17% in YouGov; Greens level with Conservatives at 19%
 
+_Evening — Geopolitical:_
+1. Israel Expands Ground Offensive in Lebanon — two additional divisions deployed; Abu Dhabi casualty confirmed
+2. Trump Demands Allied Warships for Hormuz — UK offers unmanned mine-sweeping systems instead
+3. Brent Crude Eases Below $103 — Treasury signals partial tanker access through strait
+4. Ukraine Leverages Drone Expertise to Help Gulf Allies Counter Iran
+
+_Evening — UK Domestic:_
+1. Starmer Announces £53m Heating Oil Support for 1.5 Million Vulnerable Households
+2. Bank of England Rate Decision Thursday — markets evenly split on potential 0.25% cut
+3. Government Launches £1bn Youth Jobs Scheme — youth unemployment at 16.1%
+4. Grenfell Memorial Bill Passes All Commons Stages With Cross-Party Support
+
+### Tuesday 17 March
+
+_Morning — Geopolitical:_
+1. Israel Claims Killing of Iran's De Facto Leader Ali Larijani in Overnight Strike
+2. Allies Rebuff Trump's "Loyalty Test" on Hormuz Warships — Britain, Germany, Australia, Japan, China all decline
+3. Brent Crude Climbs Past $103 as Traders Eye $200 Scenario — Hormuz closure enters third week
+4. Israel Pushes South of the Litani — IDF says operations will continue for "at least three more weeks"; 886 killed, nearly 1m displaced
+5. Ukraine Becomes the Gulf's Drone Defence Consultant — Zelenskyy dispatches experts to 10+ countries
+
+_Morning — UK Domestic:_
+1. Starmer Defies Trump — "We Will Not Be Drawn Into a Wider War"; rejects Hormuz warships demand
+2. Bank of England Faces Impossible Choice on Thursday — 472 mortgage products withdrawn in a week, average 2-year fix breaches 5%
+3. £1bn Youth Jobs Drive Launches — £3,000 per hire, pilot in April across six areas
+4. Petrol Prices Rise 3–5p — unleaded at 142.3p/litre, diesel at 162.1p; worst yet to come
+5. Grenfell Memorial Bill Fast-Tracked Through Commons — permanent memorial, archive, and exhibition authorised
+
 ---
 
 ## Week of 10–14 March 2026
