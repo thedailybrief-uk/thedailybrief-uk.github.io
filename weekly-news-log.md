@@ -51,6 +51,20 @@ _Morning — UK Domestic:_
 4. Petrol Prices Rise 3–5p — unleaded at 142.3p/litre, diesel at 162.1p; worst yet to come
 5. Grenfell Memorial Bill Fast-Tracked Through Commons — permanent memorial, archive, and exhibition authorised
 
+_Evening — Geopolitical:_
+1. Israel Claims Double Decapitation — Larijani and Basij commander Soleimani killed in Tehran strikes
+2. Iran Strikes Dubai Airport and Fujairah Oil Port — UAE airspace temporarily closed
+3. Trump Threatens to Leave NATO After Allies Refuse Hormuz Mission
+4. Amnesty Confirms US Tomahawk Struck Minab Primary School — 170+ killed including 100+ children
+5. Baghdad: Most Intense US Embassy Attack Since War Began — drones land within perimeter
+
+_Evening — UK Domestic:_
+1. UK to Deploy Minesweeping Drones at Hormuz Instead of Warships — SWEEP system confirmed
+2. Energy Minister: "No Question" War Impacts UK Bills — government "stands ready" to intervene
+3. Healey: Russia's "Hidden Hand" Behind Iran's Drone Tactics — RAF Akrotiri drone being analysed
+4. BoE Rate Decision in Three Days — markets now lean towards hold at 3.75%
+5. Petrol Hits 140p — 18-month high, diesel at 158.8p/L
+
 ---
 
 ## Week of 10–14 March 2026
