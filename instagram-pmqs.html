@@ -187,8 +187,7 @@
     display: flex;
     flex-direction: column;
     padding: 60px 70px 70px;
-    --default-bg: url('https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=1080&q=80');
-    --slide-bg: var(--default-bg);
+    --slide-bg: none;
   }
 
   .headline::before {
@@ -203,13 +202,7 @@
   }
 
   .slide.headline::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--slide-bg) center/cover no-repeat;
-    opacity: 0.08;
-    pointer-events: none;
-    z-index: 0;
+    display: none;
   }
   .slide.headline > * {
     position: relative;
@@ -462,7 +455,7 @@
 <body>
 
 <!-- SLIDE 1: COVER -->
-<div class="slide cover" style="--slide-bg: url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1080&q=80')">
+<div class="slide cover" style="--slide-bg: url('https://images.unsplash.com/photo-1551266162-bb4130701dbf?w=1080&q=80')">
   <div class="bg-photo"></div>
   <div class="top-row">
     <div class="brand">The Daily Brief</div>
