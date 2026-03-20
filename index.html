@@ -212,11 +212,31 @@
     }
     @media (max-width: 600px) {
       .masthead-nav {
-        gap: 0; padding: 8px 0; justify-content: center;
-        row-gap: 2px;
+        gap: 0; padding: 0; justify-content: center;
+        row-gap: 0; flex-wrap: wrap;
       }
-      .masthead-nav a { flex: 1 1 33%; text-align: center; justify-content: center; padding: 8px 0 4px; }
-      .masthead-nav button { padding: 8px 10px 4px; }
+      /* Row 1: section navigation links — equal thirds, fill full width */
+      .masthead-nav a:not(.nav-instagram) {
+        flex: 1 1 33%; text-align: center; justify-content: center;
+        padding: 10px 0 8px; font-size: 10px; letter-spacing: 0.8px;
+      }
+      /* Row 2: utility items — evenly spaced */
+      .masthead-nav button,
+      .masthead-nav a.nav-instagram {
+        flex: 1 1 auto; justify-content: center; text-align: center;
+        padding: 8px 4px 8px; font-size: 10px;
+        border-top: 1px solid var(--border-light);
+      }
+      .masthead-nav button.subscribe-btn {
+        margin-top: 0; padding: 6px 12px; font-size: 9px;
+        min-height: 32px;
+      }
+      .masthead-nav a.nav-instagram {
+        min-width: 44px; max-width: 44px;
+      }
+      .masthead-nav .notify-btn {
+        min-width: 44px; max-width: 44px; padding: 8px 4px;
+      }
     }
     .masthead-nav a:hover, .masthead-nav button:hover { color: var(--text-primary); }
     .toggle-icon { display: inline-block; vertical-align: -2px; line-height: 1; font-size: 16px; }
