@@ -1,0 +1,12 @@
+name = "daily-brief-push"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "PUSH_SUBS"
+id = "f2bc5ec830af4ab2b7891e5c0bea3040"
+
+# Secrets (set via wrangler secret put):
+#   VAPID_PRIVATE_KEY
+#   PUSH_AUTH_TOKEN
+#   VAPID_SUBJECT  (mailto:email or https://domain)

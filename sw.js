@@ -1,4 +1,4 @@
-const CACHE_NAME = 'daily-brief-v8';
+const CACHE_NAME = 'daily-brief-v9';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -68,4 +68,48 @@ self.addEventListener('fetch', (e) => {
 
   // Network-only for RSS proxies and external APIs (don't cache stale news)
   e.respondWith(fetch(e.request));
+});
+
+// ── Web Push Notifications ──
+
+self.addEventListener('push', (e) => {
+  if (!e.data) return;
+
+  let data;
+  try {
+    data = e.data.json();
+  } catch {
+    data = { title: 'The Daily Brief', body: e.data.text() };
+  }
+
+  const options = {
+    body: data.body || '',
+    icon: '/icon-192.png',
+    badge: '/icon-192.png',
+    tag: data.type === 'breaking' ? 'breaking-news' : 'edition-' + Date.now(),
+    data: { url: data.url || '/' },
+    vibrate: [200, 100, 200],
+    requireInteraction: data.type === 'breaking',
+  };
+
+  e.waitUntil(self.registration.showNotification(data.title || 'The Daily Brief', options));
+});
+
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+
+  const targetUrl = e.notification.data?.url || '/';
+
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      // Focus existing tab if open
+      for (const client of windowClients) {
+        if (new URL(client.url).pathname === targetUrl && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise open new tab
+      return clients.openWindow(targetUrl);
+    })
+  );
 });

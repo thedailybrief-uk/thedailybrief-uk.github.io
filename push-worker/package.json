@@ -1,0 +1,10 @@
+{
+  "name": "daily-brief-push",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloudflare Worker for The Daily Brief web push notifications",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  }
+}
