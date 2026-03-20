@@ -1441,6 +1441,18 @@
       .market-modal-inner { padding: 24px 20px; }
       .market-modal-header { flex-direction: column; gap: 8px; }
     }
+
+    /* ── Mobile text overflow safety net ── */
+    @media (max-width: 600px) {
+      .container, .masthead-inner { padding: 0 12px; }
+      .also-item .also-source { min-width: auto; }
+      .section-header { flex-wrap: wrap; gap: 8px; }
+      .dive-deeper .deeper-content { overflow-wrap: break-word; word-break: break-word; }
+      .impact-box { overflow-wrap: break-word; word-break: break-word; }
+      .curated-item h2, .curated-item p { overflow-wrap: break-word; word-break: break-word; }
+    }
+    * { min-width: 0; } /* Prevent flex/grid children from overflowing */
+    a { overflow-wrap: break-word; word-break: break-word; }
   </style>
 </head>
 <body>
@@ -1461,6 +1473,7 @@
        - Stories > 8h old are hidden automatically
        To add a new breaking story, prepend an entry here with the current ISO timestamp. -->
   <script id="breaking-stories" type="application/json">[
+    {"text": "Trump administration considering ground takeover of Iran\u2019s Kharg Island to force open Strait of Hormuz; senior official says \u2018that decision hasn\u2019t been made\u2019 but Marines expedited \u2014 15:52 GMT", "posted": "2026-03-20T15:52:00Z"},
     {"text": "Kuwait\u2019s Mina Al-Ahmadi refinery struck by Iranian drones for second consecutive day; fires erupt across multiple units as Gulf energy war widens \u2014 07:45 GMT", "posted": "2026-03-20T07:45:00Z"}
   ]</script>
   <div class="breaking-banner dismissed" id="breakingBanner">
@@ -1474,8 +1487,8 @@
   <!-- Feature 8: Notification Modal -->
   <div class="notify-modal" id="notifyModal">
     <div class="notify-modal-inner">
-      <h3>Edition Notifications</h3>
-      <p>Get a browser notification when you visit the site and a new edition is available.</p>
+      <h3>Push Notifications</h3>
+      <p>Get notified when new briefings drop and when breaking news hits — even when the site isn't open.</p>
       <button class="notify-subscribe" id="notifySubscribe">Enable Notifications</button>
       <button class="notify-cancel" id="notifyCancel">Not now</button>
     </div>
@@ -3620,25 +3633,10 @@ if ('serviceWorker' in navigator) {
   const breakingKey = 'breakingDismissed_' + active.text.slice(0, 80);
   if (localStorage.getItem(breakingKey)) return;
 
-  // Send browser notification for a breaking story (if permission granted)
-  function notifyBreaking(text) {
-    const notifyKey = 'breakingNotified_' + text.slice(0, 80);
-    if (localStorage.getItem(notifyKey)) return; // already notified
-    if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
-    localStorage.setItem(notifyKey, '1');
-    new Notification('Breaking — The Daily Brief', {
-      body: text,
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
-      tag: 'breaking-news'
-    });
-  }
-
-  // Show the banner
+  // Show the banner (breaking push notifications are sent via the Worker CLI)
   breakingTextEl.textContent = active.text;
   banner.classList.remove('dismissed');
   document.body.classList.add('has-breaking-banner');
-  notifyBreaking(active.text);
 
   // Dismiss handler
   dismiss.addEventListener('click', (e) => {
@@ -3745,89 +3743,104 @@ if ('serviceWorker' in navigator) {
 })();
 
 // ── Edition release notifications ──
+// Now handled via Web Push (scripts/push-notify.js triggers the Worker)
+
+// ── Feature 8: Web Push Notification Subscription ──
 (function() {
-  if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
-  const editions = document.querySelectorAll('#all-editions .curated-edition:not(.weekly)');
-  if (!editions.length) return;
+  const PUSH_WORKER = 'https://daily-brief-push.ed-dickinsone14.workers.dev';
+  const VAPID_PUBLIC_KEY = 'BJ8KRLYBThmYGP1dcFNbMpWRJSTnZfe0nWu7cQKxxwK8-wESiXKk6OfJhYI28MykLxj5xSzggp8whn_DYaEWAKw';
 
-  // Find the newest edition
-  let newest = null;
-  let newestKey = '';
-  editions.forEach(ed => {
-    const date = ed.dataset.date || '';
-    const time = ed.dataset.time || '00:00';
-    const key = date + 'T' + time;
-    if (!newest || key > newestKey) { newest = ed; newestKey = key; }
-  });
-  if (!newest) return;
-
-  const hour = parseInt((newest.dataset.time || '00:00').split(':')[0]);
-  const type = hour < 14 ? 'Morning' : 'Evening';
-  const d = new Date(newest.dataset.date + 'T12:00:00');
-  const dateLabel = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
-  const notifyKey = 'editionNotified_' + newestKey;
-
-  if (localStorage.getItem(notifyKey)) return;
-  localStorage.setItem(notifyKey, '1');
-
-  // Brief delay so notification doesn't fire instantly on every page load
-  setTimeout(() => {
-    new Notification(type + ' Briefing — The Daily Brief', {
-      body: dateLabel + ' edition is now live.',
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
-      tag: 'edition-' + newestKey
-    });
-  }, 2000);
-})();
-
-// ── Feature 8: Notification Subscription ──
-(function() {
   const btn = document.getElementById('notifyBtn');
   const modal = document.getElementById('notifyModal');
-  const subscribe = document.getElementById('notifySubscribe');
+  const subscribeBtn = document.getElementById('notifySubscribe');
   const cancel = document.getElementById('notifyCancel');
   if (!btn || !modal) return;
 
-  // Check if already subscribed
-  if (localStorage.getItem('notifySubscribed') || (typeof Notification !== 'undefined' && Notification.permission === 'granted')) {
-    btn.classList.add('notify-active');
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const raw = atob(base64);
+    const arr = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+    return arr;
   }
 
-  btn.addEventListener('click', () => {
-    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-      // Already subscribed — show a test notification
-      new Notification('The Daily Brief', { body: 'You are already subscribed to edition notifications.' });
+  async function getExistingSubscription() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return null;
+    const reg = await navigator.serviceWorker.ready;
+    return reg.pushManager.getSubscription();
+  }
+
+  async function updateButtonState() {
+    const sub = await getExistingSubscription();
+    btn.classList.toggle('notify-active', !!sub);
+  }
+
+  updateButtonState();
+
+  btn.addEventListener('click', async () => {
+    const existing = await getExistingSubscription();
+    if (existing) {
+      // Already subscribed — offer to unsubscribe
+      if (confirm('Push notifications are enabled. Disable them?')) {
+        try {
+          await fetch(PUSH_WORKER + '/unsubscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ endpoint: existing.endpoint }),
+          });
+          await existing.unsubscribe();
+          btn.classList.remove('notify-active');
+          localStorage.removeItem('notifySubscribed');
+        } catch (err) {
+          console.error('Unsubscribe failed:', err);
+        }
+      }
       return;
     }
     modal.classList.add('open');
   });
 
-  cancel.addEventListener('click', () => {
-    modal.classList.remove('open');
-  });
+  cancel.addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('open');
-  });
-
-  subscribe.addEventListener('click', () => {
-    if (typeof Notification === 'undefined') {
-      alert('Notifications are not supported in this browser.');
+  subscribeBtn.addEventListener('click', async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      alert('Push notifications are not supported in this browser.');
       modal.classList.remove('open');
       return;
     }
-    Notification.requestPermission().then(perm => {
-      modal.classList.remove('open');
-      if (perm === 'granted') {
-        btn.classList.add('notify-active');
-        localStorage.setItem('notifySubscribed', '1');
-        new Notification('The Daily Brief', {
-          body: 'Notifications enabled — you\'ll see alerts when new editions are available.',
-          icon: '/icon-192.png'
-        });
+
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        modal.classList.remove('open');
+        return;
       }
-    });
+
+      const reg = await navigator.serviceWorker.ready;
+      const subscription = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+
+      // Send subscription to our Worker
+      const res = await fetch(PUSH_WORKER + '/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(subscription.toJSON()),
+      });
+
+      if (!res.ok) throw new Error('Server rejected subscription');
+
+      btn.classList.add('notify-active');
+      localStorage.setItem('notifySubscribed', '1');
+      modal.classList.remove('open');
+    } catch (err) {
+      console.error('Push subscription failed:', err);
+      alert('Could not enable notifications. Please try again.');
+      modal.classList.remove('open');
+    }
   });
 })();
 
