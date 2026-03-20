@@ -1,0 +1,73 @@
+name: Push Notifications
+
+on:
+  push:
+    branches: [main]
+    paths: [index.html]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install web-push
+        run: npm install web-push
+
+      - name: Detect notification type and send
+        env:
+          PUSH_AUTH_TOKEN: ${{ secrets.PUSH_AUTH_TOKEN }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_PUBLIC_KEY: "BJ8KRLYBThmYGP1dcFNbMpWRJSTnZfe0nWu7cQKxxwK8-wESiXKk6OfJhYI28MykLxj5xSzggp8whn_DYaEWAKw"
+          VAPID_SUBJECT: "mailto:ed@thedailybrief.co.uk"
+          PUSH_WORKER_URL: "https://daily-brief-push.thedailybrief.workers.dev"
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          DIFF=$(git diff HEAD~1 HEAD -- index.html)
+
+          # Detect breaking news (banner added/changed)
+          if echo "$DIFF" | grep -qi 'breaking-banner\|breaking-news-text\|breakingHeadline'; then
+            echo "Detected: Breaking news update"
+            # Extract the breaking headline from the diff (new lines only)
+            HEADLINE=$(echo "$DIFF" | grep '^+' | grep -oP 'breaking-news-text[^>]*>\K[^<]+' | head -1)
+            if [ -z "$HEADLINE" ]; then
+              HEADLINE="Breaking news on The Daily Brief"
+            fi
+            node scripts/push-notify.js "$HEADLINE" --type breaking
+            exit 0
+          fi
+
+          # Detect morning briefing
+          if echo "$COMMIT_MSG" | grep -qiE 'morning (brief|edition|briefing)'; then
+            echo "Detected: Morning briefing"
+            node scripts/push-notify.js "The Morning Briefing is live" --type edition
+            exit 0
+          fi
+
+          # Detect evening briefing
+          if echo "$COMMIT_MSG" | grep -qiE 'evening (brief|edition|briefing)'; then
+            echo "Detected: Evening briefing"
+            node scripts/push-notify.js "The Evening Briefing is live" --type edition
+            exit 0
+          fi
+
+          # Fallback: check diff for edition patterns
+          if echo "$DIFF" | grep -qiE 'edition-morning|morning-edition'; then
+            echo "Detected: Morning edition from diff"
+            node scripts/push-notify.js "The Morning Briefing is live" --type edition
+            exit 0
+          fi
+
+          if echo "$DIFF" | grep -qiE 'edition-evening|evening-edition'; then
+            echo "Detected: Evening edition from diff"
+            node scripts/push-notify.js "The Evening Briefing is live" --type edition
+            exit 0
+          fi
+
+          echo "No briefing or breaking news detected — skipping notification"

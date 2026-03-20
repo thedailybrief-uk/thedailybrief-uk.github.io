@@ -3912,12 +3912,8 @@ if ('serviceWorker' in navigator) {
   modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
 
   subscribeBtn.addEventListener('click', async () => {
-    const hasSW = 'serviceWorker' in navigator;
-    const hasPush = 'PushManager' in window;
-    const hasNotif = 'Notification' in window;
-
-    if (!hasSW || !hasPush) {
-      alert('Push not supported.\nServiceWorker: ' + hasSW + '\nPushManager: ' + hasPush + '\nNotification: ' + hasNotif + '\nStandalone: ' + (navigator.standalone || window.matchMedia('(display-mode: standalone)').matches));
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      alert('Push notifications are not supported in this browser. On iOS, add this site to your Home Screen first.');
       modal.classList.remove('open');
       return;
     }
@@ -3925,7 +3921,7 @@ if ('serviceWorker' in navigator) {
     try {
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
-        alert('Permission not granted: "' + permission + '"\n\nOn iOS, go to Settings → Notifications → Daily Brief and enable Allow Notifications, then try again.');
+        alert('Notifications were not enabled. On iOS, check Settings → Notifications → Daily Brief.');
         modal.classList.remove('open');
         return;
       }
