@@ -162,6 +162,16 @@
         transition-duration: 0.01ms !important;
       }
     }
+    /* ── Skip to Content (accessibility) ── */
+    .skip-link {
+      position: absolute; top: -100%; left: 16px; z-index: 999;
+      background: var(--text-primary); color: var(--bg);
+      padding: 8px 16px; border-radius: 0 0 6px 6px;
+      font-family: var(--sans); font-size: 13px; font-weight: 600;
+      text-decoration: none; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+
     body {
       font-family: var(--sans);
       background: var(--bg);
@@ -294,6 +304,13 @@
       font-size: 18px; opacity: 0.7;
     }
     .edition-header h2 { font-family: var(--serif); font-size: 20px; font-weight: 700; }
+    .expand-all-btn {
+      margin-left: auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6); font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    }
+    .expand-all-btn:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
     .curated-meta { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 20px; padding-left: 30px; }
 
     /* #3 Key figures strip */
@@ -598,6 +615,11 @@
       .col-expanded .col-expand-btn svg {
         transform: rotate(180deg);
       }
+      .col-preview {
+        display: block; font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.5);
+        margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        font-style: italic;
+      }
     }
 
     /* ── Section ── */
@@ -737,7 +759,12 @@
     .day-nav {
       display: flex; align-items: center; justify-content: center; gap: 20px;
       margin-bottom: 20px; padding: 14px 0;
+      position: sticky; top: 0; z-index: 45;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
+    body.has-breaking-banner .day-nav { top: 48px; }
+    @media (max-width: 600px) { body.has-breaking-banner .day-nav { top: 56px; } }
     .day-nav-btn {
       background: var(--bg); border: 1px solid var(--border); border-radius: 50%;
       width: 40px; height: 40px; cursor: pointer; display: flex;
@@ -764,6 +791,18 @@
       font-family: var(--sans); display: block; margin-top: 3px;
       letter-spacing: 0.5px; text-transform: uppercase;
     }
+    /* ── Day dots (timeline indicator) ── */
+    .day-dots {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 0 0 12px; margin-top: -8px;
+    }
+    .day-dot {
+      width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
+      background: var(--border); cursor: pointer; transition: all 0.2s;
+    }
+    .day-dot:hover { background: var(--text-tertiary); transform: scale(1.3); }
+    .day-dot.active { background: var(--text-primary); transform: scale(1.2); }
+
     /* Day transition */
     #day-editions {
       transition: opacity 0.3s ease, transform 0.3s ease;
@@ -782,12 +821,14 @@
 
     /* ── Scroll to top ── */
     .scroll-top {
-      position: fixed; bottom: 24px; right: 24px; width: 38px; height: 38px;
+      position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px;
       background: var(--text-primary); color: var(--bg); border: none; border-radius: 50%;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 40;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s, bottom 0.3s; z-index: 40;
     }
     .scroll-top.visible { opacity: 1; pointer-events: auto; }
+    .scroll-top.cookie-offset { bottom: 90px; }
+    @media (max-width: 600px) { .scroll-top.cookie-offset { bottom: 120px; } }
 
     /* ── Feature 1: Breaking Alert Banner ── */
     .breaking-banner {
@@ -1403,6 +1444,7 @@
   </style>
 </head>
 <body>
+  <a href="#curated" class="skip-link">Skip to content</a>
 
   <!-- #5: Fixed Search Icon -->
   <button class="search-fixed" id="searchBtn" aria-label="Search editions" title="Search editions (/)">
@@ -1653,6 +1695,8 @@
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
     </div>
+    <!-- Day dots (timeline indicator) -->
+    <div class="day-dots" id="dayDots"></div>
     <!-- #7 Swipe hint for mobile -->
     <div class="swipe-hint" id="swipeHint">Swipe left or right to browse days</div>
 
@@ -3065,20 +3109,43 @@ window._marketData = {};
         });
       }
 
+      // Expand All / Collapse All for Dive Deeper sections
+      const details = clone.querySelectorAll('details.dive-deeper');
+      if (details.length > 0) {
+        const header = clone.querySelector('.edition-header');
+        if (header) {
+          const expandBtn = document.createElement('button');
+          expandBtn.className = 'expand-all-btn';
+          expandBtn.textContent = 'Expand all';
+          expandBtn.addEventListener('click', () => {
+            const allOpen = Array.from(details).every(d => d.open);
+            details.forEach(d => d.open = !allOpen);
+            expandBtn.textContent = allOpen ? 'Expand all' : 'Collapse all';
+          });
+          header.appendChild(expandBtn);
+        }
+      }
+
       // Mobile per-column expand/collapse buttons
       if (window.innerWidth <= 768) {
         clone.classList.add('collapsed');
         clone.querySelectorAll('.curated-column').forEach(col => {
+          const items = col.querySelectorAll('.curated-item');
+          const storyCount = items.length;
+          const firstHeadline = items.length ? items[0].querySelector('h4') : null;
+          const previewText = firstHeadline ? firstHeadline.textContent.trim() : '';
           const btn = document.createElement('button');
           btn.className = 'col-expand-btn';
           const chevron = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
-          btn.innerHTML = 'Read full briefing ' + chevron;
+          const countLabel = storyCount + ' stor' + (storyCount === 1 ? 'y' : 'ies');
+          const preview = previewText ? '<span class="col-preview">' + escHtml(previewText) + '</span>' : '';
+          btn.innerHTML = 'Read full briefing (' + countLabel + ') ' + chevron + preview;
           col.appendChild(btn);
           btn.addEventListener('click', () => {
             const wasExpanded = col.classList.contains('col-expanded');
             col.classList.toggle('col-expanded');
             if (wasExpanded) {
-              btn.innerHTML = 'Read full briefing ' + chevron;
+              btn.innerHTML = 'Read full briefing (' + countLabel + ') ' + chevron + preview;
               setTimeout(() => {
                 btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
               }, 50);
@@ -3100,6 +3167,23 @@ window._marketData = {};
     prevBtn.disabled = (index >= dates.length - 1);
     nextBtn.disabled = (index <= 0);
     dayNav.style.display = dates.length > 1 ? 'flex' : 'none';
+
+    // Update day dots
+    const dotsContainer = document.getElementById('dayDots');
+    if (dotsContainer && dates.length > 1) {
+      if (!dotsContainer.children.length) {
+        dates.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = 'day-dot';
+          dot.setAttribute('aria-label', formatDate(dates[i]));
+          dot.addEventListener('click', () => showDay(i, true));
+          dotsContainer.appendChild(dot);
+        });
+      }
+      dotsContainer.querySelectorAll('.day-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
     } // end renderContent
 
     // #12: Enhanced directional transitions
@@ -3474,7 +3558,11 @@ init();
 
 // ── Scroll to top ──
 const sb = document.getElementById('scrollTop');
-window.addEventListener('scroll', () => sb.classList.toggle('visible', window.scrollY > 400), { passive: true });
+window.addEventListener('scroll', () => {
+  sb.classList.toggle('visible', window.scrollY > 600);
+  const cookieBanner = document.getElementById('cookieBanner');
+  sb.classList.toggle('cookie-offset', cookieBanner && cookieBanner.classList.contains('visible'));
+}, { passive: true });
 sb.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 // ── Service Worker ──
@@ -3497,8 +3585,9 @@ if ('serviceWorker' in navigator) {
   const breakingText = banner ? banner.querySelector('.breaking-text') : null;
   if (!banner) return;
 
-  // Check if already dismissed this session
-  if (sessionStorage.getItem('breakingDismissed')) {
+  // Check if already dismissed (persist per-headline so new stories still show)
+  const breakingKey = 'breakingDismissed_' + (breakingText ? breakingText.textContent.trim().slice(0, 80) : '');
+  if (localStorage.getItem(breakingKey)) {
     banner.classList.add('dismissed');
   } else {
     document.body.classList.add('has-breaking-banner');
@@ -3508,7 +3597,7 @@ if ('serviceWorker' in navigator) {
     e.stopPropagation();
     banner.classList.add('dismissed');
     document.body.classList.remove('has-breaking-banner');
-    sessionStorage.setItem('breakingDismissed', '1');
+    localStorage.setItem(breakingKey, '1');
   });
 
   // Link breaking banner to matching curated item
@@ -3882,27 +3971,57 @@ if ('serviceWorker' in navigator) {
 
     resultsEl.innerHTML = matches.map(m => {
       const summarySnippet = m.summary.length > 120 ? m.summary.slice(0, 120) + '...' : m.summary;
-      return '<div class="search-result" data-date="' + m.date + '">' +
+      return '<div class="search-result" data-date="' + m.date + '" data-headline="' + escHtml(m.headline) + '">' +
         '<div class="search-result-date">' + escHtml(m.dateLabel) + '</div>' +
         '<h4>' + highlightText(m.headline, query) + '</h4>' +
         '<p>' + highlightText(summarySnippet, query) + '</p>' +
       '</div>';
     }).join('');
 
-    // Click to navigate
+    // Click to navigate, scroll to matching story, and highlight it
     resultsEl.querySelectorAll('.search-result').forEach(el => {
       el.addEventListener('click', () => {
         const targetDate = el.dataset.date;
+        const targetHeadline = el.dataset.headline;
         const dates = window._briefDates;
         const showDayFn = window._showDay;
         if (dates && showDayFn) {
           const idx = dates.indexOf(targetDate);
-          if (idx !== -1) showDayFn(idx, true);
+          if (idx !== -1) showDayFn(idx, false);
         }
         overlay.classList.remove('open');
         input.value = '';
         resultsEl.innerHTML = '';
-        document.getElementById('curated').scrollIntoView({ behavior: 'smooth' });
+
+        // Find and scroll to the matching story
+        setTimeout(() => {
+          const dayEditions = document.getElementById('day-editions');
+          if (!dayEditions) return;
+          const items = dayEditions.querySelectorAll('.curated-item');
+          let match = null;
+          items.forEach(item => {
+            const h4 = item.querySelector('h4');
+            if (h4 && h4.textContent.trim() === targetHeadline) match = item;
+          });
+          if (match) {
+            // Expand parent column if collapsed on mobile
+            const col = match.closest('.curated-column');
+            if (col && !col.classList.contains('col-expanded')) {
+              const expandBtn = col.querySelector('.col-expand-btn');
+              if (expandBtn) expandBtn.click();
+            }
+            match.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Highlight the story
+            match.classList.remove('highlight-flash');
+            match.offsetHeight;
+            match.classList.add('highlight-flash');
+            match.addEventListener('animationend', () => {
+              match.classList.remove('highlight-flash');
+            }, { once: true });
+          } else {
+            document.getElementById('curated').scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 150);
       });
     });
   }
