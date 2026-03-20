@@ -1,4 +1,4 @@
-const CACHE_NAME = 'daily-brief-v9';
+const CACHE_NAME = 'daily-brief-v10';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -73,17 +73,19 @@ self.addEventListener('fetch', (e) => {
 // ── Web Push Notifications ──
 
 self.addEventListener('push', (e) => {
-  if (!e.data) return;
+  // Always show a notification — even if payload is empty or decryption failed
+  let data = { title: 'The Daily Brief', body: 'New update available' };
 
-  let data;
-  try {
-    data = e.data.json();
-  } catch {
-    data = { title: 'The Daily Brief', body: e.data.text() };
+  if (e.data) {
+    try {
+      data = e.data.json();
+    } catch {
+      try { data.body = e.data.text(); } catch { /* keep default */ }
+    }
   }
 
   const options = {
-    body: data.body || '',
+    body: data.body || 'New update available',
     icon: '/icon-192.png',
     badge: '/icon-192.png',
     tag: data.type === 'breaking' ? 'breaking-news' : 'edition-' + Date.now(),
