@@ -3620,10 +3620,25 @@ if ('serviceWorker' in navigator) {
   const breakingKey = 'breakingDismissed_' + active.text.slice(0, 80);
   if (localStorage.getItem(breakingKey)) return;
 
+  // Send browser notification for a breaking story (if permission granted)
+  function notifyBreaking(text) {
+    const notifyKey = 'breakingNotified_' + text.slice(0, 80);
+    if (localStorage.getItem(notifyKey)) return; // already notified
+    if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+    localStorage.setItem(notifyKey, '1');
+    new Notification('Breaking — The Daily Brief', {
+      body: text,
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
+      tag: 'breaking-news'
+    });
+  }
+
   // Show the banner
   breakingTextEl.textContent = active.text;
   banner.classList.remove('dismissed');
   document.body.classList.add('has-breaking-banner');
+  notifyBreaking(active.text);
 
   // Dismiss handler
   dismiss.addEventListener('click', (e) => {
@@ -3641,6 +3656,7 @@ if ('serviceWorker' in navigator) {
       const next = valid.find(s => s !== active && !localStorage.getItem('breakingDismissed_' + s.text.slice(0, 80)));
       if (next) {
         breakingTextEl.textContent = next.text;
+        notifyBreaking(next.text);
         // Update dismiss key for the new story
         const newKey = 'breakingDismissed_' + next.text.slice(0, 80);
         dismiss.onclick = (e) => {
