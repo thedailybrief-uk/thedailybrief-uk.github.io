@@ -3168,20 +3168,21 @@ window._marketData = {};
     nextBtn.disabled = (index <= 0);
     dayNav.style.display = dates.length > 1 ? 'flex' : 'none';
 
-    // Update day dots
+    // Update day dots (chronological: oldest left, newest right)
     const dotsContainer = document.getElementById('dayDots');
     if (dotsContainer && dates.length > 1) {
       if (!dotsContainer.children.length) {
-        dates.forEach((_, i) => {
+        for (let i = dates.length - 1; i >= 0; i--) {
           const dot = document.createElement('button');
           dot.className = 'day-dot';
           dot.setAttribute('aria-label', formatDate(dates[i]));
           dot.addEventListener('click', () => showDay(i, true));
           dotsContainer.appendChild(dot);
-        });
+        }
       }
-      dotsContainer.querySelectorAll('.day-dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
+      const dots = dotsContainer.querySelectorAll('.day-dot');
+      dots.forEach((dot, di) => {
+        dot.classList.toggle('active', (dates.length - 1 - di) === index);
       });
     }
     } // end renderContent
