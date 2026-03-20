@@ -105,7 +105,7 @@
   <!-- <link rel="preconnect" href="https://api.stripe.com" /> -->
   <!-- <script src="https://js.stripe.com/v3/" async></script> -->
   <!-- #18: Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.rss2json.com https://api.allorigins.win https://corsproxy.io https://query1.finance.yahoo.com https://query2.finance.yahoo.com https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.rss2json.com https://api.allorigins.win https://corsproxy.io https://query1.finance.yahoo.com https://query2.finance.yahoo.com https://api.stripe.com https://daily-brief-push.thedailybrief.workers.dev; frame-src https://js.stripe.com https://hooks.stripe.com;" />
   <!-- #12 Font optimisation: added display=swap, subset to latin -->
   <link rel="preload" as="style" crossorigin href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap&subset=latin" rel="stylesheet" />
@@ -3868,6 +3868,20 @@ if ('serviceWorker' in navigator) {
   async function updateButtonState() {
     const sub = await getExistingSubscription();
     btn.classList.toggle('notify-active', !!sub);
+    // Sync localStorage with actual PushManager state
+    if (sub) {
+      localStorage.setItem('notifySubscribed', '1');
+      // Re-register with Worker in case POST failed previously
+      try {
+        await fetch(PUSH_WORKER + '/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sub.toJSON()),
+        });
+      } catch (e) { console.warn('Push re-sync failed:', e); }
+    } else {
+      localStorage.removeItem('notifySubscribed');
+    }
   }
 
   updateButtonState();
@@ -3875,20 +3889,19 @@ if ('serviceWorker' in navigator) {
   btn.addEventListener('click', async () => {
     const existing = await getExistingSubscription();
     if (existing) {
-      // Already subscribed — offer to unsubscribe
-      if (confirm('Push notifications are enabled. Disable them?')) {
-        try {
-          await fetch(PUSH_WORKER + '/unsubscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ endpoint: existing.endpoint }),
-          });
-          await existing.unsubscribe();
-          btn.classList.remove('notify-active');
-          localStorage.removeItem('notifySubscribed');
-        } catch (err) {
-          console.error('Unsubscribe failed:', err);
-        }
+      // Already subscribed — unsubscribe directly (no confirm dialog)
+      try {
+        await fetch(PUSH_WORKER + '/unsubscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint: existing.endpoint }),
+        });
+        await existing.unsubscribe();
+        btn.classList.remove('notify-active');
+        localStorage.removeItem('notifySubscribed');
+      } catch (err) {
+        console.error('Unsubscribe failed:', err);
+        alert('Could not disable notifications. Try again.');
       }
       return;
     }
