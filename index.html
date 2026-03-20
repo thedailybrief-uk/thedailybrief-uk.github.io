@@ -3744,6 +3744,43 @@ if ('serviceWorker' in navigator) {
   setTimeout(linkBanner, 500);
 })();
 
+// ── Edition release notifications ──
+(function() {
+  if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+  const editions = document.querySelectorAll('#all-editions .curated-edition:not(.weekly)');
+  if (!editions.length) return;
+
+  // Find the newest edition
+  let newest = null;
+  let newestKey = '';
+  editions.forEach(ed => {
+    const date = ed.dataset.date || '';
+    const time = ed.dataset.time || '00:00';
+    const key = date + 'T' + time;
+    if (!newest || key > newestKey) { newest = ed; newestKey = key; }
+  });
+  if (!newest) return;
+
+  const hour = parseInt((newest.dataset.time || '00:00').split(':')[0]);
+  const type = hour < 14 ? 'Morning' : 'Evening';
+  const d = new Date(newest.dataset.date + 'T12:00:00');
+  const dateLabel = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  const notifyKey = 'editionNotified_' + newestKey;
+
+  if (localStorage.getItem(notifyKey)) return;
+  localStorage.setItem(notifyKey, '1');
+
+  // Brief delay so notification doesn't fire instantly on every page load
+  setTimeout(() => {
+    new Notification(type + ' Briefing — The Daily Brief', {
+      body: dateLabel + ' edition is now live.',
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
+      tag: 'edition-' + newestKey
+    });
+  }, 2000);
+})();
+
 // ── Feature 8: Notification Subscription ──
 (function() {
   const btn = document.getElementById('notifyBtn');
