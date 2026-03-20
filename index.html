@@ -3685,7 +3685,9 @@ if ('serviceWorker' in navigator) {
   const swVersion = document.querySelector('script[id="embedded-markets"]')?.textContent
     ? JSON.parse(document.querySelector('script[id="embedded-markets"]').textContent).ts || ''
     : Date.now();
-  navigator.serviceWorker.register('/sw.js?v=' + encodeURIComponent(swVersion)).catch(() => {});
+  navigator.serviceWorker.register('/sw.js?v=' + encodeURIComponent(swVersion))
+    .then(reg => { if (reg) reg.update(); })
+    .catch(() => {});
 }
 
 // ════════════════════════════════════════════
@@ -3930,7 +3932,7 @@ if ('serviceWorker' in navigator) {
       modal.classList.remove('open');
     } catch (err) {
       console.error('Push subscription failed:', err);
-      alert('Could not enable notifications. Please try again.');
+      alert('Could not enable notifications: ' + err.message);
       modal.classList.remove('open');
     }
   });
