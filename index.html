@@ -1455,10 +1455,18 @@
   <div class="reading-progress" id="readingProgress"></div>
 
   <!-- Feature 1: Breaking Alert Banner -->
-  <div class="breaking-banner" id="breakingBanner">
+  <!-- Breaking stories: newest first. JS picks the active one based on time rules.
+       - Stories < 3h old take priority over older ones
+       - Stories 3-8h old show only if no fresher story exists
+       - Stories > 8h old are hidden automatically
+       To add a new breaking story, prepend an entry here with the current ISO timestamp. -->
+  <script id="breaking-stories" type="application/json">[
+    {"text": "Kuwait\u2019s Mina Al-Ahmadi refinery struck by Iranian drones for second consecutive day; fires erupt across multiple units as Gulf energy war widens \u2014 07:45 GMT", "posted": "2026-03-20T07:45:00Z"}
+  ]</script>
+  <div class="breaking-banner dismissed" id="breakingBanner">
     <div class="breaking-inner">
       <span class="breaking-label">BREAKING</span>
-      <span class="breaking-text">Kuwait&rsquo;s Mina Al-Ahmadi refinery struck by Iranian drones for second consecutive day; fires erupt across multiple units as Gulf energy war widens &mdash; 07:45 GMT</span>
+      <span class="breaking-text" id="breakingText"></span>
       <button class="breaking-dismiss" id="breakingDismiss">&times;</button>
     </div>
   </div>
@@ -3579,21 +3587,45 @@ if ('serviceWorker' in navigator) {
 // PREVIEW FEATURES
 // ════════════════════════════════════════════
 
-// ── Feature 1: Breaking Alert Banner ──
+// ── Feature 1: Breaking Alert Banner (with auto-rotation) ──
 (function() {
   const banner = document.getElementById('breakingBanner');
   const dismiss = document.getElementById('breakingDismiss');
-  const breakingText = banner ? banner.querySelector('.breaking-text') : null;
-  if (!banner) return;
+  const breakingTextEl = document.getElementById('breakingText');
+  if (!banner || !breakingTextEl) return;
 
-  // Check if already dismissed (persist per-headline so new stories still show)
-  const breakingKey = 'breakingDismissed_' + (breakingText ? breakingText.textContent.trim().slice(0, 80) : '');
-  if (localStorage.getItem(breakingKey)) {
-    banner.classList.add('dismissed');
-  } else {
-    document.body.classList.add('has-breaking-banner');
-  }
+  // Load breaking stories from JSON
+  let stories = [];
+  try { stories = JSON.parse(document.getElementById('breaking-stories').textContent); } catch(e) {}
+  if (!stories.length) return;
 
+  // Time thresholds
+  const THREE_HOURS = 3 * 60 * 60 * 1000;
+  const EIGHT_HOURS = 8 * 60 * 60 * 1000;
+  const now = Date.now();
+
+  // Filter: remove stories > 8h old, sort newest first
+  const valid = stories
+    .map(s => ({ ...s, age: now - new Date(s.posted).getTime() }))
+    .filter(s => s.age < EIGHT_HOURS && s.age >= 0)
+    .sort((a, b) => a.age - b.age);
+
+  if (!valid.length) return; // all expired
+
+  // Pick: prefer the freshest story < 3h; otherwise the freshest valid story
+  const fresh = valid.find(s => s.age < THREE_HOURS);
+  const active = fresh || valid[0];
+
+  // Check if user dismissed this specific headline
+  const breakingKey = 'breakingDismissed_' + active.text.slice(0, 80);
+  if (localStorage.getItem(breakingKey)) return;
+
+  // Show the banner
+  breakingTextEl.textContent = active.text;
+  banner.classList.remove('dismissed');
+  document.body.classList.add('has-breaking-banner');
+
+  // Dismiss handler
   dismiss.addEventListener('click', (e) => {
     e.stopPropagation();
     banner.classList.add('dismissed');
@@ -3601,76 +3633,99 @@ if ('serviceWorker' in navigator) {
     localStorage.setItem(breakingKey, '1');
   });
 
+  // Auto-rotate: if the active story passes 3h and a newer one exists, swap it
+  if (active === fresh && valid.length > 1) {
+    const msUntilExpiry = THREE_HOURS - active.age;
+    setTimeout(() => {
+      // Find next valid story that isn't dismissed
+      const next = valid.find(s => s !== active && !localStorage.getItem('breakingDismissed_' + s.text.slice(0, 80)));
+      if (next) {
+        breakingTextEl.textContent = next.text;
+        // Update dismiss key for the new story
+        const newKey = 'breakingDismissed_' + next.text.slice(0, 80);
+        dismiss.onclick = (e) => {
+          e.stopPropagation();
+          banner.classList.add('dismissed');
+          document.body.classList.remove('has-breaking-banner');
+          localStorage.setItem(newKey, '1');
+        };
+      } else {
+        banner.classList.add('dismissed');
+        document.body.classList.remove('has-breaking-banner');
+      }
+    }, msUntilExpiry);
+  }
+
+  // Auto-hide after 8h total
+  const msUntilHide = EIGHT_HOURS - active.age;
+  setTimeout(() => {
+    banner.classList.add('dismissed');
+    document.body.classList.remove('has-breaking-banner');
+  }, msUntilHide);
+
   // Link breaking banner to matching curated item
-  if (breakingText) {
-    const breakingWords = breakingText.textContent.toLowerCase()
+  function getBreakingWords() {
+    return breakingTextEl.textContent.toLowerCase()
       .replace(/[^a-z0-9\s]/g, '').split(/\s+/)
       .filter(w => w.length > 3);
+  }
 
-    function findMatchingItem() {
-      const dayEditions = document.getElementById('day-editions');
-      if (!dayEditions) return null;
-      let bestMatch = null;
-      let bestScore = 0;
-      dayEditions.querySelectorAll('.curated-item').forEach(item => {
-        const h4 = item.querySelector('h4');
-        if (!h4) return;
-        const itemWords = h4.textContent.toLowerCase()
-          .replace(/[^a-z0-9\s]/g, '').split(/\s+/)
-          .filter(w => w.length > 3);
-        const overlap = breakingWords.filter(w => itemWords.includes(w)).length;
-        if (overlap > bestScore && overlap >= 2) {
-          bestScore = overlap;
-          bestMatch = item;
-        }
-      });
-      return bestMatch;
-    }
-
-    // Check for match after editions render
-    function linkBanner() {
-      const match = findMatchingItem();
-      if (match) {
-        breakingText.classList.add('linked');
-        breakingText.title = 'Click to read full coverage';
-      }
-    }
-
-    breakingText.addEventListener('click', () => {
-      const match = findMatchingItem();
-      if (match) {
-        match.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Flash after scroll settles
-        let flashed = false;
-        function flash() {
-          if (flashed) return;
-          flashed = true;
-          match.classList.remove('highlight-flash');
-          match.offsetHeight;
-          match.classList.add('highlight-flash');
-          match.addEventListener('animationend', () => {
-            match.classList.remove('highlight-flash');
-          }, { once: true });
-        }
-        // Trigger after scroll completes (use IntersectionObserver for reliability)
-        const io = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            io.disconnect();
-            requestAnimationFrame(flash);
-          }
-        }, { threshold: 0.5 });
-        io.observe(match);
-        // Safety fallback in case observer doesn't fire
-        setTimeout(() => { io.disconnect(); flash(); }, 1200);
+  function findMatchingItem() {
+    const dayEditions = document.getElementById('day-editions');
+    if (!dayEditions) return null;
+    const breakingWords = getBreakingWords();
+    let bestMatch = null;
+    let bestScore = 0;
+    dayEditions.querySelectorAll('.curated-item').forEach(item => {
+      const h4 = item.querySelector('h4');
+      if (!h4) return;
+      const itemWords = h4.textContent.toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '').split(/\s+/)
+        .filter(w => w.length > 3);
+      const overlap = breakingWords.filter(w => itemWords.includes(w)).length;
+      if (overlap > bestScore && overlap >= 2) {
+        bestScore = overlap;
+        bestMatch = item;
       }
     });
-
-    // Run after showDay renders content
-    const obs = new MutationObserver(() => setTimeout(linkBanner, 100));
-    const dayEds = document.getElementById('day-editions');
-    if (dayEds) obs.observe(dayEds, { childList: true });
-    setTimeout(linkBanner, 500);
+    return bestMatch;
   }
+
+  function linkBanner() {
+    const match = findMatchingItem();
+    if (match) {
+      breakingTextEl.classList.add('linked');
+      breakingTextEl.title = 'Click to read full coverage';
+    }
+  }
+
+  breakingTextEl.addEventListener('click', () => {
+    const match = findMatchingItem();
+    if (match) {
+      match.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      let flashed = false;
+      function flash() {
+        if (flashed) return;
+        flashed = true;
+        match.classList.remove('highlight-flash');
+        match.offsetHeight;
+        match.classList.add('highlight-flash');
+        match.addEventListener('animationend', () => {
+          match.classList.remove('highlight-flash');
+        }, { once: true });
+      }
+      const io = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { io.disconnect(); requestAnimationFrame(flash); }
+      }, { threshold: 0.5 });
+      io.observe(match);
+      setTimeout(() => { io.disconnect(); flash(); }, 1200);
+    }
+  });
+
+  const obs = new MutationObserver(() => setTimeout(linkBanner, 100));
+  const dayEds = document.getElementById('day-editions');
+  if (dayEds) obs.observe(dayEds, { childList: true });
+  setTimeout(linkBanner, 500);
 })();
 
 // ── Feature 8: Notification Subscription ──
