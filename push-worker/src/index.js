@@ -288,6 +288,29 @@ async function handleStats(request, env) {
   return json({ subscribers: count }, 200, request);
 }
 
+/** Return all subscriptions (auth required) — used by CLI push script */
+async function handleSubscriptions(request, env) {
+  const auth = request.headers.get('Authorization');
+  if (auth !== `Bearer ${env.PUSH_AUTH_TOKEN}`) {
+    return json({ error: 'Unauthorised' }, 401, request);
+  }
+
+  const subs = [];
+  let cursor = null;
+  do {
+    const list = await env.PUSH_SUBS.list({ cursor, limit: 1000 });
+    for (const key of list.keys) {
+      const raw = await env.PUSH_SUBS.get(key.name);
+      if (raw) {
+        try { subs.push(JSON.parse(raw)); } catch {}
+      }
+    }
+    cursor = list.list_complete ? null : list.cursor;
+  } while (cursor);
+
+  return json({ subscriptions: subs }, 200, request);
+}
+
 // ── Main ──
 
 export default {
@@ -311,6 +334,9 @@ export default {
     }
     if (request.method === 'GET' && path === '/stats') {
       return handleStats(request, env);
+    }
+    if (request.method === 'GET' && path === '/subscriptions') {
+      return handleSubscriptions(request, env);
     }
 
     return json({ error: 'Not found' }, 404, request);
