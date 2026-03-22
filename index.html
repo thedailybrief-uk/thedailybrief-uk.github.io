@@ -458,9 +458,19 @@
     }
     .weekly-details { width: 100%; }
     .weekly-details > summary {
-      cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px;
+      cursor: pointer; list-style: none; display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; border-radius: 8px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.2s; margin-top: 8px;
     }
     .weekly-details > summary::-webkit-details-marker { display: none; }
+    .weekly-details > summary:hover {
+      background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.25);
+    }
+    .weekly-details > summary .weekly-summary-text {
+      font-family: var(--sans); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.3px; color: rgba(255,255,255,0.85);
+    }
     .weekly-expand-hint {
       margin-left: auto; font-family: var(--sans); font-size: 11px;
       font-weight: 500; color: rgba(255,255,255,0.4);
@@ -469,37 +479,50 @@
     .weekly-expand-hint::after {
       content: '▼'; font-size: 9px; transition: transform 0.2s; display: inline-block;
     }
+    .weekly-details[open] > summary {
+      border-radius: 8px 8px 0 0; border-bottom-color: transparent;
+      background: rgba(255,255,255,0.06);
+    }
     .weekly-details[open] .weekly-expand-hint::after { transform: rotate(180deg); }
     .weekly-details[open] .weekly-expand-hint { color: rgba(255,255,255,0.25); }
     .weekly-details > summary:hover .weekly-expand-hint { color: rgba(255,255,255,0.6); }
-    .weekly-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-    @media (max-width: 768px) { .weekly-grid { grid-template-columns: 1fr; } }
-    .weekly-column {
-      padding: 16px 18px; border-radius: 8px;
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    .weekly-days {
+      padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.08);
     }
-    .weekly-column h3 {
+    .weekly-day { border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .weekly-day:last-child { border-bottom: none; }
+    .weekly-day > summary {
+      cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px;
+      padding: 14px 16px; font-family: var(--sans); font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.8); transition: all 0.15s;
+    }
+    .weekly-day > summary::-webkit-details-marker { display: none; }
+    .weekly-day > summary:hover { background: rgba(255,255,255,0.04); }
+    .weekly-day > summary::before {
+      content: '▸'; font-size: 11px; color: rgba(255,255,255,0.3);
+      transition: transform 0.2s; display: inline-block; width: 12px;
+    }
+    .weekly-day[open] > summary::before { transform: rotate(90deg); }
+    .weekly-day > summary .weekly-day-count {
+      margin-left: auto; font-size: 11px; font-weight: 500;
+      color: rgba(255,255,255,0.3);
+    }
+    .weekly-day-content { padding: 0 16px 16px 38px; }
+    .weekly-day-content h4 {
       font-family: var(--sans); font-size: 10px; font-weight: 700;
-      letter-spacing: 1.2px; text-transform: uppercase;
-      color: rgba(255,255,255,0.5); margin-bottom: 12px;
-      display: flex; align-items: center; gap: 8px;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); margin: 16px 0 8px;
     }
-    .weekly-column h3 .weekly-icon { font-size: 12px; }
-    .weekly-item { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .weekly-item:last-child { border-bottom: none; }
-    .weekly-item h4 {
-      font-family: var(--body-serif); font-size: 14px; font-weight: 600;
-      line-height: 1.35; margin-bottom: 4px;
+    .weekly-day-content h4:first-child { margin-top: 0; }
+    .weekly-day-content ul {
+      list-style: none; padding: 0; margin: 0;
     }
-    .weekly-item p { font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,0.6); }
-    .weekly-item .weekly-tag {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-      text-transform: uppercase; padding: 1px 6px; border-radius: 3px;
-      margin-left: 6px; vertical-align: middle;
+    .weekly-day-content li {
+      font-family: var(--body-serif); font-size: 13px; line-height: 1.45;
+      color: rgba(255,255,255,0.65); padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
-    .weekly-tag.geo { background: rgba(139, 35, 50, 0.3); color: rgba(255,255,255,0.7); }
-    .weekly-tag.dom { background: rgba(27, 79, 114, 0.3); color: rgba(255,255,255,0.7); }
-    .weekly-tag.markets { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+    .weekly-day-content li:last-child { border-bottom: none; }
 
     /* ── Feature 3: Reference Figures ── */
     .ref-figures {
@@ -1762,63 +1785,180 @@
     <!-- ── WEEKLY ROUNDUP 16–22 MARCH ── -->
     <div class="curated-edition weekly" data-date="2026-03-22" data-time="19:00">
       <div class="edition-header">
-        <span class="edition-icon">&#128197;</span>
         <h2>Week in Review</h2>
       </div>
-      <div class="curated-meta">Week of 16&ndash;22 March 2026</div>
+      <div class="curated-meta">Week of 18&ndash;22 March 2026</div>
       <details class="weekly-details">
         <summary>
-          <span>The stories that defined this week</span>
+          <span class="weekly-summary-text">Browse this week&rsquo;s briefings</span>
           <span class="weekly-expand-hint"></span>
         </summary>
-        <div class="weekly-grid">
+        <div class="weekly-days">
 
-          <!-- MOVED FORWARD -->
-          <div class="weekly-column">
-            <h3><span class="weekly-icon">&uarr;</span> Moved Forward</h3>
-            <div class="weekly-item">
-              <h4>Ukraine Achieves Drone Parity <span class="weekly-tag geo">Geopolitical</span></h4>
-              <p>Ukraine launched a record 280-drone barrage at Russia, setting the Saratov refinery ablaze. February 2026 became the first month since 2024 in which Ukraine recaptured more territory than it lost. Domestic drone production now exceeds 100,000 units per month.</p>
+          <!-- SUNDAY 22 MARCH -->
+          <details class="weekly-day">
+            <summary>Sunday 22 March <span class="weekly-day-count">20 stories</span></summary>
+            <div class="weekly-day-content">
+              <h4>Evening Briefing &mdash; 17:50</h4>
+              <ul>
+                <li>Trump&rsquo;s 48-Hour Ultimatum Ticks Down; Iran Threatens Permanent Hormuz Closure</li>
+                <li>IAEA Confirms Natanz Bombing; Iran Death Toll Reaches 1,500</li>
+                <li>Iraq Militia Attacks Surge to 21 in 24 Hours; Regional Spillover Intensifies</li>
+                <li>Ukraine Saratov Refinery Fire Burns Into Second Day; Drone Parity Achieved</li>
+                <li>Gaza Ceasefire Continues to Erode as World Focuses on Iran</li>
+                <li>Starmer Bars Akrotiri From US Strikes; Considers Sending Drones to Gulf</li>
+                <li>Anti-War March Reaches Downing Street; Counter-Rally Draws Fewer Than 100</li>
+                <li>Energy Bills Forecast to Rise &pound;332 From July as Gilt Yields Hit 2008 Highs</li>
+                <li>Kent Meningitis Cases Revised Down to 29; Nearly 5,800 Vaccinated</li>
+                <li>Blair Urges Starmer to &ldquo;Show Up&rdquo; for Trump on Iran</li>
+              </ul>
+              <h4>Morning Briefing &mdash; 07:45</h4>
+              <ul>
+                <li>Natanz Struck by US Bunker-Busters; Iran Retaliates Against Israeli Cities</li>
+                <li>Trump Issues 48-Hour Ultimatum: Reopen Hormuz or Power Plants Will Be &ldquo;Obliterated&rdquo;</li>
+                <li>Iran Fires Missiles at Diego Garcia, Revealing Intercontinental Capability</li>
+                <li>Ukraine Launches Record 280-Drone Barrage at Russia; Territorial Gains Continue</li>
+                <li>Gaza Ceasefire Fraying: 591 Killed Since October Truce as World Attention Shifts</li>
+                <li>UK Drawn Deeper Into Conflict as Trump&rsquo;s Hormuz Ultimatum Ticks Down</li>
+                <li>Thousands March Against Iran War in London; US Embassy Protest Planned Today</li>
+                <li>Gold Crashes 11% in Worst Week Since 1983 as Gilt Yields Hit 5%</li>
+                <li>Kent Meningitis: Mass Vaccination Race Against Easter Break</li>
+                <li>Labour Exploring Balkan &ldquo;Return Hubs&rdquo; for Failed Asylum Seekers</li>
+              </ul>
             </div>
-            <div class="weekly-item">
-              <h4>22-Nation Hormuz Coalition Takes Shape <span class="weekly-tag geo">Geopolitical</span></h4>
-              <p>A 22-nation coalition &mdash; up from 7 in a week &mdash; signed a joint statement demanding Iran reopen the Strait. The UAE, Japan and Australia joined the UK, France and Germany. Saudi Arabia expelled Iran&rsquo;s military attach&eacute;.</p>
-            </div>
-            <div class="weekly-item">
-              <h4>Kent Meningitis Vaccination Push Reaches 5,800 <span class="weekly-tag dom">Domestic</span></h4>
-              <p>UKHSA administered 5,794 Bexsero vaccines and 11,010 antibiotic courses across six clinics. Cases were revised down from 34 to 29 after lab reclassification &mdash; the first decline.</p>
-            </div>
-          </div>
+          </details>
 
-          <!-- STALLED -->
-          <div class="weekly-column">
-            <h3><span class="weekly-icon">&bull;</span> Stalled</h3>
-            <div class="weekly-item">
-              <h4>Gilt Yields Hit 5% &mdash; Highest Since 2008; Gold Crashes 11% <span class="weekly-tag markets">Markets</span></h4>
-              <p>UK 10-year gilts breached 5% for the first time since 2008, up 68 basis points in 15 trading days. Gold suffered its worst week since 1983, plunging 11%. FTSE 100 logged its worst week since the 2022 energy crisis.</p>
+          <!-- SATURDAY 21 MARCH -->
+          <details class="weekly-day">
+            <summary>Saturday 21 March <span class="weekly-day-count">20 stories</span></summary>
+            <div class="weekly-day-content">
+              <h4>Evening Briefing &mdash; 18:15</h4>
+              <ul>
+                <li>Israel Strikes Natanz Nuclear Site; Iran Fires Missiles at Diego Garcia</li>
+                <li>Trump Lifts Sanctions on 140 Million Barrels of Iranian Oil to Cool Markets</li>
+                <li>Gulf Energy Crisis Deepens; Goldman Warns Oil May Stay Triple-Digit for Years</li>
+                <li>Denmark&rsquo;s Greenland Sabotage Plan Dominates Weekend Coverage Across NATO</li>
+                <li>Orb&aacute;n Holds Firm on Ukraine Loan and Russia Sanctions as Summit Deadlocks</li>
+                <li>Iran Warns Britain: Allowing US Strikes From Bases Is &ldquo;Participation in Aggression&rdquo;</li>
+                <li>Mortgage Market Seizes Up: 700 Products Pulled, All Sub-4% Deals Gone</li>
+                <li>Kent Meningitis Outbreak Reaches 34 Cases; 4,500 Vaccinations Administered</li>
+                <li>Energy Bills to Fall &pound;117 in April &mdash; But War Threatens to Reverse Gains by July</li>
+                <li>Anti-Fascist Protesters Outnumber Far-Right Rally at Scottish Parliament</li>
+              </ul>
+              <h4>Morning Briefing &mdash; 07:50</h4>
+              <ul>
+                <li>Denmark Drew Up Secret Plan to Destroy Greenland Runways if US Moved to Seize Island</li>
+                <li>Orb&aacute;n Blocks &euro;90 Billion EU Loan to Ukraine; Brussels Vows to &ldquo;Find Another Way&rdquo;</li>
+                <li>Lebanon Death Toll Passes 1,000 as Israeli Ground Forces Push South of Litani</li>
+                <li>Trump Floats &ldquo;Winding Down&rdquo; Iran Campaign Even as Marines Deploy to Gulf</li>
+                <li>Oil Ends Turbulent Week at $112 After Touching $126; Hormuz Still Effectively Shut</li>
+                <li>Energy Price Cap Forecast to Jump 20% This Summer as Iran War Hits Households</li>
+                <li>Thousands Expected to March Through Central London Against Iran War Today</li>
+                <li>Mortgage Rates Climb Past 5.3% as Markets Price In Possible Rate Rises</li>
+                <li>Reeves Pledges &pound;2.5 Billion AI and Quantum Push to Rescue Flagging Growth</li>
+                <li>Kent Meningitis Outbreak: 27 Cases, Two Dead as Mass Vaccination Targets 5,000</li>
+              </ul>
             </div>
-            <div class="weekly-item">
-              <h4>Mortgage Market Seizes Up &mdash; 700+ Products Pulled <span class="weekly-tag dom">Domestic</span></h4>
-              <p>Over 700 fixed-rate mortgage deals were withdrawn in 48 hours as gilt yields surged. The average two-year fix rose from 4.84% to 5.21% in two weeks. All sub-4% deals vanished.</p>
-            </div>
-            <div class="weekly-item">
-              <h4>Iran War Enters Nuclear Phase <span class="weekly-tag geo">Geopolitical</span></h4>
-              <p>US bunker-busters hit Iran&rsquo;s Natanz enrichment plant. Iran retaliated by striking near Israel&rsquo;s Dimona nuclear centre, wounding 200. Iran&rsquo;s death toll reached 1,500 including 204 children.</p>
-            </div>
-          </div>
+          </details>
 
-          <!-- WATCH NEXT WEEK -->
-          <div class="weekly-column">
-            <h3><span class="weekly-icon">&rarr;</span> Watch Next Week</h3>
-            <div class="weekly-item">
-              <h4>Trump&rsquo;s 48-Hour Ultimatum Expires Monday Night <span class="weekly-tag geo">Geopolitical</span></h4>
-              <p>Trump has demanded Iran reopen Hormuz or face strikes to &ldquo;obliterate&rdquo; its power plants. The deadline expires approximately 11:44 PM GMT Monday 23 March. This could be the most dangerous 48 hours of the conflict.</p>
+          <!-- FRIDAY 20 MARCH -->
+          <details class="weekly-day">
+            <summary>Friday 20 March <span class="weekly-day-count">20 stories</span></summary>
+            <div class="weekly-day-content">
+              <h4>Evening Briefing &mdash; 18:15</h4>
+              <ul>
+                <li>Trump Brands NATO &ldquo;Cowards&rdquo; Hours After Allies Pledge Hormuz Support</li>
+                <li>Israel Bombs Tehran on Nowruz; Netanyahu Agrees to Halt Energy Strikes</li>
+                <li>F-35 Damage Confirmed; Chinese Analysts Map How Iran Detected Stealth Jet</li>
+                <li>UN Negotiates Humanitarian Corridor for 20,000 Stranded Seafarers</li>
+                <li>Iranian Drones Strike Kuwait Again as Gulf Energy War Intensifies</li>
+                <li>Petrol Prices Surge Past 144p as Oil Crisis Squeezes Households</li>
+                <li>Starmer Walks Tightrope on Iran as Britain Fires on Drones, Rules Out NATO</li>
+                <li>One in Five UK Founders Plan to Leave Britain Within 12 Months</li>
+                <li>Reform Dominates Polls at 28% as Labour Hits Record Lows</li>
+                <li>Unilever in Talks to Sell $33bn Food Arm to McCormick</li>
+              </ul>
+              <h4>Morning Briefing &mdash; 08:04</h4>
+              <ul>
+                <li>Kuwait Refinery Hit by Iranian Drones for Second Day Running</li>
+                <li>Seven Allied Nations Pledge to Secure Strait of Hormuz Passage</li>
+                <li>Pentagon Seeks $200bn War Supplemental; Hegseth Gives No End Date</li>
+                <li>US F-35 Struck by Iranian Fire in First Aircraft Hit of Conflict</li>
+                <li>Oil Falls as Washington Weighs Releasing Sanctioned Iranian Crude</li>
+                <li>Healey Faces MPs on Gulf Deployment as Allied Pledge Falls Short</li>
+                <li>Starmer Retreats on Immigration White Paper After Rayner Revolt</li>
+                <li>BoE Warns Inflation Could Hit 3.5% as Rate Cut Hopes Evaporate</li>
+                <li>End of Life Bill Likely Dead as Lords Time Runs Out</li>
+                <li>Grenfell Memorial Bill Clears Commons; No Charges Nine Years On</li>
+              </ul>
             </div>
-            <div class="weekly-item">
-              <h4>Parliament Debates UK Military Role in Iran Conflict <span class="weekly-tag dom">Domestic</span></h4>
-              <p>40 Labour MPs have signed an Early Day Motion demanding a vote on UK military involvement. Blair is pushing Starmer to &ldquo;show up&rdquo; for Trump. HMS Prince of Wales is being readied. Parliament sits Monday.</p>
+          </details>
+
+          <!-- THURSDAY 19 MARCH -->
+          <details class="weekly-day">
+            <summary>Thursday 19 March <span class="weekly-day-count">20 stories</span></summary>
+            <div class="weekly-day-content">
+              <h4>Evening Briefing &mdash; 18:05</h4>
+              <ul>
+                <li>Iran Strikes Qatar, Saudi and UAE Energy Sites After South Pars Hit</li>
+                <li>Saudi Arabia Warns Iran &ldquo;Patience Has Limits&rdquo;; Military Action Reserved</li>
+                <li>Brent Crude Hits $119 Before Settling at $111; Markets in Turmoil</li>
+                <li>Pentagon Weighs Sending Thousands More Troops to the Gulf</li>
+                <li>Israel Strikes Caspian Sea Naval Targets; Death Toll Passes 2,200</li>
+                <li>Bank of England Holds at 3.75% Unanimously; Warns of Rate Rises</li>
+                <li>Greens Lay Out Alternative Economic Plan as Labour Faces May Rout</li>
+                <li>Canterbury Meningitis: 27 Cases Under Investigation; Vaccination Begins</li>
+                <li>Heating Oil Fund Under Fire as Brent Hits $119; Rural Areas Worst Hit</li>
+                <li>Employment Rights: Day-One Sick Pay Now 18 Days Away</li>
+              </ul>
+              <h4>Morning Briefing &mdash; 07:57</h4>
+              <ul>
+                <li>Israel Strikes South Pars Gasfield; Iran Retaliates Against Qatar&rsquo;s Ras Laffan</li>
+                <li>Trump Threatens to &ldquo;Blow Up&rdquo; Entire South Pars If Iran Hits Qatar Again</li>
+                <li>Khatib Confirmed Dead &mdash; Fourth Senior Iranian Official Killed in Three Days</li>
+                <li>Brent Surges Past $114 as Gulf Energy War Escalates; VIX Spikes</li>
+                <li>US Senate Rejects War Powers Resolution 47&ndash;53; Fed Holds Rates Steady</li>
+                <li>Bank of England to Decide at Noon &mdash; Hold at 3.75% All but Certain</li>
+                <li>Starmer&rsquo;s &pound;53m Heating Oil Fund Under Fire as Prices Double Again</li>
+                <li>Canterbury Meningitis: Mass Vaccination Begins at University of Kent</li>
+                <li>Reform UK Lead Narrows to Seven Points as Labour Falls to 17%</li>
+                <li>Employment Rights Act: Day-One Sick Pay Takes Effect in 18 Days</li>
+              </ul>
             </div>
-          </div>
+          </details>
+
+          <!-- WEDNESDAY 18 MARCH -->
+          <details class="weekly-day">
+            <summary>Wednesday 18 March <span class="weekly-day-count">20 stories</span></summary>
+            <div class="weekly-day-content">
+              <h4>Evening Briefing &mdash; 17:55</h4>
+              <ul>
+                <li>Iran Confirms Khatib Killed &mdash; Third Senior Official in 48 Hours</li>
+                <li>Iran Launches Fresh Missile Salvo at Israel; Two Killed Near Tel Aviv</li>
+                <li>IRGC Threatens Strikes on Saudi, Qatari and UAE Oil Infrastructure</li>
+                <li>Brent Surges Past $105 as Gulf Threat Compounds Hormuz Shutdown</li>
+                <li>Trump&ndash;Zelenskyy Peace Deal 95% Agreed; Russia Launches 147 Drones</li>
+                <li>Starmer Demands Badenoch Sack Timothy Over Muslim Prayer Remarks</li>
+                <li>Canterbury Meningitis Outbreak Reaches 20 Cases; Two Young People Dead</li>
+                <li>Government Announces &pound;53m Heating Oil Fund for Vulnerable Households</li>
+                <li>Bank of England Poised to Hold at 3.75% as Oil Shock Clouds Outlook</li>
+                <li>Home Affairs Committee Warns Settlement Reforms Risk NHS Staffing</li>
+              </ul>
+              <h4>Morning Briefing &mdash; 07:55</h4>
+              <ul>
+                <li>Iran Fires Cluster Missiles at Tel Aviv; Elderly Couple Killed in Ramat Gan</li>
+                <li>Tehran Confirms Deaths of Larijani and Basij Commander Soleimani</li>
+                <li>UK&ndash;Ukraine Sign Drone Defence Pact; AI Centre for Kyiv Announced</li>
+                <li>Oil Holds Above $102 as Hormuz Closure Enters Fourth Week</li>
+                <li>Trump&ndash;Zelenskyy Peace Framework 95 Per Cent Agreed; Russia Stalls</li>
+                <li>Bank of England Decision Tomorrow &mdash; Markets Price Hold at 3.75%</li>
+                <li>Whitehall Credit Card Crackdown: 20,000 Cards Frozen in Waste Drive</li>
+                <li>Day-One Employment Rights Take Effect in Three Weeks</li>
+                <li>Immigration Settlement Rules Delayed to Autumn After Labour Revolt</li>
+                <li>Welsh Affairs Committee Launches Child Poverty Inquiry</li>
+              </ul>
+            </div>
+          </details>
 
         </div>
       </details>
