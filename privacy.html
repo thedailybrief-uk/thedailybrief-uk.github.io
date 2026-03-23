@@ -47,11 +47,11 @@
     <h2>2. Data Controller</h2>
     <p>The data controller for the purposes of UK GDPR is:</p>
     <p><strong>The Daily Brief</strong><br/>
-    Trading name of [YOUR FULL LEGAL NAME]<br/>
+    Trading name of Edward Charles Stephen Dickinson<br/>
     [YOUR CORRESPONDENCE ADDRESS]<br/>
     Email: <a href="mailto:thedailybriefuk@gmail.com">thedailybriefuk@gmail.com</a><br/>
     Telephone: [YOUR PHONE NUMBER]</p>
-    <p>The data protection contact for The Daily Brief is [YOUR FULL LEGAL NAME], contactable at the email address above.</p>
+    <p>The data protection contact for The Daily Brief is Edward Charles Stephen Dickinson, contactable at the email address above.</p>
 
     <h2>3. Data We Collect</h2>
     <h3>3.1 Data Stored Locally (localStorage)</h3>
@@ -95,11 +95,16 @@
           <td>Store your email for subscription interest</td>
           <td>Email address you provide</td>
         </tr>
+        <tr>
+          <td><code>breakingDismissed_*</code></td>
+          <td>Track which breaking news stories you have dismissed</td>
+          <td>"1" (dismissed flag)</td>
+        </tr>
       </tbody>
     </table>
 
-    <h3>3.2 Browser Notification Permission</h3>
-    <p>If you enable edition notifications, your browser stores the notification permission. We do not operate a push notification server; notifications are triggered locally when you visit the site.</p>
+    <h3>3.2 Push Notifications</h3>
+    <p>If you enable push notifications, your browser generates a subscription object containing an endpoint URL and encryption keys. This subscription is sent to our Cloudflare Worker (<code>daily-brief-push.thedailybrief.workers.dev</code>), which stores it in order to deliver edition alerts to your device. No other personal data is collected. You can unsubscribe at any time using the bell icon, which removes your subscription from both your browser and our Worker.</p>
 
     <h3>3.3 HTTP Headers</h3>
     <p>When you visit the Site, standard HTTP headers (IP address, browser type, referring page) are processed by GitHub Pages' servers. We do not have direct access to these server logs.</p>
@@ -174,6 +179,12 @@
           <td>IP address, browser headers</td>
           <td>Site hosting</td>
           <td><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a></td>
+        </tr>
+        <tr>
+          <td>Cloudflare Workers (daily-brief-push)</td>
+          <td>Push subscription endpoint URL, encryption keys</td>
+          <td>Delivers push notifications for new editions. Subscription data is stored on the Worker and deleted when you unsubscribe.</td>
+          <td><a href="https://www.cloudflare.com/en-gb/privacypolicy/" rel="noopener">Cloudflare Privacy Policy</a></td>
         </tr>
         <tr>
           <td>Stripe (future)</td>
