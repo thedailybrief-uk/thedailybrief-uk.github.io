@@ -820,8 +820,8 @@
       background: color-mix(in srgb, var(--bg) 85%, transparent);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
-    body.has-breaking-banner .day-nav { top: 48px; }
-    @media (max-width: 600px) { body.has-breaking-banner .day-nav { top: 56px; } }
+
+
     .day-nav-btn {
       background: var(--bg); border: 1px solid var(--border); border-radius: 50%;
       width: 40px; height: 40px; cursor: pointer; display: flex;
@@ -889,7 +889,7 @@
 
     /* ── Feature 1: Breaking Alert Banner ── */
     .breaking-banner {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       background: linear-gradient(135deg, #8b2332, #a63045);
       color: #fff; overflow: hidden;
       transition: transform 0.4s ease, opacity 0.4s ease;
@@ -986,11 +986,9 @@
       min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;
     }
     .breaking-dismiss:hover { color: #fff; }
-    body.has-breaking-banner { padding-top: 48px; }
     @media (max-width: 600px) {
       .breaking-text { font-size: 12px; }
       .breaking-readmore { font-size: 11px; }
-      body.has-breaking-banner { padding-top: 56px; }
     }
 
     /* ── Feature 2: Reading Time Estimate ── */
@@ -1186,8 +1184,8 @@
       transition: color 0.2s, box-shadow 0.2s, top 0.3s;
     }
     .search-fixed:hover { color: var(--text-primary); box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
-    body.has-breaking-banner .search-fixed { top: 56px; }
-    @media (max-width: 600px) { body.has-breaking-banner .search-fixed { top: 64px; } }
+
+
 
     /* ── #3 Enhancement: Reading Progress Bar ── */
     .reading-progress {
@@ -1195,8 +1193,8 @@
       background: var(--accent-geo); width: 0%;
       transition: width 0.1s linear; pointer-events: none;
     }
-    body.has-breaking-banner .reading-progress { top: 48px; }
-    @media (max-width: 600px) { body.has-breaking-banner .reading-progress { top: 56px; } }
+
+
 
     /* ── #4 Enhancement: Skeleton pulse refinement ── */
     .skeleton-card { animation: skeletonPulse 2s ease-in-out infinite; }
