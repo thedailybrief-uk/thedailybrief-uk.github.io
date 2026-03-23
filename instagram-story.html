@@ -28,15 +28,21 @@
     --slide-bg: var(--default-bg);
   }
 
-  /* ── Background photo layer ── */
+  /* ── Background photo layer with gentle Ken Burns drift ── */
   .story::after {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: -30px;
     background: var(--slide-bg) center/cover no-repeat;
     opacity: 0.22;
     pointer-events: none;
     z-index: 0;
+    animation: bgDrift 10s ease-in-out infinite alternate;
+  }
+
+  @keyframes bgDrift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(30px); }
   }
   .story > * {
     position: relative;
@@ -121,6 +127,12 @@
     justify-content: center;
     gap: 28px;
     box-shadow: 0 8px 40px rgba(192,57,43,0.5), 0 0 120px rgba(192,57,43,0.2);
+    animation: bannerGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes bannerGlow {
+    0%, 100% { box-shadow: 0 8px 40px rgba(192,57,43,0.5), 0 0 120px rgba(192,57,43,0.2); }
+    50% { box-shadow: 0 8px 60px rgba(192,57,43,0.7), 0 0 160px rgba(192,57,43,0.35); }
   }
 
   .breaking-banner .breaking-icon {
@@ -129,13 +141,23 @@
     background: #fff;
     border-radius: 50%;
     flex-shrink: 0;
-    animation: blink 0.8s ease-in-out infinite;
+    position: relative;
     box-shadow: 0 0 16px rgba(255,255,255,0.6);
   }
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.15; }
+  /* Live indicator: expanding ring */
+  .breaking-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.6);
+    animation: liveRing 2s ease-out infinite;
+  }
+
+  @keyframes liveRing {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(2.5); opacity: 0; }
   }
 
   .breaking-banner .breaking-text {
@@ -147,7 +169,7 @@
     color: #fff;
   }
 
-  /* ── Time stamp ── */
+  /* ── Time stamp — fades in on load ── */
   .timestamp {
     position: absolute;
     top: 480px;
@@ -160,6 +182,8 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     padding-top: 20px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
   }
 
   /* ── Content: centred in safe zone ── */
@@ -188,6 +212,9 @@
     color: #fff;
     line-height: 1.08;
     margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease forwards 0.3s;
   }
 
   .story-content h1 em {
@@ -209,6 +236,8 @@
     font-weight: 400;
     color: rgba(255,255,255,0.6);
     line-height: 1.55;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards 0.8s;
   }
 
   .story-content .key-facts {
@@ -222,7 +251,14 @@
   .story-content .fact {
     display: flex;
     flex-direction: column;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: slideUp 0.5s ease forwards;
   }
+  .story-content .fact:nth-child(1) { animation-delay: 1.2s; }
+  .story-content .fact:nth-child(2) { animation-delay: 1.35s; }
+  .story-content .fact:nth-child(3) { animation-delay: 1.5s; }
+  .story-content .fact:nth-child(4) { animation-delay: 1.65s; }
 
   .story-content .fact-value {
     font-family: 'Inter', sans-serif;
@@ -271,6 +307,42 @@
     letter-spacing: 1.5px;
   }
 
+  /* ── Lower-third ticker strip ── */
+  .ticker-strip {
+    position: absolute;
+    bottom: 350px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: transparent;
+    overflow: hidden;
+    z-index: 2;
+  }
+  .ticker-strip::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #c0392b;
+    animation: tickerSweep 10s linear infinite;
+  }
+
+  @keyframes tickerSweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* ── Entrance animation keyframes ── */
+  @keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
   /* Scale for preview */
   @media screen {
     .story { transform: scale(0.35); transform-origin: top left; margin-bottom: -1248px; margin-right: -702px; }
@@ -280,7 +352,7 @@
 <body>
 
 <!-- BREAKING NEWS STORY -->
-<div class="story" style="--slide-bg: url('https://plus.unsplash.com/premium_photo-1716745005851-f459bd0bfe25?w=1080&q=80')">
+<div class="story" style="--slide-bg: url('https://images.unsplash.com/photo-1663900108404-a05e8bf82cda?w=1080&q=80')">
   <div class="red-bar"></div>
   <div class="side-accent"></div>
   <div class="red-glow"></div>
@@ -291,29 +363,30 @@
     <div class="breaking-icon"></div>
     <div class="breaking-text">Breaking News</div>
   </div>
-  <div class="timestamp">18 March 2026 &mdash; 06:30 GMT</div>
+  <div class="timestamp">19 March 2026 &mdash; 17:30 GMT</div>
 
   <div class="story-content">
     <div class="category">Geopolitical</div>
-    <h1>Iran Fires <em>Cluster Missiles</em> at Central Israel</h1>
+    <h1>Saudi Arabia Warns Iran <em>&ldquo;Patience Has Limits&rdquo;</em></h1>
     <div class="divider"></div>
-    <div class="summary">Iran launched cluster munitions at central Israel overnight in what Tehran called &ldquo;revenge&rdquo; for the killing of security chief Ali Larijani. An elderly couple were killed in Ramat Gan after a warhead penetrated their apartment roof. Tehran has separately confirmed the deaths of Larijani and Basij commander Gholamreza Soleimani in Israeli strikes.</div>
+    <div class="summary">Saudi Foreign Minister Prince Faisal declared Riyadh&rsquo;s trust in Iran &ldquo;completely shattered&rdquo; after IRGC strikes hit energy infrastructure across three Gulf states. The kingdom &ldquo;reserves the right to take military action.&rdquo; Brent crude hit $119 before settling at $111. Gulf states raised air defences to their highest level since the conflict began.</div>
     <div class="key-facts">
       <div class="fact">
-        <div class="fact-value">2</div>
-        <div class="fact-label">Killed</div>
+        <div class="fact-value">$119</div>
+        <div class="fact-label">Brent intraday peak</div>
       </div>
       <div class="fact">
-        <div class="fact-value">Day 19</div>
+        <div class="fact-value">3</div>
+        <div class="fact-label">Gulf states struck</div>
+      </div>
+      <div class="fact">
+        <div class="fact-value">Day 20</div>
         <div class="fact-label">Of Iran conflict</div>
-      </div>
-      <div class="fact">
-        <div class="fact-value">2</div>
-        <div class="fact-label">Senior officials dead</div>
       </div>
     </div>
   </div>
 
+  <div class="ticker-strip"></div>
   <div class="story-footer">
     <div class="footer-brand">The Daily Brief</div>
     <div class="footer-url">thedailybrief.co.uk</div>

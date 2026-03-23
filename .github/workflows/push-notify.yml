@@ -31,11 +31,11 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%B)
           DIFF=$(git diff HEAD~1 HEAD -- index.html)
 
-          # Detect breaking news (banner added/changed)
-          if echo "$DIFF" | grep -qi 'breaking-banner\|breaking-news-text\|breakingHeadline'; then
+          # Detect breaking news (JSON block changed — look for headline field in added lines)
+          if echo "$DIFF" | grep '^+' | grep -q '"headline"'; then
             echo "Detected: Breaking news update"
-            # Extract the breaking headline from the diff (new lines only)
-            HEADLINE=$(echo "$DIFF" | grep '^+' | grep -oP 'breaking-news-text[^>]*>\K[^<]+' | head -1)
+            # Extract the headline from the JSON diff (first added "headline" value)
+            HEADLINE=$(echo "$DIFF" | grep '^+' | grep -oP '"headline"\s*:\s*"\K[^"]+' | head -1)
             if [ -z "$HEADLINE" ]; then
               HEADLINE="Breaking news on The Daily Brief"
             fi
