@@ -914,7 +914,62 @@
       cursor: pointer; transition: opacity 0.2s;
     }
     .breaking-text:hover { opacity: 0.85; }
-    .breaking-text.linked { text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 2px; }
+    .breaking-readmore {
+      font-family: var(--sans); font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85);
+      cursor: pointer; white-space: nowrap; border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 1px; transition: color 0.2s, border-color 0.2s;
+    }
+    .breaking-readmore:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+    .breaking-modal {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 9999; align-items: center; justify-content: center;
+    }
+    .breaking-modal.open { display: flex; }
+    .breaking-modal-inner {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 32px 36px; max-width: 520px; width: 92%; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;
+    }
+    .breaking-modal-close {
+      position: absolute; top: 14px; right: 16px; background: none; border: none;
+      font-size: 28px; cursor: pointer; color: var(--text-tertiary); line-height: 1;
+    }
+    .breaking-modal-close:hover { color: var(--text-primary); }
+    .breaking-modal-cat {
+      display: inline-block; font-family: var(--sans); font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: #fff;
+      background: #8b2332; padding: 3px 10px; border-radius: 3px; margin-bottom: 12px;
+    }
+    .breaking-modal-headline {
+      font-family: var(--serif); font-size: 22px; font-weight: 700; line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .breaking-modal-time {
+      font-family: var(--sans); font-size: 12px; color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .breaking-modal-summary {
+      font-size: 14px; line-height: 1.6; color: var(--text-secondary);
+      margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+    }
+    .breaking-modal-facts {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;
+    }
+    .breaking-modal-fact {
+      background: rgba(139,35,50,0.06); border-radius: 8px; padding: 10px 12px;
+    }
+    [data-theme="dark"] .breaking-modal-fact { background: rgba(139,35,50,0.15); }
+    .breaking-modal-fact-label {
+      font-family: var(--sans); font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; color: #8b2332; margin-bottom: 4px;
+    }
+    .breaking-modal-fact-value {
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+    }
+    @media (max-width: 520px) {
+      .breaking-modal-inner { padding: 24px 20px; }
+      .breaking-modal-facts { grid-template-columns: 1fr; }
+    }
     .curated-item.highlight-flash {
       animation: highlightPulse 2.5s ease-out forwards;
       border-radius: 6px; position: relative; z-index: 2;
@@ -934,6 +989,7 @@
     body.has-breaking-banner { padding-top: 48px; }
     @media (max-width: 600px) {
       .breaking-text { font-size: 12px; }
+      .breaking-readmore { font-size: 11px; }
       body.has-breaking-banner { padding-top: 56px; }
     }
 
@@ -1530,14 +1586,23 @@
        - Stories > 8h old are hidden automatically
        To add a new breaking story, prepend an entry here with the current ISO timestamp. -->
   <script id="breaking-stories" type="application/json">[
-    {"text": "Trump\u2019s 48-hour Hormuz ultimatum expires at 23:44 GMT tonight; Iran vows \u2018permanent closure\u2019 of Strait and retaliatory strikes on Gulf desalination infrastructure if power plants hit \u2014 07:45 GMT", "posted": "2026-03-23T07:45:00Z"},
-    {"text": "Intense overnight strikes hit Tehran, Karaj, Shiraz and Chabahar as Day 24 of Iran conflict begins; 1,330+ killed including 200 children \u2014 06:30 GMT", "posted": "2026-03-23T06:30:00Z"}
+    {"headline": "Hormuz ultimatum expires at 23:44 GMT tonight — 07:45 GMT", "category": "Geopolitics", "summary": "Trump's 48-hour ultimatum over the Strait of Hormuz is set to expire at 23:44 GMT. Iran has vowed 'permanent closure' of the Strait and threatened retaliatory strikes on Gulf desalination infrastructure if its power plants are hit. Global shipping routes face severe disruption.", "facts": [{"label": "Deadline", "value": "23:44 GMT tonight"}, {"label": "Threat", "value": "Permanent Hormuz closure"}, {"label": "Retaliation", "value": "Gulf desalination strikes"}], "posted": "2026-03-23T07:45:00Z"},
+    {"headline": "Overnight strikes hit Tehran, Karaj, Shiraz and Chabahar — 06:30 GMT", "category": "Conflict", "summary": "Intense overnight strikes have hit four Iranian cities as Day 24 of the Iran conflict begins. Tehran, Karaj, Shiraz and Chabahar all sustained significant damage. The confirmed death toll has surpassed 1,330, including more than 200 children.", "facts": [{"label": "Cities hit", "value": "Tehran, Karaj, Shiraz, Chabahar"}, {"label": "Confirmed killed", "value": "1,330+"}, {"label": "Children killed", "value": "200+"}], "posted": "2026-03-23T06:30:00Z"}
   ]</script>
   <div class="breaking-banner" id="breakingBanner">
     <div class="breaking-inner">
       <span class="breaking-label">BREAKING</span>
-      <span class="breaking-text" id="breakingText">Asian markets in freefall as Trump&rsquo;s 48-hour Iran ultimatum enters final hours; KOSPI plunges 6.5%, Nikkei falls 3.5% &mdash; 08:55 GMT</span>
+      <span class="breaking-text" id="breakingText"></span>
+      <span class="breaking-readmore" id="breakingReadmore">Read more</span>
       <button class="breaking-dismiss" id="breakingDismiss">&times;</button>
+    </div>
+  </div>
+
+  <!-- Breaking News Modal -->
+  <div class="breaking-modal" id="breakingModal" role="dialog" aria-modal="true" aria-label="Breaking news details">
+    <div class="breaking-modal-inner">
+      <button class="breaking-modal-close" id="breakingModalClose" aria-label="Close">&times;</button>
+      <div id="breakingModalContent"></div>
     </div>
   </div>
 
@@ -3434,6 +3499,7 @@ window._marketData = {};
       document.getElementById('kbdOverlay')?.classList.remove('open');
       document.getElementById('notifyModal')?.classList.remove('open');
       document.getElementById('subscribeModal')?.classList.remove('open');
+      document.getElementById('breakingModal')?.classList.remove('open');
       var mm = document.getElementById('marketModal');
       if (mm && mm.classList.contains('open')) { mm.classList.remove('open'); if (window._tickerScheduleResume) window._tickerScheduleResume(); }
       const bp = document.getElementById('bookmarksPanel');
@@ -3798,12 +3864,21 @@ if ('serviceWorker' in navigator) {
   const banner = document.getElementById('breakingBanner');
   const dismiss = document.getElementById('breakingDismiss');
   const breakingTextEl = document.getElementById('breakingText');
+  const readmoreBtn = document.getElementById('breakingReadmore');
+  const breakingModal = document.getElementById('breakingModal');
+  const breakingModalClose = document.getElementById('breakingModalClose');
+  const breakingModalContent = document.getElementById('breakingModalContent');
   if (!banner || !breakingTextEl) return;
 
   // Load breaking stories from JSON
   let stories = [];
   try { stories = JSON.parse(document.getElementById('breaking-stories').textContent); } catch(e) {}
   if (!stories.length) return;
+
+  // Helper: get display text (headline with text fallback)
+  function displayText(s) { return s.headline || s.text || ''; }
+  // Helper: dismiss key
+  function dismissKey(s) { return 'breakingDismissed_' + displayText(s).slice(0, 80); }
 
   // Time thresholds
   const THREE_HOURS = 3 * 60 * 60 * 1000;
@@ -3822,12 +3897,14 @@ if ('serviceWorker' in navigator) {
   const fresh = valid.find(s => s.age < THREE_HOURS);
   const active = fresh || valid[0];
 
-  // Check if user dismissed this specific headline
-  const breakingKey = 'breakingDismissed_' + active.text.slice(0, 80);
-  if (localStorage.getItem(breakingKey)) return;
+  // Track current story for modal
+  var currentStory = active;
 
-  // Show the banner (breaking push notifications are sent via the Worker CLI)
-  breakingTextEl.textContent = active.text;
+  // Check if user dismissed this specific headline
+  if (localStorage.getItem(dismissKey(active))) return;
+
+  // Show the banner
+  breakingTextEl.textContent = displayText(active);
   banner.style.display = '';
   banner.classList.remove('dismissed');
   document.body.classList.add('has-breaking-banner');
@@ -3837,26 +3914,26 @@ if ('serviceWorker' in navigator) {
     e.stopPropagation();
     banner.classList.add('dismissed');
     document.body.classList.remove('has-breaking-banner');
-    localStorage.setItem(breakingKey, '1');
+    localStorage.setItem(dismissKey(currentStory), '1');
   });
 
   // Auto-rotate: if the active story passes 3h and a newer one exists, swap it
   if (active === fresh && valid.length > 1) {
     const msUntilExpiry = THREE_HOURS - active.age;
     setTimeout(() => {
-      // Find next valid story that isn't dismissed
-      const next = valid.find(s => s !== active && !localStorage.getItem('breakingDismissed_' + s.text.slice(0, 80)));
+      const next = valid.find(s => s !== active && !localStorage.getItem(dismissKey(s)));
       if (next) {
-        breakingTextEl.textContent = next.text;
-        notifyBreaking(next.text);
-        // Update dismiss key for the new story
-        const newKey = 'breakingDismissed_' + next.text.slice(0, 80);
+        currentStory = next;
+        breakingTextEl.textContent = displayText(next);
+        notifyBreaking(displayText(next));
         dismiss.onclick = (e) => {
           e.stopPropagation();
           banner.classList.add('dismissed');
           document.body.classList.remove('has-breaking-banner');
-          localStorage.setItem(newKey, '1');
+          localStorage.setItem(dismissKey(next), '1');
         };
+        // Re-link banner to curated items
+        setTimeout(linkBanner, 200);
       } else {
         banner.classList.add('dismissed');
         document.body.classList.remove('has-breaking-banner');
@@ -3871,7 +3948,44 @@ if ('serviceWorker' in navigator) {
     document.body.classList.remove('has-breaking-banner');
   }, msUntilHide);
 
-  // Link breaking banner to matching curated item
+  // ── Breaking Modal ──
+  function openBreakingModal() {
+    if (!breakingModal || !breakingModalContent || !currentStory) return;
+    var s = currentStory;
+    var posted = new Date(s.posted);
+    var timeStr = posted.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+    var dateStr = posted.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    var html = '';
+    if (s.category) html += '<div class="breaking-modal-cat">' + s.category + '</div>';
+    // Strip trailing timestamp from headline for modal display
+    var cleanHeadline = displayText(s).replace(/\s*[\u2014—–-]\s*\d{1,2}:\d{2}\s*(GMT|BST|UTC)$/i, '');
+    html += '<div class="breaking-modal-headline">' + cleanHeadline + '</div>';
+    html += '<div class="breaking-modal-time">' + dateStr + ' at ' + timeStr + '</div>';
+    if (s.summary) html += '<div class="breaking-modal-summary">' + s.summary + '</div>';
+    if (s.facts && s.facts.length) {
+      html += '<div class="breaking-modal-facts">';
+      s.facts.forEach(function(f) {
+        html += '<div class="breaking-modal-fact">';
+        html += '<div class="breaking-modal-fact-label">' + f.label + '</div>';
+        html += '<div class="breaking-modal-fact-value">' + f.value + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    breakingModalContent.innerHTML = html;
+    breakingModal.classList.add('open');
+  }
+
+  function closeBreakingModal() {
+    if (breakingModal) breakingModal.classList.remove('open');
+  }
+
+  if (readmoreBtn) readmoreBtn.addEventListener('click', function(e) { e.stopPropagation(); openBreakingModal(); });
+  if (breakingModalClose) breakingModalClose.addEventListener('click', closeBreakingModal);
+  if (breakingModal) breakingModal.addEventListener('click', function(e) { if (e.target === breakingModal) closeBreakingModal(); });
+
+  // Link breaking banner to matching curated item (click on text still scrolls)
   function getBreakingWords() {
     return breakingTextEl.textContent.toLowerCase()
       .replace(/[^a-z0-9\s]/g, '').split(/\s+/)
@@ -3902,7 +4016,6 @@ if ('serviceWorker' in navigator) {
   function linkBanner() {
     const match = findMatchingItem();
     if (match) {
-      breakingTextEl.classList.add('linked');
       breakingTextEl.title = 'Click to read full coverage';
     }
   }
