@@ -5,6 +5,49 @@
 
 ---
 
+## Week of 23–28 March 2026
+
+### Monday 23 March
+
+_Morning — Geopolitical:_
+1. Day 24: Israeli Strikes Hit Tehran, Tabriz and Khorramabad — IRGC HQ and weapons sites targeted
+2. Iran Denies Trump's "Productive Talks" Claim — five-day pause begins on power-plant strikes
+3. Iran Attacks All Six GCC States in Historic First — Bahrain, Kuwait, Oman, Qatar, Saudi, UAE all struck
+4. Asian Markets Rally, Oil Falls Below $100 on Trump Pause Hopes
+5. Russia Strikes Ukrainian Energy Grid Across Nine Regions — Moldova power link severed
+
+_Morning — UK Domestic:_
+1. Starmer Chairs COBRA on Economic Fallout — plans for "some time"
+2. Reeves Unveils Anti-Profiteering Framework — CMA gets time-limited enforcement powers
+3. Gilt Yields Hold Near 5% — fiscal headroom evaporates
+4. Labour Falls to Record Low 16% — Greens surge to 21%
+5. Commons Enters Final Week Before Easter Recess
+
+### Tuesday 24 March
+
+_Morning — Geopolitical:_
+1. Day 25: "Unprecedented" Israeli Strikes Devastate Eastern Tehran
+2. Iran Denies Trump's "Productive Talks" as Five-Day Pause Begins
+3. Iran Attacks All Six GCC States in Historic First
+4. Asian Markets Rally on Trump Pause; Oil Falls Below $100
+5. Russia Strikes Ukrainian Energy Grid Across Nine Regions
+
+_Evening — Geopolitical:_
+1. Day 25: Trump Claims Iran Offered a "Significant Prize" — Tehran Denies Any Contact
+2. Trump's Approval Crashes to 36% as Americans Turn Against Iran War
+3. German President Calls Iran War a "Disastrous Mistake"
+4. Israel Strikes Lebanese Christian Town in Significant Expansion
+5. Colombian Military Plane Crash Kills 66 Soldiers
+
+_Evening — UK Domestic:_
+1. Counter-Terror Police Probe Iran-Linked Group After Golders Green Arson
+2. UK Economy Stalls — Flash PMI Slumps to Six-Month Low
+3. Matt Brittin Named as Next BBC Director-General
+4. Davey Declares "Two-Horse Race" as Lib Dems Launch Local Election Campaign
+5. Government Announces £53m Heating Oil Fund and Late Payment Crackdown
+
+---
+
 ## Week of 16–21 March 2026
 
 ### Monday 16 March
