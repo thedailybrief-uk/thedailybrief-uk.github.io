@@ -5601,6 +5601,51 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 
+<!-- ── Auto-refresh when returning from background (PWA / home screen) ── -->
+<script>
+(function() {
+  var hiddenAt = 0;
+  var STALE_MS = 2 * 60 * 1000; // 2 minutes
+
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      hiddenAt = Date.now();
+      return;
+    }
+    // Page just became visible again
+    if (!hiddenAt || Date.now() - hiddenAt < STALE_MS) return;
+
+    // Been hidden for 2+ minutes — check if the site has been updated
+    fetch('/index.html?_nocache=' + Date.now(), { method: 'HEAD', cache: 'no-store' })
+      .then(function(res) {
+        var serverDate = res.headers.get('last-modified');
+        if (!serverDate) return;
+        // Compare against the page's own load time (stored on first run)
+        if (!window._pageLastModified) {
+          window._pageLastModified = serverDate;
+          return;
+        }
+        if (serverDate !== window._pageLastModified) {
+          location.reload();
+        }
+      })
+      .catch(function() { /* offline — do nothing */ });
+  });
+
+  // Also handle iOS back-forward cache restoration
+  window.addEventListener('pageshow', function(e) {
+    if (e.persisted) location.reload();
+  });
+
+  // Store initial Last-Modified on first load
+  fetch('/index.html?_nocache=' + Date.now(), { method: 'HEAD', cache: 'no-store' })
+    .then(function(res) {
+      window._pageLastModified = res.headers.get('last-modified');
+    })
+    .catch(function() {});
+})();
+</script>
+
 <!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ae2a490fafae4f79ab14fe515fd3e376"}'></script>
 <!-- End Cloudflare Web Analytics -->
