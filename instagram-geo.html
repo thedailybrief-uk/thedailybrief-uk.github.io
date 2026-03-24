@@ -102,12 +102,12 @@
 
   .cover .label {
     font-family: 'Inter', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 5px;
+    color: #f5a0a0;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
 
   .cover .hook {
@@ -128,9 +128,9 @@
     font-family: 'Inter', sans-serif;
     font-size: 26px;
     font-weight: 400;
-    color: rgba(255,255,255,0.55);
-    line-height: 1.5;
-    max-width: 700px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.55;
+    max-width: 850px;
   }
 
   .cover .bottom-row {
@@ -148,20 +148,16 @@
     color: rgba(255,255,255,0.4);
     letter-spacing: 3px;
     text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 12px;
   }
 
   .cover .swipe-arrow {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    font-size: 20px;
+    display: inline-block;
+    animation: nudge 1.5s ease-in-out infinite;
+  }
+
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
   }
 
   .cover .dots {
@@ -178,104 +174,86 @@
 
   .cover .dots span:first-child {
     background: #f5a0a0;
-    width: 28px;
-    border-radius: 5px;
   }
 
   /* ── HEADLINE SLIDES ── */
   .slide.headline {
-    background: #0c0c14;
+    background: linear-gradient(170deg, #1a0a10 0%, #0d0d0d 100%);
     display: flex;
     flex-direction: column;
-    padding: 60px 70px 70px;
-    --default-bg: url('https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=1080&q=90');
-    --slide-bg: var(--default-bg);
+    padding: 70px 70px 50px;
   }
 
-  .headline::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 8px;
-    height: 100%;
-    background: linear-gradient(180deg, #8b2332, #c43e54, #8b2332);
-    z-index: 1;
-  }
-
-  /* ── Background photo layer ── */
-  .slide.headline::after {
+  /* Background photo layer */
+  .headline::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--slide-bg) center/cover no-repeat;
+    background: var(--slide-bg, var(--default-bg)) center/cover no-repeat;
     opacity: 0.08;
     pointer-events: none;
     z-index: 0;
-  }
-  .slide.headline > * {
-    position: relative;
-    z-index: 1;
+    --default-bg: url('https://images.unsplash.com/photo-1578902848213-b7d89464fc5e?w=1080&q=90');
   }
 
   .headline .top-section {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 30px;
-    padding-left: 16px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
   }
 
   .headline .num-block {
     display: flex;
     align-items: baseline;
-    gap: 16px;
+    gap: 4px;
   }
 
   .headline .slide-num {
     font-family: 'Inter', sans-serif;
-    font-size: 120px;
+    font-size: 72px;
     font-weight: 900;
-    color: #8b2332;
+    color: #fff;
     line-height: 1;
-    letter-spacing: -4px;
   }
 
   .headline .of-total {
     font-family: 'Inter', sans-serif;
     font-size: 28px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.15);
+    font-weight: 600;
+    color: rgba(255,255,255,0.2);
   }
 
   .headline .tag {
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: #f5a0a0;
     letter-spacing: 3px;
     text-transform: uppercase;
-    background: rgba(139,35,50,0.15);
-    padding: 10px 22px;
-    border-radius: 4px;
-    margin-top: 14px;
+    padding: 12px 24px;
+    border: 1.5px solid rgba(245,160,160,0.25);
+    border-radius: 30px;
   }
 
   .headline .content {
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 16px;
+    position: relative;
+    z-index: 1;
   }
 
   .headline h2 {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 62px;
+    font-size: 56px;
     font-weight: 800;
     color: #fff;
-    line-height: 1.12;
-    margin-bottom: 32px;
+    line-height: 1.15;
+    margin-bottom: 28px;
   }
 
   .headline h2 em {
@@ -285,18 +263,31 @@
 
   .headline .summary {
     font-family: 'Inter', sans-serif;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 400;
     color: rgba(255,255,255,0.55);
     line-height: 1.6;
+    margin-bottom: 40px;
   }
 
   .headline .stat-row {
     display: flex;
-    gap: 40px;
-    margin-top: 40px;
+    gap: 50px;
+    padding-left: 16px;
     padding-top: 32px;
     border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Accent bar left */
+  .headline .content::before {
+    content: '';
+    position: absolute;
+    left: -70px;
+    top: 10%;
+    bottom: 10%;
+    width: 4px;
+    background: linear-gradient(180deg, #8b2332, #c43e54, #8b2332);
+    border-radius: 2px;
   }
 
   .headline .stat {
@@ -464,16 +455,16 @@
 <body>
 
 <!-- SLIDE 1: COVER -->
-<div class="slide cover" style="--slide-bg: url('https://images.unsplash.com/photo-1761301643520-49c1ee626e72?w=1080&q=90')">
+<div class="slide cover" style="--slide-bg: url('https://images.unsplash.com/photo-1578902848213-b7d89464fc5e?w=1080&q=90')">
   <div class="bg-photo"></div>
   <div class="top-row">
     <div class="brand">The Daily Brief</div>
-    <div class="date-pill">Mon 23 March 2026</div>
+    <div class="date-pill">Tue 24 March 2026</div>
   </div>
   <div class="center-block">
     <div class="label">Daily Briefing</div>
     <div class="hook">Today&rsquo;s Top 5 <em>Geopolitical</em> Stories</div>
-    <div class="sub">Day 24 of the Iran war &mdash; Trump postpones ultimatum and claims talks (Iran denies), oil plunges 10%, Israel expands into Lebanon, US lifts sanctions on 140M barrels, and Sudan hospital strike kills 64.</div>
+    <div class="sub">Day 25 of the Iran war &mdash; Trump claims Tehran offered a &ldquo;prize&rdquo; (Iran denies), his approval crashes to 36%, Germany calls war a &ldquo;disastrous mistake,&rdquo; Israel hits Lebanese Christians, and Colombia mourns 66 soldiers.</div>
   </div>
   <div class="bottom-row">
     <div class="swipe">Swipe <span class="swipe-arrow">&rarr;</span></div>
@@ -482,7 +473,7 @@
 </div>
 
 <!-- SLIDE 2 -->
-<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1629904853893-c2c8981a1dc5?w=1080&q=90')">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1745847768380-2caeadbb3b71?w=1080&q=90')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">01</div>
@@ -491,20 +482,20 @@
     <div class="tag">Geopolitical</div>
   </div>
   <div class="content">
-    <h2>Trump Postpones <em>Iran Ultimatum</em> &mdash; Claims &ldquo;Productive Talks&rdquo;</h2>
-    <div class="summary">Trump announced a five-day postponement, claiming &ldquo;very productive private talks&rdquo; with Tehran. Iran&rsquo;s Foreign Ministry categorically denied any negotiations, calling it &ldquo;a fabrication.&rdquo; The deadline shifts to Saturday 28 March. Markets surged; Brent crude fell over 10%.</div>
+    <h2>Trump Claims Iran&rsquo;s <em>&ldquo;Prize&rdquo;</em> &mdash; Tehran Denies Any Contact</h2>
+    <div class="summary">Trump claimed Iran had offered &ldquo;a very significant prize&rdquo; related to the Strait of Hormuz but refused to specify. Tehran categorically denied any talks. Israel struck central Tehran; Iran fired missiles at Tel Aviv. Over 1,000 troops from the 82nd Airborne deployed to the region.</div>
     <div class="stat-row">
       <div class="stat">
-        <div class="stat-value">5 days</div>
-        <div class="stat-label">Postponement</div>
+        <div class="stat-value">Day 25</div>
+        <div class="stat-label">Of the conflict</div>
       </div>
       <div class="stat">
-        <div class="stat-value down">&minus;10.5%</div>
-        <div class="stat-label">Brent crude</div>
+        <div class="stat-value down">350+</div>
+        <div class="stat-label">Children killed</div>
       </div>
       <div class="stat">
-        <div class="stat-value">28 Mar</div>
-        <div class="stat-label">New deadline</div>
+        <div class="stat-value">1,000+</div>
+        <div class="stat-label">Troops deployed</div>
       </div>
     </div>
   </div>
@@ -515,7 +506,7 @@
 </div>
 
 <!-- SLIDE 3 -->
-<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1745270917449-c2e2c5806586?w=1080&q=90')">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1580128660010-fd027e1e587a?w=1080&q=90')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">02</div>
@@ -524,20 +515,20 @@
     <div class="tag">Geopolitical</div>
   </div>
   <div class="content">
-    <h2>Markets Rally, <em>Oil Plunges</em> 10.5% on De-Escalation</h2>
-    <div class="summary">The largest single-day oil price drop since the conflict began. Brent fell from $112 to $100.46. The Dow gained over 1,000 points. FTSE rallied 2.8%. Gold fell 1.5% as safe-haven demand retreated. The VIX fear gauge plunged 16%. But physical oil markets remain severely disrupted.</div>
+    <h2>Trump&rsquo;s Approval <em>Crashes to 36%</em> &mdash; Lowest of Second Term</h2>
+    <div class="summary">A Reuters/Ipsos poll shows the sharpest weekly decline for any modern US president. Just 25% approve of his cost-of-living record. Gasoline above $4.50/gallon. A separate Quinnipiac poll found 74% oppose ground troops. No post-war president below 38% has recovered to win re-election.</div>
     <div class="stat-row">
       <div class="stat">
-        <div class="stat-value">$100.46</div>
-        <div class="stat-label">Brent crude</div>
+        <div class="stat-value down">36%</div>
+        <div class="stat-label">Approval rating</div>
       </div>
       <div class="stat">
-        <div class="stat-value">+1,000</div>
-        <div class="stat-label">Dow points</div>
+        <div class="stat-value down">&minus;4pts</div>
+        <div class="stat-label">In one week</div>
       </div>
       <div class="stat">
-        <div class="stat-value down">&minus;16%</div>
-        <div class="stat-label">VIX fear gauge</div>
+        <div class="stat-value down">74%</div>
+        <div class="stat-label">Oppose ground troops</div>
       </div>
     </div>
   </div>
@@ -548,7 +539,7 @@
 </div>
 
 <!-- SLIDE 4 -->
-<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1669522315458-9b866007d3b9?w=1080&q=90')">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1745602470992-5a6416efbcc0?w=1080&q=90')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">03</div>
@@ -557,20 +548,16 @@
     <div class="tag">Geopolitical</div>
   </div>
   <div class="content">
-    <h2>Israel Expands <em>Lebanon Ground Ops</em> &mdash; Litani Bridges Destroyed</h2>
-    <div class="summary">Israel destroyed two bridges over the Litani River to cut Hezbollah supply lines, advancing to within 3km of the river &mdash; deepest penetration since 2006. Over 1,001 killed in the Lebanese theatre. The IDF has established a &ldquo;security corridor&rdquo; along the entire southern border.</div>
+    <h2>German President Calls War a <em>&ldquo;Disastrous Mistake&rdquo;</em></h2>
+    <div class="summary">Steinmeier delivered the sharpest European rebuke yet, calling the war a breach of international law and comparing the transatlantic rupture to the break with Russia after February 2022. He said there would be &ldquo;no going back&rdquo; and called on Germany to reduce dependence on the United States.</div>
     <div class="stat-row">
       <div class="stat">
-        <div class="stat-value down">1,001+</div>
-        <div class="stat-label">Killed in Lebanon</div>
+        <div class="stat-value">35,000</div>
+        <div class="stat-label">US troops in Germany</div>
       </div>
       <div class="stat">
-        <div class="stat-value">2</div>
-        <div class="stat-label">Bridges destroyed</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">3 km</div>
-        <div class="stat-label">From Litani</div>
+        <div class="stat-value down">Rupture</div>
+        <div class="stat-label">Transatlantic ties</div>
       </div>
     </div>
   </div>
@@ -581,7 +568,7 @@
 </div>
 
 <!-- SLIDE 5 -->
-<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1489395326921-8010373d5147?w=1080&q=90')">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1622142354474-5d8ec097c915?w=1080&q=90')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">04</div>
@@ -590,20 +577,16 @@
     <div class="tag">Geopolitical</div>
   </div>
   <div class="content">
-    <h2>US Lifts Sanctions on <em>140M Barrels</em> of Iranian Oil</h2>
-    <div class="summary">A 30-day waiver on sanctions enforcement for ~140 million barrels of Iranian crude held in Asian ports &mdash; valued at $14 billion. Designed to ease supply pressure while Hormuz remains closed. China, India and South Korea hold the majority. Critics call it &ldquo;paradoxical capitulation.&rdquo;</div>
+    <h2>Israel Strikes <em>Lebanese Christian</em> Town for First Time</h2>
+    <div class="summary">Israeli forces struck Sahel Alma, a Maronite Christian town north of Beirut, marking a significant geographic expansion of the Israel-Hezbollah conflict. The 2006 war largely spared Christian areas. Over 100 children have been killed in Lebanon since the war began.</div>
     <div class="stat-row">
       <div class="stat">
-        <div class="stat-value">140M</div>
-        <div class="stat-label">Barrels released</div>
+        <div class="stat-value down">100+</div>
+        <div class="stat-label">Children killed</div>
       </div>
       <div class="stat">
-        <div class="stat-value">$14bn</div>
-        <div class="stat-label">Value</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">30 days</div>
-        <div class="stat-label">Waiver window</div>
+        <div class="stat-value">Sahel Alma</div>
+        <div class="stat-label">First time targeted</div>
       </div>
     </div>
   </div>
@@ -614,7 +597,7 @@
 </div>
 
 <!-- SLIDE 6 -->
-<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1659781044995-1c68c81dcc67?w=1080&q=90')">
+<div class="slide headline" style="--slide-bg: url('https://images.unsplash.com/photo-1681145553138-816eb004b846?w=1080&q=90')">
   <div class="top-section">
     <div class="num-block">
       <div class="slide-num">05</div>
@@ -623,20 +606,20 @@
     <div class="tag">Geopolitical</div>
   </div>
   <div class="content">
-    <h2>Sudan Hospital <em>Drone Strike</em> Kills 64 Including Children</h2>
-    <div class="summary">A strike on Al Daein Teaching Hospital in East Darfur killed 64 people, including 13 children, medical staff and patients. The WHO confirmed the facility was rendered non-functional. Over 2,000 health facility deaths in Sudan&rsquo;s civil war. The world&rsquo;s attention remains fixed on the Middle East.</div>
+    <h2>Colombian <em>Military Plane</em> Crash Kills 66 Soldiers</h2>
+    <div class="summary">A C-130H Hercules carrying 128 people crashed after takeoff from Puerto Leguiz&aacute;mo near the Ecuador and Peru borders. At least 66 killed, 58 survived. The military ruled out hostile action, citing mechanical failure. It is the second-deadliest crash in Colombian Air Force history.</div>
     <div class="stat-row">
       <div class="stat">
-        <div class="stat-value down">64</div>
+        <div class="stat-value down">66</div>
         <div class="stat-label">Killed</div>
       </div>
       <div class="stat">
-        <div class="stat-value down">13</div>
-        <div class="stat-label">Children</div>
+        <div class="stat-value">58</div>
+        <div class="stat-label">Survivors</div>
       </div>
       <div class="stat">
-        <div class="stat-value down">2,000+</div>
-        <div class="stat-label">Health facility deaths</div>
+        <div class="stat-value">128</div>
+        <div class="stat-label">On board</div>
       </div>
     </div>
   </div>
@@ -647,7 +630,7 @@
 </div>
 
 <!-- SLIDE 7: CTA -->
-<div class="slide cta" style="--slide-bg: url('https://images.unsplash.com/photo-1689859438394-2b59a858e31c?w=1080&q=90')">
+<div class="slide cta" style="--slide-bg: url('https://images.unsplash.com/photo-1573812195421-50a396d17893?w=1080&q=90')">
   <div class="cta-brand">The Daily Brief</div>
   <div class="cta-divider"></div>
   <div class="cta-hook">Get the <em>full story</em> with every update</div>
