@@ -3792,52 +3792,16 @@ if ('serviceWorker' in navigator) {
   // Load breaking stories from JSON
   let stories = [];
   try { stories = JSON.parse(document.getElementById('breaking-stories').textContent); } catch(e) {}
-  if (!stories.length) return;
+
+  // If no JSON stories but banner has text (set by update script), still attach handlers
+  const bannerHasText = breakingTextEl.textContent.trim().length > 0;
+  if (!stories.length && !bannerHasText) return;
+  const jsonMode = stories.length > 0;
 
   // Helper: get display text (headline with text fallback)
   function displayText(s) { return s.headline || s.text || ''; }
   // Helper: dismiss key
   function dismissKey(s) { return 'breakingDismissed_' + displayText(s).slice(0, 80); }
-
-  // Time thresholds: 3h primary display + 2h extension = 5h max
-  const THREE_HOURS = 3 * 60 * 60 * 1000;
-  const FIVE_HOURS  = 5 * 60 * 60 * 1000;
-  const now = Date.now();
-
-  // Clean up stale localStorage dismiss keys (> 24h old)
-  try {
-    const DAY = 24 * 60 * 60 * 1000;
-    Object.keys(localStorage).forEach(k => {
-      if (k.startsWith('breakingDismissed_')) {
-        const ts = parseInt(localStorage.getItem(k + '_ts'), 10);
-        if (ts && now - ts > DAY) { localStorage.removeItem(k); localStorage.removeItem(k + '_ts'); }
-      }
-    });
-  } catch(e) {}
-
-  // Expiry: use per-story "expires" field if set, else posted + 5h
-  function storyExpiry(s) {
-    if (s.expires) return new Date(s.expires).getTime();
-    return new Date(s.posted).getTime() + FIVE_HOURS;
-  }
-
-  // Filter: remove expired stories, sort newest first
-  const valid = stories
-    .map(s => ({ ...s, age: now - new Date(s.posted).getTime() }))
-    .filter(s => now < storyExpiry(s) && s.age >= 0)
-    .sort((a, b) => a.age - b.age);
-
-  if (!valid.length) return; // all expired
-
-  // Pick: prefer the freshest story < 3h; otherwise the freshest valid story
-  const fresh = valid.find(s => s.age < THREE_HOURS);
-  const active = fresh || valid[0];
-
-  // Track current story for modal
-  var currentStory = active;
-
-  // Check if user dismissed this specific headline
-  if (localStorage.getItem(dismissKey(active))) return;
 
   // Helper: hide the banner
   function hideBanner() {
@@ -3845,55 +3809,98 @@ if ('serviceWorker' in navigator) {
     document.body.classList.remove('has-breaking-banner');
   }
 
-  // Helper: show a story with crossfade
-  function showStory(s, animate) {
-    if (animate) {
-      breakingTextEl.style.transition = 'opacity 0.3s';
-      breakingTextEl.style.opacity = '0';
-      setTimeout(() => {
-        currentStory = s;
-        breakingTextEl.textContent = displayText(s);
-        breakingTextEl.style.opacity = '1';
-        setTimeout(linkBanner, 200);
-      }, 300);
-    } else {
-      currentStory = s;
-      breakingTextEl.textContent = displayText(s);
+  // Track current story for modal (null in text-only mode)
+  var currentStory = null;
+
+  if (jsonMode) {
+    // Time thresholds: 3h primary display + 2h extension = 5h max
+    const THREE_HOURS = 3 * 60 * 60 * 1000;
+    const FIVE_HOURS  = 5 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    // Clean up stale localStorage dismiss keys (> 24h old)
+    try {
+      const DAY = 24 * 60 * 60 * 1000;
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('breakingDismissed_')) {
+          const ts = parseInt(localStorage.getItem(k + '_ts'), 10);
+          if (ts && now - ts > DAY) { localStorage.removeItem(k); localStorage.removeItem(k + '_ts'); }
+        }
+      });
+    } catch(e) {}
+
+    // Expiry: use per-story "expires" field if set, else posted + 5h
+    function storyExpiry(s) {
+      if (s.expires) return new Date(s.expires).getTime();
+      return new Date(s.posted).getTime() + FIVE_HOURS;
+    }
+
+    // Filter: remove expired stories, sort newest first
+    const valid = stories
+      .map(s => ({ ...s, age: now - new Date(s.posted).getTime() }))
+      .filter(s => now < storyExpiry(s) && s.age >= 0)
+      .sort((a, b) => a.age - b.age);
+
+    if (valid.length) {
+      const fresh = valid.find(s => s.age < THREE_HOURS);
+      const active = fresh || valid[0];
+      currentStory = active;
+
+      // Check if user dismissed this specific headline
+      if (localStorage.getItem(dismissKey(active))) { hideBanner(); return; }
+
+      // Helper: show a story with crossfade
+      function showStory(s, animate) {
+        if (animate) {
+          breakingTextEl.style.transition = 'opacity 0.3s';
+          breakingTextEl.style.opacity = '0';
+          setTimeout(() => {
+            currentStory = s;
+            breakingTextEl.textContent = displayText(s);
+            breakingTextEl.style.opacity = '1';
+            setTimeout(linkBanner, 200);
+          }, 300);
+        } else {
+          currentStory = s;
+          breakingTextEl.textContent = displayText(s);
+        }
+      }
+
+      showStory(active, false);
+
+      // Auto-rotate at 3h
+      if (active === fresh) {
+        const msUntil3h = THREE_HOURS - active.age;
+        setTimeout(() => {
+          const next = valid.find(s => s !== active && !localStorage.getItem(dismissKey(s)));
+          if (next) {
+            showStory(next, true);
+            const msUntilNextExpiry = storyExpiry(next) - Date.now();
+            if (msUntilNextExpiry > 0) setTimeout(hideBanner, msUntilNextExpiry);
+          }
+        }, msUntil3h);
+      }
+
+      // Hard expiry for active story
+      const msUntilHide = storyExpiry(active) - now;
+      if (msUntilHide > 0) setTimeout(hideBanner, msUntilHide);
     }
   }
 
-  // Show the banner
-  showStory(active, false);
+  // Show the banner (works in both JSON and text-only mode)
   banner.style.display = '';
   banner.classList.remove('dismissed');
   document.body.classList.add('has-breaking-banner');
 
-  // Dismiss handler (store timestamp for cleanup)
-  dismiss.addEventListener('click', (e) => {
+  // Dismiss handler
+  if (dismiss) dismiss.addEventListener('click', (e) => {
     e.stopPropagation();
     hideBanner();
-    localStorage.setItem(dismissKey(currentStory), '1');
-    localStorage.setItem(dismissKey(currentStory) + '_ts', String(now));
+    if (currentStory) {
+      localStorage.setItem(dismissKey(currentStory), '1');
+      localStorage.setItem(dismissKey(currentStory) + '_ts', String(Date.now()));
+    }
   });
-
-  // Auto-rotate at 3h: swap to next valid story or keep current for 2 more hours
-  if (active === fresh) {
-    const msUntil3h = THREE_HOURS - active.age;
-    setTimeout(() => {
-      const next = valid.find(s => s !== active && !localStorage.getItem(dismissKey(s)));
-      if (next) {
-        showStory(next, true);
-        // Set hard expiry for the replacement story
-        const msUntilNextExpiry = storyExpiry(next) - Date.now();
-        if (msUntilNextExpiry > 0) setTimeout(hideBanner, msUntilNextExpiry);
-      }
-      // If no next story, current stays — hard expiry below handles removal
-    }, msUntil3h);
-  }
-
-  // Hard expiry for active story
-  const msUntilHide = storyExpiry(active) - now;
-  if (msUntilHide > 0) setTimeout(hideBanner, msUntilHide);
 
   // ── Breaking Modal ──
   function openBreakingModal() {
@@ -3956,7 +3963,22 @@ if ('serviceWorker' in navigator) {
     if (breakingModal) breakingModal.classList.remove('open');
   }
 
-  if (readmoreBtn) readmoreBtn.addEventListener('click', function(e) { e.stopPropagation(); openBreakingModal(); });
+  if (readmoreBtn) readmoreBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (currentStory) {
+      openBreakingModal();
+    } else {
+      // Text-only mode: scroll to matching article
+      var match = findMatchingItem();
+      if (match) {
+        match.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        match.classList.remove('highlight-flash');
+        match.offsetHeight;
+        match.classList.add('highlight-flash');
+        match.addEventListener('animationend', function() { match.classList.remove('highlight-flash'); }, { once: true });
+      }
+    }
+  });
   if (breakingModalClose) breakingModalClose.addEventListener('click', closeBreakingModal);
   if (breakingModal) breakingModal.addEventListener('click', function(e) { if (e.target === breakingModal) closeBreakingModal(); });
 
