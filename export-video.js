@@ -40,8 +40,8 @@ const framesDir = '/tmp/breaking-news-frames';
     `
   });
 
-  // Wait for fonts and animations to start
-  await new Promise(r => setTimeout(r, 2000));
+  // Brief pause for fonts only — animations must play during capture
+  await new Promise(r => setTimeout(r, 300));
 
   console.log(`Capturing ${totalFrames} frames at ${fps}fps (${duration}s)...`);
 
@@ -66,7 +66,8 @@ const framesDir = '/tmp/breaking-news-frames';
   console.log('Encoding video with ffmpeg...');
 
   // Encode with H.264, high quality, Instagram-compatible
-  execSync(`ffmpeg -y -framerate ${fps} -i "${framesDir}/frame-%04d.png" \
+  const ffmpegPath = path.join(__dirname, 'node_modules/ffmpeg-static/ffmpeg');
+  execSync(`"${ffmpegPath}" -y -framerate ${fps} -i "${framesDir}/frame-%04d.png" \
     -c:v libx264 -preset slow -crf 18 \
     -pix_fmt yuv420p \
     -vf "scale=1080:1920:flags=lanczos" \

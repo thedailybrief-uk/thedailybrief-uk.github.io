@@ -27,7 +27,7 @@
 
   /* ── COVER SLIDE ── */
   .slide.cover {
-    background: linear-gradient(155deg, #2a0a10 0%, #8b2332 40%, #2a0a10 100%);
+    background: linear-gradient(155deg, #2a0a10 0%, #c0354d 40%, #2a0a10 100%);
     display: flex;
     flex-direction: column;
     padding: 70px 70px 80px;
@@ -40,7 +40,7 @@
     right: -200px;
     width: 700px;
     height: 700px;
-    background: radial-gradient(circle, rgba(168,50,72,0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(192,53,77,0.4) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -51,11 +51,10 @@
     left: -150px;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(139,35,50,0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(192,53,77,0.25) 0%, transparent 70%);
     pointer-events: none;
   }
 
-  /* ── Cover background photo layer ── */
   .bg-photo {
     position: absolute;
     inset: 0;
@@ -76,7 +75,7 @@
 
   .cover .brand {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 800;
     color: #fff;
     letter-spacing: 1px;
@@ -84,10 +83,10 @@
 
   .cover .date-pill {
     font-family: 'Inter', sans-serif;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     color: #fff;
-    background: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.18);
     padding: 14px 30px;
     border-radius: 30px;
     backdrop-filter: blur(10px);
@@ -102,9 +101,9 @@
 
   .cover .label {
     font-family: 'Inter', sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
-    color: #f5a0a0;
+    color: #ff7085;
     letter-spacing: 4px;
     text-transform: uppercase;
     margin-bottom: 20px;
@@ -112,7 +111,7 @@
 
   .cover .hook {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 82px;
+    font-size: 96px;
     font-weight: 800;
     color: #fff;
     line-height: 1.05;
@@ -121,14 +120,14 @@
 
   .cover .hook em {
     font-style: normal;
-    color: #f5a0a0;
+    color: #ff7085;
   }
 
   .cover .sub {
     font-family: 'Inter', sans-serif;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 400;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.78);
     line-height: 1.55;
     max-width: 850px;
   }
@@ -145,7 +144,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.55);
     letter-spacing: 3px;
     text-transform: uppercase;
   }
@@ -169,11 +168,11 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.25);
   }
 
   .cover .dots span:first-child {
-    background: #f5a0a0;
+    background: #ff7085;
   }
 
   /* ── HEADLINE SLIDES ── */
@@ -184,7 +183,6 @@
     padding: 70px 70px 50px;
   }
 
-  /* Background photo layer */
   .headline::after {
     content: '';
     position: absolute;
@@ -213,7 +211,7 @@
 
   .headline .slide-num {
     font-family: 'Inter', sans-serif;
-    font-size: 72px;
+    font-size: 84px;
     font-weight: 900;
     color: #fff;
     line-height: 1;
@@ -221,20 +219,20 @@
 
   .headline .of-total {
     font-family: 'Inter', sans-serif;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 600;
-    color: rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.35);
   }
 
   .headline .tag {
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
-    color: #f5a0a0;
+    color: #ff7085;
     letter-spacing: 3px;
     text-transform: uppercase;
     padding: 12px 24px;
-    border: 1.5px solid rgba(245,160,160,0.25);
+    border: 1.5px solid rgba(255,112,133,0.35);
     border-radius: 30px;
   }
 
@@ -249,23 +247,23 @@
 
   .headline h2 {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 56px;
+    font-size: 66px;
     font-weight: 800;
     color: #fff;
-    line-height: 1.15;
+    line-height: 1.12;
     margin-bottom: 28px;
   }
 
   .headline h2 em {
     font-style: normal;
-    color: #f5a0a0;
+    color: #ff7085;
   }
 
   .headline .summary {
     font-family: 'Inter', sans-serif;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 400;
-    color: rgba(255,255,255,0.55);
+    color: rgba(255,255,255,0.75);
     line-height: 1.6;
     margin-bottom: 40px;
   }
@@ -275,10 +273,9 @@
     gap: 50px;
     padding-left: 16px;
     padding-top: 32px;
-    border-top: 1px solid rgba(255,255,255,0.06);
+    border-top: 1px solid rgba(255,255,255,0.1);
   }
 
-  /* Accent bar left */
   .headline .content::before {
     content: '';
     position: absolute;
@@ -286,7 +283,7 @@
     top: 10%;
     bottom: 10%;
     width: 4px;
-    background: linear-gradient(180deg, #8b2332, #c43e54, #8b2332);
+    background: linear-gradient(180deg, #c0354d, #e8475f, #c0354d);
     border-radius: 2px;
   }
 
@@ -297,21 +294,21 @@
 
   .headline .stat-value {
     font-family: 'Inter', sans-serif;
-    font-size: 38px;
+    font-size: 46px;
     font-weight: 800;
-    color: #f5a0a0;
+    color: #ff7085;
     line-height: 1.1;
   }
 
   .headline .stat-value.down {
-    color: #e85454;
+    color: #ff5252;
   }
 
   .headline .stat-label {
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.45);
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin-top: 6px;
@@ -323,29 +320,29 @@
     align-items: center;
     padding-left: 16px;
     padding-top: 28px;
-    border-top: 1px solid rgba(255,255,255,0.04);
+    border-top: 1px solid rgba(255,255,255,0.08);
   }
 
   .headline .bottom-brand {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 18px;
+    font-size: 21px;
     font-weight: 700;
-    color: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.25);
     letter-spacing: 1px;
   }
 
   .headline .save-cue {
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
-    color: rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.35);
     letter-spacing: 2px;
     text-transform: uppercase;
   }
 
   /* ── CTA SLIDE ── */
   .slide.cta {
-    background: linear-gradient(155deg, #2a0a10 0%, #8b2332 40%, #2a0a10 100%);
+    background: linear-gradient(155deg, #2a0a10 0%, #c0354d 40%, #2a0a10 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -362,13 +359,13 @@
     transform: translateX(-50%);
     width: 800px;
     height: 800px;
-    background: radial-gradient(circle, rgba(168,50,72,0.25) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(192,53,77,0.35) 0%, transparent 70%);
     pointer-events: none;
   }
 
   .cta .cta-brand {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 52px;
+    font-size: 60px;
     font-weight: 800;
     color: #fff;
     letter-spacing: 1px;
@@ -380,7 +377,7 @@
   .cta .cta-divider {
     width: 60px;
     height: 3px;
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.4);
     margin-bottom: 50px;
     position: relative;
     z-index: 1;
@@ -388,7 +385,7 @@
 
   .cta .cta-hook {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 60px;
+    font-size: 70px;
     font-weight: 700;
     color: #fff;
     line-height: 1.15;
@@ -400,18 +397,18 @@
 
   .cta .cta-hook em {
     font-style: normal;
-    color: #f5a0a0;
+    color: #ff7085;
   }
 
   .cta .cta-url {
     font-family: 'Inter', sans-serif;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     color: #fff;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.15);
     padding: 20px 48px;
     border-radius: 50px;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
     margin-bottom: 40px;
     position: relative;
     z-index: 1;
@@ -420,9 +417,9 @@
 
   .cta .cta-sub {
     font-family: 'Inter', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 400;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.6);
     line-height: 1.6;
     max-width: 600px;
     position: relative;
@@ -439,9 +436,9 @@
 
   .cta .cta-action {
     font-family: 'Inter', sans-serif;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.5);
     letter-spacing: 3px;
     text-transform: uppercase;
   }
