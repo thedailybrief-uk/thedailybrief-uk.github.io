@@ -988,7 +988,12 @@
     }
     .breaking-dismiss:hover { color: #fff; }
     @media (max-width: 600px) {
-      .breaking-text { font-size: 13px; }
+      .breaking-inner { padding: 8px 16px; gap: 8px; }
+      .breaking-text {
+        font-size: 13px;
+        display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
+        overflow: hidden; text-overflow: ellipsis;
+      }
       .breaking-readmore { font-size: 12px; }
     }
 
