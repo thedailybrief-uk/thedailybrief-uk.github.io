@@ -46,6 +46,36 @@ _Evening — UK Domestic:_
 4. Davey Declares "Two-Horse Race" as Lib Dems Launch Local Election Campaign
 5. Government Announces £53m Heating Oil Fund and Late Payment Crackdown
 
+### Wednesday 25 March
+
+_Morning — Geopolitical:_
+1. Day 26: Pentagon Orders 82nd Airborne to Middle East — up to 3,000 paratroopers on standby
+2. Trump Claims Iran Talks Under Way; Tehran Flatly Denies
+3. Russia Launches Spring Offensive With 400-Drone Barrage
+4. Strait of Hormuz Crisis Chokes Global Energy Supplies — 200 tankers stranded
+5. NATO Agrees Unprecedented 5% Defence Spending Target
+
+_Morning — UK Domestic:_
+1. Crime and Policing Bill Clears Lords Third Reading
+2. Starmer Chairs COBR as Iran Conflict Drives Energy Surge
+3. English Devolution Bill Enters Lords Report Stage
+4. Votes at 16 Bill Advances Through Commons Committee
+5. Bank of England Holds Rate at 3.75% as War Clouds Outlook
+
+_Evening — Geopolitical:_
+1. Iran Rejects US 15-Point Ceasefire Plan, Issues Five-Point Counterproposal
+2. Oil Crashes Below $100 as Iran Opens Hormuz to "Non-Hostile" Ships
+3. Iranian Drones Strike Kuwait Airport; 82nd Airborne Deploys
+4. Russia Launches 948 Drones in Largest Assault; Spring Offensive Begins
+5. Global Fallout: Cuba Blackout, Fertiliser Crisis, Lebanon Toll Passes 1,000
+
+_Evening — UK Domestic:_
+1. PMQs: Badenoch Wins on Energy, Starmer Strikes Back on Iran
+2. UK Inflation Holds at 3.0% — Last Clean Print Before War Impact
+3. Sarah Mullally Enthroned as First Female Archbishop of Canterbury
+4. North Sea Drilling Licences in Regulatory Limbo Amid Energy Crisis
+5. UK Business Insolvencies Rise as Energy Costs Squeeze SMEs
+
 ---
 
 ## Week of 16–21 March 2026
