@@ -4882,6 +4882,10 @@ if ('serviceWorker' in navigator) {
 
   if (readmoreBtn) readmoreBtn.addEventListener('click', function(e) {
     e.stopPropagation();
+    // If currentStory expired, try to recover it from the full stories array
+    if (!currentStory && stories.length) {
+      currentStory = stories[0];
+    }
     if (currentStory) {
       openBreakingModal();
     } else if (breakingModal && breakingModalContent) {
