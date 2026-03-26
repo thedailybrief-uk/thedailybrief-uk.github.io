@@ -331,9 +331,10 @@
     }
     .edition-header h2 { font-family: var(--serif); font-size: 26px; font-weight: 700; }
     @media (max-width: 768px) {
-      .edition-header { gap: 8px; }
-      .edition-header h2 { font-size: 20px; }
-      .edition-header .listen-btn { margin-left: 0; }
+      .edition-header { gap: 6px 8px; }
+      .edition-header h2 { font-size: 20px; flex: 1; }
+      .edition-header .reading-time { order: 3; }
+      .edition-header .listen-btn { order: 4; margin-left: 0; }
     }
     .curated-meta { font-size: 14px; color: rgba(245,230,206,0.7); margin-bottom: 20px; padding-left: 30px; }
 
@@ -1687,6 +1688,23 @@
     }
     .impact-details .impact-box {
       margin: 0; border-radius: 0 0 6px 0;
+    }
+
+    /* ── Mobile collapse button at bottom of expanded details ── */
+    .details-collapse-btn {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .details-collapse-btn {
+        display: block; width: 100%; padding: 10px;
+        font-family: var(--sans); font-size: 12px; font-weight: 600;
+        letter-spacing: 0.5px; text-transform: uppercase;
+        color: rgba(245,230,206,0.5); background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+        cursor: pointer; margin-top: 12px; text-align: center;
+        transition: all 0.2s;
+      }
+      .details-collapse-btn:hover { color: rgba(245,230,206,0.8); background: rgba(255,255,255,0.1); }
     }
   </style>
 </head>
@@ -4599,6 +4617,29 @@ window._marketData = {};
 const now = new Date();
 document.getElementById('currentDate').textContent =
   now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+
+// ── Mobile: Collapse button at bottom of expandable sections ──
+(function() {
+  function addCollapseBtn(details) {
+    if (details.querySelector('.details-collapse-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'details-collapse-btn';
+    btn.textContent = 'Collapse \u25B2';
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      details.open = false;
+      details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    details.appendChild(btn);
+  }
+  // Listen for toggle events on pmqs-wrapper and impact-details
+  document.addEventListener('toggle', (e) => {
+    const d = e.target;
+    if (d.open && (d.classList.contains('pmqs-wrapper') || d.classList.contains('impact-details'))) {
+      addCollapseBtn(d);
+    }
+  }, true);
+})();
 
 // ── Live Feed Tab Switching ──
 (function() {
