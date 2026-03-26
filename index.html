@@ -216,9 +216,9 @@
         gap: 0; padding: 0; justify-content: center;
         row-gap: 0; flex-wrap: wrap;
       }
-      /* Row 1: section navigation links — equal thirds, fill full width */
+      /* Row 1: section navigation links — equal halves, fill full width */
       .masthead-nav a:not(.nav-instagram) {
-        flex: 1 1 33%; text-align: center; justify-content: center;
+        flex: 1 1 50%; text-align: center; justify-content: center;
         padding: 10px 0 8px; font-size: 11px; letter-spacing: 0.8px;
       }
       /* Row 2: utility items in wrapper div — full-width border */
@@ -247,8 +247,7 @@
     .toggle-icon { display: inline-block; vertical-align: -2px; line-height: 1; font-size: 16px; }
     .toggle-icon.sun { color: var(--text-primary); }
     .toggle-icon.moon { font-size: 13px; vertical-align: -1px; }
-    .masthead-nav a.geo { border-bottom: 2px solid var(--accent-geo); padding-left: 4px; padding-right: 4px; margin-bottom: 4px; }
-    .masthead-nav a.dom { border-bottom: 2px solid var(--accent-dom); padding-left: 4px; padding-right: 4px; margin-bottom: 4px; }
+    /* Nav accent styles removed — simplified to 2 links */
     .masthead-nav a.nav-instagram { border-bottom: none; }
     .last-updated { font-size: 12px; color: var(--text-muted); text-align: center; padding: 6px 0; }
 
@@ -325,18 +324,17 @@
     }
     .edition-header {
       display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+      flex-wrap: wrap;
     }
     .edition-icon {
       font-size: 18px; opacity: 0.7;
     }
     .edition-header h2 { font-family: var(--serif); font-size: 26px; font-weight: 700; }
-    .expand-all-btn {
-      margin-left: auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(245,230,206,0.65); font-family: var(--sans); font-size: 11px; font-weight: 600;
-      letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
-      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    @media (max-width: 768px) {
+      .edition-header { gap: 8px; }
+      .edition-header h2 { font-size: 20px; }
+      .edition-header .listen-btn { margin-left: 0; }
     }
-    .expand-all-btn:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
     .curated-meta { font-size: 14px; color: rgba(245,230,206,0.7); margin-bottom: 20px; padding-left: 30px; }
 
     /* #3 Key figures strip */
@@ -363,18 +361,10 @@
       padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle;
     }
 
-    .curated-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .curated-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
     @media (max-width: 768px) { .curated-grid { grid-template-columns: 1fr; } }
     .curated-column {
       padding: 16px; border-radius: 10px;
-      display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 0;
-    }
-    .curated-column > div {
-      display: contents;
-    }
-    @media (max-width: 768px) {
-      .curated-column { display: flex; flex-direction: column; grid-row: auto; }
-      .curated-column > div { display: flex; flex-direction: column; flex: 1; }
     }
     .curated-column:first-child {
       background: rgba(224, 66, 94, 0.18); border: 1px solid rgba(224, 66, 94, 0.35);
@@ -390,8 +380,8 @@
       color: rgba(245,230,206,0.75);
     }
     .curated-column h3 .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .curated-column h3 .dot.geo { background: var(--accent-geo); box-shadow: 0 0 10px rgba(224, 66, 94, 0.7); }
-    .curated-column h3 .dot.dom { background: var(--accent-dom); box-shadow: 0 0 10px rgba(46, 150, 214, 0.7); }
+    .curated-column h3 .dot.geo { background: var(--accent-geo); }
+    .curated-column h3 .dot.dom { background: var(--accent-dom); }
     .curated-column:first-child h3 { color: rgba(240, 150, 165, 0.9); }
     .curated-column:last-child h3 { color: rgba(150, 200, 240, 0.9); }
     .curated-item {
@@ -1570,6 +1560,134 @@
     }
     .curated-grid *, .section *, .also-today *, .impact-box * { min-width: 0; }
     a { overflow-wrap: break-word; word-break: break-word; }
+
+    /* ── Section Label Bars ── */
+    .section-label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 24px; margin: 0;
+      background: var(--bg-section);
+      border-bottom: 1px solid var(--border-light);
+      border-top: 1px solid var(--border-light);
+      font-family: var(--sans); font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+    .section-label .label-icon {
+      font-size: 14px; line-height: 1;
+    }
+    .section-label .label-detail {
+      font-weight: 500; letter-spacing: 0.5px; text-transform: none;
+      color: var(--text-muted); font-size: 11px;
+    }
+    @media (max-width: 600px) {
+      .section-label { padding: 8px 12px; font-size: 10px; }
+    }
+
+    /* ── Live Feed Tabs ── */
+    .live-tabs-bar {
+      display: flex; gap: 0;
+      border-bottom: 2px solid var(--border);
+      padding: 0 24px; margin: 0;
+    }
+    .live-tab {
+      font-family: var(--sans); font-size: 13px; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--text-tertiary);
+      background: none; border: none; border-bottom: 2px solid transparent;
+      padding: 12px 20px; margin-bottom: -2px;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .live-tab:hover { color: var(--text-primary); }
+    .live-tab.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--text-primary);
+    }
+    .live-tab .tab-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .live-tab .tab-dot.geo { background: var(--accent-geo); }
+    .live-tab .tab-dot.dom { background: var(--accent-dom); }
+    .live-tab.active .tab-dot {
+      animation: livePulse 2s ease-in-out infinite;
+    }
+    .live-tab-panel {
+      display: none;
+    }
+    .live-tab-panel.active {
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .live-tabs-bar { padding: 0 12px; }
+      .live-tab { padding: 10px 14px; font-size: 12px; }
+    }
+
+    /* ── Story timestamp badge ── */
+    .story-time {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      color: rgba(245,230,206,0.35); letter-spacing: 0.3px;
+      margin-left: 8px; white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    /* ── Accordion curated items — chevron on all, smooth expand/collapse ── */
+    .curated-item-accordion {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      transition: grid-template-rows 0.4s ease;
+    }
+    .curated-item-collapsed {
+      grid-template-rows: auto 0fr;
+    }
+    .curated-item-body {
+      overflow: hidden;
+      transition: opacity 0.35s ease;
+      opacity: 1;
+      min-height: 0;
+    }
+    .curated-item-collapsed .curated-item-body {
+      opacity: 0;
+    }
+    .curated-item-accordion h4 {
+      cursor: pointer;
+      padding-left: 18px;
+      position: relative;
+      transition: color 0.15s;
+    }
+    .curated-item-accordion h4::before {
+      content: '\25BE';
+      position: absolute; left: 0; top: 0;
+      color: rgba(245,230,206,0.4);
+      transition: color 0.2s;
+    }
+    .curated-item-accordion:hover h4::before { color: rgba(245,230,206,0.7); }
+    .curated-item-collapsed h4::before {
+      content: '\25B8';
+    }
+    .curated-item-collapsed:hover h4 { color: #fff; }
+
+    /* ── Collapsible impact box ── */
+    .impact-details { margin: 14px 0 18px; }
+    .impact-details summary {
+      font-family: var(--sans); font-size: 10px; font-weight: 700;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      color: rgba(245,230,206,0.5); cursor: pointer;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.05);
+      border-left: 3px solid rgba(255,255,255,0.25);
+      border-radius: 0 6px 6px 0;
+      list-style: none;
+    }
+    .impact-details summary::-webkit-details-marker { display: none; }
+    .impact-details summary::after {
+      content: ' \25BC'; font-size: 8px; opacity: 0.5;
+    }
+    .impact-details[open] summary {
+      border-radius: 0 6px 0 0;
+    }
+    .impact-details .impact-box {
+      margin: 0; border-radius: 0 0 6px 0;
+    }
   </style>
 </head>
 <body>
@@ -1690,9 +1808,8 @@
       </div>
       <h1 class="masthead-title">The Daily Brief</h1>
       <nav class="masthead-nav" role="navigation" aria-label="Main navigation">
-        <a href="#curated">Curated Briefings</a>
-        <a href="#geopolitical" class="geo">Geopolitical</a>
-        <a href="#domestic" class="dom">UK Domestic</a>
+        <a href="#curated">Today's Briefing</a>
+        <a href="#live-feeds">Live Updates</a>
         <!-- Utility row -->
         <div class="nav-utility-row">
           <!-- #4 Dark mode toggle -->
@@ -1858,6 +1975,13 @@
     <span class="ref-context">(vs. previous period)</span>
   </div>
 
+  <!-- Section label: Curated Briefing -->
+  <div class="section-label" id="curatedLabel">
+    <span class="label-icon">&#9998;</span>
+    <span>Curated Briefing</span>
+    <span class="label-detail">&middot; Edited at 08:00 &amp; 18:00</span>
+  </div>
+
   <!-- ════════════════════════════════════════════ -->
   <!-- CURATED BRIEFINGS                           -->
   <!-- ════════════════════════════════════════════ -->
@@ -1930,29 +2054,29 @@
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
           <div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="16:42">
               <h4>Iran Rejects US Ceasefire Plan, Issues Five-Point Counterproposal</h4>
               <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: US 15-point plan delivered via Pakistan &rarr; This evening: Iran rejects outright, issues own demands</div>
               <p>Iran dismissed the US 15-point ceasefire proposal delivered via Pakistan, with an official telling Press TV: &ldquo;Iran will end the war when it decides to do so.&rdquo; Tehran issued a five-point counterproposal demanding a halt to all US and Israeli attacks, war reparations, and international recognition of Iran&rsquo;s authority over the Strait of Hormuz.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The rejection was emphatic and unconditional. Iran&rsquo;s five demands &mdash; cessation of hostilities, guarantees against resumption, reparations, protection of allied militias in Lebanon and Iraq, and Hormuz sovereignty &mdash; are maximalist by design, intended to establish a negotiating floor rather than a final position. Pakistan&rsquo;s Prime Minister Sharif offered to host talks, but any dialogue depends on both sides accepting preconditions the other finds unacceptable. The US plan reportedly included sanctions relief, nuclear cooperation, and IAEA monitoring &mdash; concessions Tehran views as insufficient while bombs continue to fall.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="14:18">
               <h4>Oil Crashes Below $100 as Iran Opens Hormuz to &ldquo;Non-Hostile&rdquo; Ships</h4>
               <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: Hormuz effectively closed &rarr; This evening: Partial reopening, Brent at $101.47</div>
               <p>Iran&rsquo;s UN mission announced that &ldquo;non-hostile&rdquo; vessels may transit the Strait of Hormuz, the first easing of the blockade since 28 February. Brent crude crashed 6% in morning trading to $99.16 before recovering to $101.47. Only five vessels transited on Monday, compared with 120 per day before the conflict.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The partial reopening is a calculated de-escalation, allowing Iran to claim it is not indiscriminately blocking global trade while maintaining leverage over Western-allied shipping. Over 1,000 vessels remain stranded near the strait. An FT investigation found $580 million in bets on falling oil prices were placed just 15 minutes before Trump announced the postponement of energy strikes &mdash; raising questions about market manipulation or insider knowledge. Despite the partial recovery, Brent remains down sharply from its $126 peak earlier this month.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="15:30">
               <h4>Iranian Drones Strike Kuwait Airport; 82nd Airborne Deploys</h4>
               <p>Iranian drones struck a fuel tank at Kuwait International Airport, sparking a major fire. The Kuwait National Guard intercepted six drones. Separately, the Pentagon confirmed 2,000&ndash;3,000 troops from the 82nd Airborne Division, under Maj. Gen. Tegtmeier, are deploying to the region &mdash; supplementing approximately 50,000 US forces already in theatre.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The Kuwait airport strike represents a significant escalation of Iran&rsquo;s campaign against Gulf states hosting US forces. The IRGC simultaneously launched missiles and drones at military bases in Kuwait, Jordan and Bahrain. The 82nd Airborne deployment raises the total US presence to its highest level since the 2003 Iraq invasion. One likely objective is Kharg Island, handling 90 per cent of Iranian crude exports. Day 26 cumulative toll: 3,114 deaths in Iran (1,354 civilian), 13 US service members, 14 Israelis and over 880 in Lebanon.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="13:05">
               <h4>Russia Launches 948 Drones in Largest Assault; Spring Offensive Begins</h4>
               <p>Russia fired 948 drones in a 24-hour barrage &mdash; the largest single aerial assault since the full-scale invasion &mdash; alongside ground movements signalling the start of its spring offensive. Seven people were killed and 55 injured. Part of the UNESCO-listed area around Lviv&rsquo;s St Andrew&rsquo;s Church was damaged.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Moscow is exploiting the global distraction of the Iran conflict to intensify operations. Nearly 500,000 people in Russia&rsquo;s Belgorod region lost power after Ukrainian retaliatory attacks, while 150,000 consumers in Chernihiv were cut off. A Ukrainian drone strike hit Ust-Luga, a major Russian oil export hub on the Baltic. Zelensky warned that Ukraine faces an imminent deficit of air defence missiles as Western attention and stockpiles are diverted to the Middle East. Russian cumulative losses since February 2022 now exceed 1.29 million personnel.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="11:20">
               <h4>Danish PM Frederiksen Resigns After Worst Result Since 1903</h4>
               <p>Mette Frederiksen submitted her government&rsquo;s resignation after her Social Democrats won just 38 seats in the 179-seat parliament &mdash; the party&rsquo;s worst showing since 1903. The left-leaning &ldquo;red bloc&rdquo; secured 84 seats, six short of a majority. Coalition talks with the Moderates could still return Frederiksen for a third term.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The election was fought primarily on immigration, welfare and the cost of living, with Trump&rsquo;s Greenland ambitions proving less decisive than expected. Frederiksen&rsquo;s party lost 12 seats compared with 2022. The Moderates, led by Foreign Minister Lars L&oslash;kke Rasmussen, are now kingmakers and could demand a broad centrist coalition. Denmark&rsquo;s political instability matters beyond its borders: Copenhagen has been a key NATO voice on Arctic security and the Greenland question, and any coalition talks will be closely watched in Washington.</div></details>
@@ -1962,27 +2086,27 @@
         <div class="curated-column">
           <h3><span class="dot dom"></span> UK Domestic Politics</h3>
           <div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="12:35">
               <h4>All Eight Reform MPs Walk Out of PMQs After Farage Clash</h4>
               <p>Nigel Farage and all eight Reform UK MPs staged a dramatic walkout from the Commons after Starmer branded Farage an &ldquo;absolute disgrace&rdquo; over his U-turn on the Iran war. Conservative MP Ben Obese-Jecty called the stunt &ldquo;absolutely pathetic&rdquo; and &ldquo;pre-rehearsed.&rdquo; The session had earlier seen Badenoch dominate on North Sea drilling licences.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The walkout was the most dramatic Commons moment of the session, eclipsing substantive exchanges on energy and Iran. Starmer&rsquo;s triple attack &mdash; on Farage&rsquo;s voting record against counter-terrorism powers, his Iran U-turn, and Reform&rsquo;s 9 per cent council tax rise &mdash; left Farage visibly angered. The pre-planned nature of the exit, with all eight MPs rising simultaneously, suggests Reform calculated the television moment was worth more than parliamentary engagement. Richard Tice&rsquo;s furious post-session interview on GB News confirmed the party sees the episode as a rallying point rather than an embarrassment.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="07:00">
               <h4>UK Inflation Holds at 3.0% &mdash; Last Clean Print Before War Impact</h4>
               <p>CPI rose 3.0% in the 12 months to February, unchanged from January. Core inflation edged up to 3.2%; services inflation slowed to 4.3%, the lowest since March 2022. This is the final reading before the Iran war energy shock feeds through &mdash; analysts expect sharp rises from April onwards.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The breakdown reveals a mixed picture beneath the headline. Food inflation eased to 3.3% from 3.6%, and transport fell to 2.4% as petrol dropped 1.6p per litre in February &mdash; a trend now decisively reversed. Housing and utilities crept up to 4.6%. Clothing posted its first increase in four months. The Bank of England faces an impossible trade-off: the February data alone would have supported a rate cut, but the March energy shock changes the calculus entirely. Markets now price no further cuts until at least the fourth quarter of 2026.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="14:50">
               <h4>Kent Meningitis Outbreak Kills Two; 23 Cases Confirmed</h4>
               <p>An outbreak of meningitis B centred on the University of Kent in Canterbury has killed two young people, including 18-year-old Juliette Kenny, with 23 confirmed cases. Health Secretary Wes Streeting described it as &ldquo;unprecedented&rdquo; and announced a targeted vaccination programme for 5,000 students. Over 9,300 vaccines have been administered.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The outbreak is believed to have originated at Club Chemistry nightclub on 5&ndash;7 March and represents the most significant meningococcal cluster in Britain in decades. The UKHSA has deployed a specialist team to Canterbury. Parents of university students across the country are seeking reassurance, and several universities have begun reviewing their public health protocols. The ECDC has assessed the risk to the EU and EEA as very low, but the speed of transmission has alarmed epidemiologists.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="10:30">
               <h4>Court of Appeal Upholds VAT on Private School Fees</h4>
               <p>The Court of Appeal dismissed a human rights challenge against the government&rsquo;s 20 per cent VAT on private school fees, brought by Charedi Jewish parents and evangelical Christian schools. The court found &ldquo;no general prohibition on taxing education.&rdquo; The claimants plan to seek permission to appeal to the Supreme Court.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The ruling is a significant victory for Labour&rsquo;s flagship education funding policy, which the party argues will generate revenue to invest in state schools. The claimants argued the policy would force faith-based schools to close, but the three-judge panel found no breach of Article 2 of Protocol 1 of the European Convention on Human Rights. Critics warn some smaller faith schools and specialist institutions may become financially unviable. If the Supreme Court declines to hear the case, the policy will be settled law.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="16:15">
               <h4>Retail Records Worst Month Since April 2020; Costs Surge</h4>
               <p>British retailers recorded their worst month since the first lockdown, with sharp sales declines and no recovery signals. Manufacturers face their largest monthly cost surge since 1992, driven by Middle East energy prices. Enterprise Foods entered administration with &pound;5 million in debts, affecting 250 suppliers.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The combination of the April employer National Insurance rise and energy cost increases is creating acute pressure for labour-intensive businesses. Hospitality and manufacturing are worst affected, with some firms reporting energy bills up 40&ndash;60 per cent since February. Output growth hit a six-month low while firms raised prices at near-year-high rates. The British Chambers of Commerce has called for an emergency support package, but the Chancellor&rsquo;s fiscal headroom &mdash; already thin at the Spring Forecast &mdash; leaves scant room for new spending commitments.</div></details>
@@ -2020,27 +2144,27 @@
         <div class="curated-column">
           <h3><span class="dot geo"></span> Geopolitical</h3>
           <div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="02:30">
               <h4>Day 26: Pentagon Orders 82nd Airborne to Middle East</h4>
               <p>The Pentagon has ordered Maj. Gen. Brandon Tegtmeier and his headquarters staff to deploy to the Middle East, with up to 3,000 paratroopers on standby. Kharg Island, handling 90 per cent of Iran&rsquo;s crude exports, is identified as the likeliest target for an airborne assault. No final order has been issued.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The deployment of the 82nd Airborne&rsquo;s command element is the clearest signal yet that Washington is preparing ground force options. Kharg Island sits 25 kilometres off Iran&rsquo;s coast in the Persian Gulf and processes virtually all of Iran&rsquo;s seaborne oil exports. Seizing it would cripple Tehran&rsquo;s revenue but risk a catastrophic escalation, drawing in Iranian ground forces and potentially triggering retaliation against US bases across the region. The Pentagon describes this as &ldquo;prudent planning,&rdquo; but the simultaneous diplomatic messaging &mdash; Trump claiming talks are under way &mdash; creates deliberate ambiguity about Washington&rsquo;s true intent.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="04:15">
               <h4>Trump Claims Iran Talks Under Way; Tehran Flatly Denies</h4>
               <p>President Trump said Vice-President Vance, Secretary Rubio and envoys Witkoff and Kushner were engaged in discussions with Tehran. Iran rejected the claims outright, accusing Washington of &ldquo;buying time.&rdquo; Trump ordered a five-day postponement of planned strikes on Iranian power plants and energy infrastructure.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The diplomatic confusion underscores a fundamental disconnect between Washington&rsquo;s public messaging and battlefield reality. While Trump frames the strike pause as a goodwill gesture, the simultaneous deployment of 82nd Airborne assets suggests preparation for escalation rather than de-escalation. Iran&rsquo;s refusal to acknowledge talks may reflect genuine absence of negotiations or a domestic political calculation &mdash; any appearance of dealing with Washington under bombardment would undermine the regime&rsquo;s standing. The next 72 hours are critical: if the five-day pause expires without progress, the Kharg Island option moves considerably closer.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="06:45">
               <h4>Russia Launches Spring Offensive With 400-Drone Barrage</h4>
               <p>Russia fired nearly 400 long-range drones at seven Ukrainian cities on 24 March, signalling the start of its spring-summer offensive. Ground assaults intensified around Lyman in Donetsk, where 500 Russian troops mounted a seven-pronged attack using 30 armoured vehicles. Ukrainian forces report all attacks were repelled.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Moscow is exploiting the global distraction of the Iran conflict to press its advantage. President Zelensky has warned of a &ldquo;very bad feeling&rdquo; about the war&rsquo;s consequences for Ukraine, citing postponed diplomatic meetings as Western attention shifts to the Middle East. The Institute for the Study of War assesses Russia is unlikely to breach the Fortress Belt defensive line in 2026, but the offensive&rsquo;s true purpose may be attritional &mdash; grinding down Ukrainian reserves and Western resolve simultaneously. Russia&rsquo;s cumulative losses since February 2022 now exceed 1.29 million troops.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="07:20">
               <h4>Strait of Hormuz Crisis Chokes Global Energy Supplies</h4>
               <p>The Strait of Hormuz remains effectively closed to Western-allied shipping on Day 26. Around 200 tankers are stranded, and global oil supply has been cut by an estimated 10 million barrels per day &mdash; the largest disruption in history. Iran is selectively permitting transit for Chinese, Indian and Japanese vessels.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Iran&rsquo;s selective transit policy is a masterclass in asymmetric leverage, rewarding neutrality while punishing Western allies. The IEA has called this the &ldquo;greatest global energy and food security challenge in history.&rdquo; Gulf Cooperation Council states, which depend on the Strait for over 80 per cent of food imports, face a concurrent grocery supply emergency. The ECB has postponed planned rate cuts and revised its inflation forecasts upward. Brent crude remains above $100 despite retreating from its $126 peak. Every week this continues, the economic damage compounds exponentially.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="05:50">
               <h4>NATO Agrees Unprecedented 5% Defence Spending Target</h4>
               <p>NATO member states agreed at The Hague summit to a new defence investment target of 5 per cent of GDP, with an interim commitment of 3.5 per cent by 2035. Germany has committed to reaching 3.2 per cent by 2029, budgeting &euro;117.2 billion for defence in 2026. Poland leads allies at 4.48 per cent.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The Iran war and Russia&rsquo;s grinding offensive have crystallised European defence urgency in a way that years of American cajoling could not. The shift from 2 per cent to 5 per cent represents a generational reorientation of European fiscal priorities, requiring an additional &euro;254 billion annually across EU NATO members. France has allocated &euro;68.5 billion despite wider deficit pressures. The question is whether European industrial capacity can absorb this spending effectively, or whether it simply inflates procurement costs without proportionate capability gains.</div></details>
@@ -2050,27 +2174,27 @@
         <div class="curated-column">
           <h3><span class="dot dom"></span> UK Domestic Politics</h3>
           <div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="22:45">
               <h4>Crime and Policing Bill Clears Lords Third Reading</h4>
               <p>The Crime and Policing Bill completed its third reading in the House of Lords, clearing upper chamber scrutiny of the government&rsquo;s flagship criminal justice legislation. The bill tackles anti-social behaviour, knife crime, violence against women, retail theft and child sexual abuse. It returns to the Commons for consideration of Lords amendments.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">This represents a significant legislative milestone for the Home Office, which has steered the bill through months of parliamentary scrutiny since its second reading in October 2025. The Lords&rsquo; report stage, running from late February to 18 March, saw extensive debate on police powers and misconduct investigation provisions. The bill&rsquo;s passage before the Easter recess &mdash; Parliament rises on 27 March &mdash; gives the government a tangible domestic achievement amid a period dominated by the Iran crisis. No major obstacles are anticipated in the Commons.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="07:30">
               <h4>Starmer Chairs COBR as Iran Conflict Drives Energy Surge</h4>
               <p>The Prime Minister chaired a COBR meeting on the domestic economic impact of the Iran conflict, attended by Chancellor Reeves and Bank of England Governor Bailey. Wholesale gas prices have risen approximately 75 per cent since late February; petrol climbed 14p per litre and diesel surged 29p per litre in under a month.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The government faces a cost-of-living crisis it did not create but must manage. The OBR has warned that the energy spike could add a full percentage point to UK inflation in 2026, potentially pushing CPI above 5 per cent and undermining the Bank of England&rsquo;s cautious rate-cutting trajectory. Starmer has insisted &ldquo;this is not our war&rdquo; whilst permitting US forces to use British bases &mdash; a position that invites comparisons with the 2003 Iraq debate. The Chancellor&rsquo;s fiscal headroom, already thin after the Spring Forecast, is under further pressure.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="06:00">
               <h4>English Devolution Bill Enters Lords Report Stage</h4>
               <p>The English Devolution and Community Empowerment Bill began its report stage in the House of Lords this week, with debate continuing on 25 March. The legislation transfers powers from Westminster to combined authorities and local councils across England, covering planning, transport, skills and economic development.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The devolution bill is central to the government&rsquo;s levelling-up agenda, but its passage has been complicated by tensions between Whitehall departments reluctant to cede control and local leaders demanding genuine autonomy. The report stage amendments signal the government&rsquo;s effort to address Lords concerns about insufficient safeguards for affected communities. With Parliament breaking for Easter on 27 March, the bill will not complete report stage until mid-April, and its progress will be closely watched by the metro mayors who stand to gain the most from its provisions.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="05:15">
               <h4>Votes at 16 Bill Advances Through Commons Committee</h4>
               <p>The Representation of the People Bill continued its committee stage scrutiny. The bill&rsquo;s core measures include lowering the voting age to 16 for all UK elections, extending voter registration to 14-year-olds and clamping down on foreign interference. Approximately 1.7 million young people would become newly eligible to vote.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">This is the government&rsquo;s most significant constitutional initiative of the session, fulfilling a Labour manifesto commitment. The Conservatives and Reform UK oppose votes at 16, arguing that the franchise should align with the age of majority. Supporters point to the existing precedent in Scotland and Wales, where 16-year-olds already vote in devolved elections. The foreign interference provisions have attracted cross-party support. The bill&rsquo;s passage before the end of the parliamentary session would require consistent government prioritisation of Commons floor time &mdash; a challenge given competing demands of the Iran crisis.</div></details>
             </div>
-            <div class="curated-item">
+            <div class="curated-item" data-time="07:00">
               <h4>Bank of England Holds Rate at 3.75% as War Clouds Outlook</h4>
               <p>The Monetary Policy Committee voted unanimously to maintain the base rate at 3.75 per cent, pausing rate cuts widely anticipated before the Middle East conflict escalated. Mortgage rates have risen sharply, with two-year fixes climbing from 4.84 per cent to 5.28 per cent in just eleven days.</p>
               <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The MPC&rsquo;s unanimous decision underscores the inflationary threat posed by the Iran conflict. Before hostilities escalated in late February, markets had priced in at least two further rate cuts in 2026. That expectation has been overtaken by events. The jump in mortgage rates &mdash; roughly 44 basis points on two-year fixes in under a fortnight &mdash; will hit the estimated 1.6 million homeowners due to remortgage this year. The Bank faces a painful trade-off: cutting rates to support a slowing economy would risk embedding higher inflation, whilst holding rates prolongs the squeeze on mortgage holders and business investment.</div></details>
@@ -3494,54 +3618,75 @@
   </div>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- LIVE RSS FEEDS                              -->
+  <!-- LIVE RSS FEEDS (tabbed)                     -->
   <!-- ════════════════════════════════════════════ -->
+
+  <!-- Section label: Live Updates -->
+  <div class="section-label" id="live-feeds">
+    <span class="label-icon">&#9679;</span>
+    <span>Live Updates</span>
+    <span class="label-detail">&middot; Auto-aggregated from 16 sources</span>
+  </div>
+
   <main class="container">
 
-    <!-- Geopolitical -->
-    <section class="section" id="geopolitical" aria-label="Geopolitical news">
-      <div class="section-header">
-        <div class="section-accent geo"></div>
-        <h2 class="section-title">Geopolitical</h2>
-        <span class="live-badge"><span class="live-dot"></span>LIVE</span>
-        <span class="section-subtitle">World affairs, diplomacy &amp; conflict</span>
-        <span class="section-time" id="geoTime"></span>
-      </div>
-      <noscript>
-        <style>.skeleton-container { display: none; }</style>
-        <p style="text-align:center; padding:40px 20px; color:var(--text-secondary); font-family:var(--sans); font-size:14px;">
-          This site requires JavaScript to load news briefings. Please enable JavaScript and refresh the page.
-        </p>
-      </noscript>
-      <div id="geoContent">
-        <!-- #8 Loading skeleton -->
-        <div class="skeleton-container">
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
-        </div>
-      </div>
-    </section>
+    <!-- Tab bar -->
+    <div class="live-tabs-bar" role="tablist" aria-label="Live feed categories">
+      <button class="live-tab active" role="tab" aria-selected="true" aria-controls="geoPanel" id="geoTab" data-panel="geoPanel">
+        <span class="tab-dot geo"></span> Geopolitical
+      </button>
+      <button class="live-tab" role="tab" aria-selected="false" aria-controls="domPanel" id="domTab" data-panel="domPanel">
+        <span class="tab-dot dom"></span> UK Domestic
+      </button>
+    </div>
 
-    <!-- UK Domestic -->
-    <section class="section" id="domestic" aria-label="UK domestic politics">
-      <div class="section-header">
-        <div class="section-accent dom"></div>
-        <h2 class="section-title">UK Domestic Politics</h2>
-        <span class="live-badge"><span class="live-dot"></span>LIVE</span>
-        <span class="section-subtitle">Westminster, policy &amp; governance</span>
-        <span class="section-time" id="domTime"></span>
-      </div>
-      <div id="domContent">
-        <div class="skeleton-container">
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
-          <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+    <!-- Geopolitical panel -->
+    <div class="live-tab-panel active" id="geoPanel" role="tabpanel" aria-labelledby="geoTab">
+      <section class="section" id="geopolitical" aria-label="Geopolitical news">
+        <div class="section-header">
+          <div class="section-accent geo"></div>
+          <h2 class="section-title">Geopolitical</h2>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+          <span class="section-subtitle">World affairs, diplomacy &amp; conflict</span>
+          <span class="section-time" id="geoTime"></span>
         </div>
-      </div>
-    </section>
+        <noscript>
+          <style>.skeleton-container { display: none; }</style>
+          <p style="text-align:center; padding:40px 20px; color:var(--text-secondary); font-family:var(--sans); font-size:14px;">
+            This site requires JavaScript to load news briefings. Please enable JavaScript and refresh the page.
+          </p>
+        </noscript>
+        <div id="geoContent">
+          <div class="skeleton-container">
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- UK Domestic panel -->
+    <div class="live-tab-panel" id="domPanel" role="tabpanel" aria-labelledby="domTab">
+      <section class="section" id="domestic" aria-label="UK domestic politics">
+        <div class="section-header">
+          <div class="section-accent dom"></div>
+          <h2 class="section-title">UK Domestic Politics</h2>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+          <span class="section-subtitle">Westminster, policy &amp; governance</span>
+          <span class="section-time" id="domTime"></span>
+        </div>
+        <div id="domContent">
+          <div class="skeleton-container">
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+          </div>
+        </div>
+      </section>
+    </div>
 
   </main>
 
@@ -4148,6 +4293,16 @@ window._marketData = {};
         });
       }
 
+      // Inject per-story timestamps from data-time attributes
+      clone.querySelectorAll('.curated-item[data-time]').forEach(item => {
+        const h4 = item.querySelector('h4');
+        if (!h4) return;
+        const time = document.createElement('span');
+        time.className = 'story-time';
+        time.textContent = item.dataset.time;
+        h4.appendChild(time);
+      });
+
       // #3 Key figures strip — pick 3 most relevant from market data based on edition content
       const allText = clone.textContent.toLowerCase();
       // Use per-edition market data if available, fall back to global live data
@@ -4222,22 +4377,65 @@ window._marketData = {};
         });
       }
 
-      // Expand All / Collapse All for Dive Deeper sections
-      const details = clone.querySelectorAll('details.dive-deeper');
-      if (details.length > 0) {
-        const header = clone.querySelector('.edition-header');
-        if (header) {
-          const expandBtn = document.createElement('button');
-          expandBtn.className = 'expand-all-btn';
-          expandBtn.textContent = 'Expand all';
-          expandBtn.addEventListener('click', () => {
-            const allOpen = Array.from(details).every(d => d.open);
-            details.forEach(d => d.open = !allOpen);
-            expandBtn.textContent = allOpen ? 'Expand all' : 'Collapse all';
-          });
-          header.appendChild(expandBtn);
-        }
-      }
+      // Collapse impact boxes into <details> elements
+      clone.querySelectorAll('.impact-box').forEach(box => {
+        const details = document.createElement('details');
+        details.className = 'impact-details';
+        const summary = document.createElement('summary');
+        const heading = box.querySelector('.impact-heading');
+        summary.textContent = heading ? heading.textContent : 'What It Means For You';
+        details.appendChild(summary);
+        if (heading) heading.remove();
+        box.parentNode.insertBefore(details, box);
+        details.appendChild(box);
+      });
+
+      // Accordion: wrap content in body div, one expanded per column, always keep one open
+      clone.querySelectorAll('.curated-column').forEach(col => {
+        const items = Array.from(col.querySelectorAll(':scope > div > .curated-item, :scope > .curated-item'));
+        items.forEach((item, i) => {
+          // Wrap all non-h4 children into a .curated-item-body for grid animation
+          const h4 = item.querySelector('h4');
+          const body = document.createElement('div');
+          body.className = 'curated-item-body';
+          while (h4 && h4.nextSibling) body.appendChild(h4.nextSibling);
+          item.appendChild(body);
+
+          item.classList.add('curated-item-accordion');
+          item.classList.add('curated-item-collapsed');
+          if (h4) {
+            h4.addEventListener('click', () => {
+              const wasCollapsed = item.classList.contains('curated-item-collapsed');
+
+              // Step 1: Snapshot where the clicked headline is on screen
+              const yBefore = h4.getBoundingClientRect().top;
+
+              // Step 2: Close dive-deeper and impact sections instantly (no animation)
+              // This removes the bulk of content height before the accordion animates
+              items.forEach(it => {
+                it.querySelectorAll('details.dive-deeper[open]').forEach(d => { d.open = false; });
+                it.querySelectorAll('details.impact-details[open]').forEach(d => { d.open = false; });
+              });
+
+              // Step 3: Correct scroll so the clicked headline stays in place
+              // after dive-deeper content vanished above it
+              const yAfterClose = h4.getBoundingClientRect().top;
+              const diveDeepDrift = yAfterClose - yBefore;
+              if (Math.abs(diveDeepDrift) > 1) window.scrollBy(0, diveDeepDrift);
+
+              // Step 4: Now run the accordion — smooth grid transition
+              items.forEach(it => {
+                if (it !== item) it.classList.add('curated-item-collapsed');
+              });
+              if (wasCollapsed) {
+                item.classList.remove('curated-item-collapsed');
+              } else {
+                item.classList.add('curated-item-collapsed');
+              }
+            });
+          }
+        });
+      });
 
       // Mobile per-column expand/collapse buttons
       if (window.innerWidth <= 768) {
@@ -4401,6 +4599,28 @@ window._marketData = {};
 const now = new Date();
 document.getElementById('currentDate').textContent =
   now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+
+// ── Live Feed Tab Switching ──
+(function() {
+  var tabs = document.querySelectorAll('.live-tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      // Deactivate all tabs and panels
+      tabs.forEach(function(t) {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.live-tab-panel').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      // Activate clicked tab and its panel
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(tab.dataset.panel);
+      if (panel) panel.classList.add('active');
+    });
+  });
+})();
 
 // ── RSS Config ──
 // Strategy 1: rss2json (returns JSON)
@@ -4573,8 +4793,8 @@ function renderSection(articles, accentClass, feeds) {
   articles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
   const deduped = dedupe(articles);
 
-  const top = deduped.slice(0, 6);
-  const rest = deduped.slice(6, 18);
+  const top = deduped.slice(0, 4);
+  const rest = deduped.slice(4, 12);
 
   let html = '<div class="top-stories">';
   top.forEach(a => {
@@ -4940,6 +5160,8 @@ if ('serviceWorker' in navigator) {
   breakingTextEl.addEventListener('click', () => {
     const match = findMatchingItem();
     if (match) {
+      // Auto-expand collapsed story when navigating to it
+      match.classList.remove('curated-item-collapsed');
       match.scrollIntoView({ behavior: 'smooth', block: 'center' });
       let flashed = false;
       function flash() {
@@ -5370,6 +5592,8 @@ if ('serviceWorker' in navigator) {
               const expandBtn = col.querySelector('.col-expand-btn');
               if (expandBtn) expandBtn.click();
             }
+            // Auto-expand collapsed story when navigating to it
+            match.classList.remove('curated-item-collapsed');
             match.scrollIntoView({ behavior: 'smooth', block: 'center' });
             // Highlight the story
             match.classList.remove('highlight-flash');
