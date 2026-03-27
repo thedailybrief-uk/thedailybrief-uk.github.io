@@ -278,53 +278,58 @@
       letter-spacing: -1px; text-align: center; padding: 16px 0;
     }
     .masthead-nav {
-      display: flex; align-items: center; justify-content: center; gap: 28px;
-      padding: 10px 0; border-top: 1px solid var(--border-light); flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      padding: 0; border-top: 1px solid var(--border-light); flex-wrap: wrap;
     }
-    .masthead-nav a, .masthead-nav button {
+    /* Row 1: section links with accent underlines */
+    .masthead-nav > a {
+      font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--text-primary); text-decoration: none; transition: all 0.2s;
+      padding: 12px 24px 10px; font-family: var(--sans);
+      min-height: 44px; display: inline-flex; align-items: center;
+      border-bottom: 3px solid transparent; position: relative;
+    }
+    .masthead-nav > a:first-of-type { border-bottom-color: var(--accent-geo); }
+    .masthead-nav > a:nth-of-type(2) { border-bottom-color: var(--accent-dom); }
+    .masthead-nav > a:hover { color: var(--text-primary); opacity: 0.7; }
+    /* Row 2: utility items */
+    .masthead-nav button {
       font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-      color: var(--text-secondary); text-decoration: none; transition: color 0.2s; padding: 12px 4px 2px;
+      color: var(--text-secondary); text-decoration: none; transition: color 0.2s; padding: 10px 4px;
       background: none; border: none; cursor: pointer; font-family: var(--sans);
       min-height: 44px; display: inline-flex; align-items: center;
     }
     @media (max-width: 600px) {
-      .masthead-nav {
-        gap: 0; padding: 0; justify-content: center;
-        flex-wrap: wrap;
-      }
-      /* Row 1: section navigation links — equal halves */
-      .masthead-nav a:not(.nav-instagram) {
+      .masthead-nav { flex-wrap: wrap; }
+      /* Row 1: section links — equal halves with accent underlines */
+      .masthead-nav > a {
         flex: 1 1 50%; text-align: center; justify-content: center;
-        padding: 12px 0 10px; font-size: 11px; letter-spacing: 0.8px;
-        border-bottom: 1px solid var(--border-light);
+        padding: 12px 0 8px; font-size: 11px; letter-spacing: 0.8px;
       }
-      /* Row 2: theme toggle + subscribe centred */
+      /* Row 2: utility items — evenly distributed */
       .masthead-nav .nav-utility-row {
         flex: 1 1 100%; display: flex; align-items: center; justify-content: center;
-        border-top: none; gap: 0;
-        padding: 6px 0;
+        gap: 0; padding: 4px 0; border-top: 1px solid var(--border-light);
       }
-      /* Hide text labels on mobile for theme toggle — icon only */
-      .nav-utility-row #darkToggle {
-        font-size: 0; padding: 8px 12px; min-width: 44px;
+      .nav-utility-row > * {
+        flex: 1 1 auto; text-align: center; justify-content: center;
       }
-      .nav-utility-row #darkToggle .toggle-icon { font-size: 16px; }
-      /* Saved — icon-like */
-      .nav-utility-row .bookmarks-nav-btn {
-        font-size: 10px; padding: 8px 10px; letter-spacing: 0.5px;
-      }
-      /* Subscribe — compact pill */
+      .nav-utility-row #darkToggle { font-size: 11px; padding: 8px 6px; }
+      .nav-utility-row .bookmarks-nav-btn { font-size: 11px; padding: 8px 6px; }
       .nav-utility-row button.subscribe-btn {
-        margin: 0; padding: 6px 14px; font-size: 9px;
-        min-height: 32px;
+        margin: 0; padding: 6px 12px; font-size: 9px; min-height: 32px;
+        flex: 0 0 auto;
       }
-      /* Instagram + bell now in masthead-top, not utility row */
     }
-    .nav-utility-row { display: contents; }
-    .masthead-nav a:hover, .masthead-nav button:hover { color: var(--text-primary); }
-    .toggle-icon { display: inline-block; vertical-align: -2px; line-height: 1; font-size: 16px; }
-    .toggle-icon.sun { color: var(--text-primary); }
-    .toggle-icon.moon { font-size: 13px; vertical-align: -1px; }
+    .nav-utility-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px; width: 100%; padding: 8px 0;
+      border-top: 1px solid var(--border-light);
+    }
+    .masthead-nav button:hover { color: var(--text-primary); }
+    .toggle-icon { display: inline-block; vertical-align: -1px; line-height: 1; font-size: 14px; }
+    .toggle-icon.sun { color: var(--text-primary); font-size: 14px; }
+    .toggle-icon.moon { font-size: 14px; vertical-align: -1px; }
     /* Nav accent styles removed — simplified to 2 links */
     .masthead-nav a.nav-instagram { border-bottom: none; }
     .last-updated { font-size: 12px; color: var(--text-muted); text-align: center; padding: 6px 0; }
