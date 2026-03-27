@@ -405,6 +405,21 @@
     .curated-edition.past-collapsed .curated-meta {
       border-bottom: none; padding-bottom: 0; margin-bottom: 0;
     }
+    .edition-preview {
+      display: none;
+      font-family: var(--sans); font-size: 14px; color: var(--text-secondary);
+      margin: 10px 0 4px; padding: 0; list-style: none; line-height: 1.5;
+    }
+    .past-collapsed .edition-preview { display: block; }
+    .edition-preview li {
+      padding: 3px 0 3px 16px; position: relative;
+    }
+    .edition-preview li::before {
+      content: ''; position: absolute; left: 0; top: 11px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-geo);
+    }
+    .curated-edition.evening .edition-preview li::before { background: var(--accent-dom); }
     .expand-edition-btn {
       display: none;
       font-family: var(--sans); font-size: 14px; font-weight: 700;
@@ -4561,6 +4576,20 @@ window._marketData = {};
       if (idx === 0) return;
       ed.classList.add('past-collapsed');
 
+      // Build preview — top 3 headlines as bullet points
+      var headlines = ed.querySelectorAll('.curated-item h4');
+      var previewUl = document.createElement('ul');
+      previewUl.className = 'edition-preview';
+      for (var h = 0; h < Math.min(3, headlines.length); h++) {
+        var li = document.createElement('li');
+        var text = headlines[h].textContent.trim();
+        // Strip any appended tags/timestamps
+        text = text.replace(/Updated from morning|UPDATED|\d{2}:\d{2}/g, '').trim();
+        if (text.length > 80) text = text.substring(0, 77) + '...';
+        li.textContent = text;
+        previewUl.appendChild(li);
+      }
+
       // Expand button (after meta)
       var expandBtn = document.createElement('button');
       expandBtn.className = 'expand-edition-btn';
@@ -4588,7 +4617,10 @@ window._marketData = {};
       collapseBtn.addEventListener('click', collapse);
 
       var meta = ed.querySelector('.curated-meta');
-      if (meta) meta.after(expandBtn);
+      if (meta) {
+        meta.after(previewUl);
+        previewUl.after(expandBtn);
+      }
       ed.appendChild(collapseBtn);
     });
 
