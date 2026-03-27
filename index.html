@@ -524,33 +524,7 @@
     .weekly-tag.dom { background: rgba(46, 150, 214, 0.4); color: rgba(245,230,206,0.92); }
     .weekly-tag.markets { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
 
-    /* ── Feature 3: Reference Figures ── */
-    .ref-figures {
-      display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
-      padding: 6px 24px; margin: 0; text-align: center;
-      border-bottom: 1px solid var(--border-light);
-      background: var(--bg-section);
-      font-size: 12px; color: rgba(0,0,0,0.5);
-      font-family: var(--sans);
-    }
-    .ref-figure { display: flex; align-items: center; gap: 5px; }
-    .ref-figure[data-market] { cursor: pointer; transition: opacity 0.15s; }
-    .ref-figure[data-market]:hover { opacity: 0.7; }
-    .ref-figure strong { color: rgba(0,0,0,0.75); font-weight: 600; }
-    .ref-figure .ref-change { font-size: 10px; font-weight: 600; margin-left: 1px; }
-    .ref-figure .ref-change.up { color: #16a34a; }
-    .ref-figure .ref-change.down { color: #dc2626; }
-    .ref-figure .ref-change.flat { color: rgba(0,0,0,0.35); }
-    .ref-figure-sep { color: rgba(0,0,0,0.15); }
-    .ref-context { font-size: 10px; color: rgba(0,0,0,0.35); font-style: italic; white-space: nowrap; }
-    [data-theme="dark"] .ref-figures { color: rgba(255,255,255,0.5); }
-    [data-theme="dark"] .ref-figure strong { color: rgba(255,255,255,0.7); }
-    [data-theme="dark"] .ref-figure .ref-change.up { color: #4ade80; }
-    [data-theme="dark"] .ref-figure .ref-change.down { color: #f87171; }
-    [data-theme="dark"] .ref-figure .ref-change.flat { color: rgba(255,255,255,0.35); }
-    [data-theme="dark"] .ref-figure-sep { color: rgba(255,255,255,0.15); }
-    [data-theme="dark"] .ref-context { color: rgba(255,255,255,0.35); }
-    @media (max-width: 600px) { .ref-figures { font-size: 11px; gap: 10px; } }
+
 
     /* ── Feature 4: One To Read ── */
     .one-to-read {
@@ -1903,34 +1877,6 @@
       "drivers_down": ["Safe-haven demand amid Middle East military escalation", "Global growth slowdown expectations pulling yields lower"],
       "updated": "16 March 2026 08:00"
     },
-    "baseRate": {
-      "name": "UK Base Rate",
-      "desc": "The Bank of England's benchmark interest rate, set by the nine-member Monetary Policy Committee. Directly influences mortgage rates, savings returns and the cost of borrowing across the UK economy.",
-      "drivers_up": ["Sticky services inflation keeping the MPC cautious on cuts", "Oil price surge from Iran conflict adding to inflationary pressure"],
-      "drivers_down": ["Six consecutive months of zero GDP growth arguing for stimulus", "Mortgage approvals falling 10% year-on-year, housing market cooling"],
-      "updated": "16 March 2026 08:00"
-    },
-    "cpi": {
-      "name": "UK CPI Inflation",
-      "desc": "The Consumer Prices Index measures the annual rate of change in prices paid by UK households for a basket of goods and services. The Bank of England targets 2% CPI inflation over the medium term.",
-      "drivers_up": ["Energy prices rising sharply as Brent crude surges past $100", "Food price pressures from supply chain disruption"],
-      "drivers_down": ["Base effects from last year's energy spike dropping out of calculations", "Weak consumer demand amid cost-of-living pressures"],
-      "updated": "16 March 2026 08:00"
-    },
-    "unemployment": {
-      "name": "UK Unemployment Rate",
-      "desc": "The proportion of the economically active population aged 16+ who are without work but seeking and available for employment, measured by the ONS Labour Force Survey.",
-      "drivers_up": ["Economic stagnation squeezing hiring across services sector", "Public sector recruitment freeze amid fiscal tightening"],
-      "drivers_down": ["Record job vacancies in defence and security sectors", "Seasonal hiring in hospitality ahead of summer"],
-      "updated": "16 March 2026 08:00"
-    },
-    "gdpGrowth": {
-      "name": "UK GDP Growth",
-      "desc": "The quarterly change in the UK's gross domestic product, measuring total economic output. The Office for Budget Responsibility halved its 2026 growth forecast to 1.1% amid geopolitical headwinds.",
-      "drivers_up": ["Defence spending acceleration providing fiscal stimulus", "Services sector showing early signs of stabilisation"],
-      "drivers_down": ["Oil shock squeezing business margins and consumer spending", "Trade disruption from Strait of Hormuz closure hitting exports"],
-      "updated": "16 March 2026 08:00"
-    }
   }</script>
   <div class="markets-bar" id="marketsBar">
     <div class="markets-track" id="marketsTrack">
@@ -1956,16 +1902,6 @@
       <span class="market-dot"></span>
       <span class="market-context" id="marketContext">(vs. prev. close)</span>
     </div>
-  </div>
-  <div class="ref-figures" id="refFiguresBar">
-    <span class="ref-figure" data-market="baseRate"><span>UK Base Rate:</span> <strong>3.75%</strong> <span class="ref-change flat">&#9644; 0.00pp</span></span>
-    <span class="ref-figure-sep">|</span>
-    <span class="ref-figure" data-market="cpi"><span>UK CPI:</span> <strong>3.0%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-    <span class="ref-figure-sep">|</span>
-    <span class="ref-figure" data-market="unemployment"><span>UK Unemployment:</span> <strong>5.2%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-    <span class="ref-figure-sep">|</span>
-    <span class="ref-figure" data-market="gdpGrowth"><span>UK GDP Growth:</span> <strong>0.1%</strong> <span class="ref-change flat">&#9644; 0.0pp</span></span>
-    <span class="ref-context">(vs. previous period)</span>
   </div>
 
   <!-- Section label: Curated Briefing -->
@@ -2002,7 +1938,275 @@
     <!-- IMPORTANT: Keep 7 FULL DAYS of editions in this container. Do NOT delete editions less than 7 days old. -->
     <div id="all-editions" style="display:none;">
 
-    <!-- ── MORNING 26 MARCH (08:05) ── -->
+    <!-- ── EVENING 27 MARCH (17:50) ── -->
+    <div class="curated-edition evening" data-date="2026-03-27" data-time="17:50" data-markets='{"FTSE":{"price":9810,"change":-0.33},"SP":{"price":6558,"change":-0.26},"Brent":{"price":105.40,"change":-0.66},"GBP":{"price":1.3348,"change":-0.13},"Gold":{"price":4585,"change":0.28},"EURGBP":{"price":0.8668,"change":0.08},"Gilt":{"price":4.86,"change":0.41},"VIX":{"price":27.10,"change":1.12},"BTC":{"price":70105,"change":-0.45},"UST":{"price":4.42,"change":0.23}}'>
+      <div class="edition-header">
+        <span class="edition-icon">&#9790;</span>
+        <h2>Evening Briefing</h2>
+      </div>
+      <div class="curated-meta">Friday 27 March 2026 &mdash; 17:50 GMT</div>
+      <div class="impact-box">
+        <h3 class="impact-heading">What It Means For You</h3>
+        <ul class="impact-list">
+          <li>Energy bill relief is brief &mdash; the 7% cap reduction from 1 April saves roughly &pound;10 per month, but July&rsquo;s projected &pound;322 increase could wipe it out. Consider fixing your energy deal now if your contract allows.</li>
+          <li>Use your ISA allowance by 5 April &mdash; with &pound;20,000 at stake and a government review potentially reducing the limit, this may be the most valuable year-end deadline in recent memory.</li>
+          <li>Review your pension scheme &mdash; the Pension Schemes Bill could force consolidation of smaller workplace pensions by 2030. Check your scheme&rsquo;s size, fees and performance now.</li>
+        </ul>
+      </div>
+      <div class="curated-grid">
+        <div class="curated-column">
+          <h3><span class="dot geo"></span> Geopolitical</h3>
+          <div>
+            <div class="curated-item" data-time="17:30">
+              <h4>Iran Responds to US Peace Plan Through Intermediaries &mdash; Washington Awaits Reply</h4>
+              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: Iran denied any talks &rarr; This evening: Tehran has responded through intermediaries, shifting from denial to indirect engagement</div>
+              <p>Iran has reportedly responded through unnamed intermediaries to the US 15-point peace framework, with Washington now awaiting Tehran&rsquo;s formal counter-proposal. The development came as Trump&rsquo;s energy strike pause entered its second day. Brent crude eased slightly to $105.40 on cautious optimism.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The shift from outright denial to indirect engagement represents the first tangible movement in nearly four weeks of conflict. Iran&rsquo;s choice to respond through intermediaries allows Tehran to negotiate without appearing to capitulate. The 15-point framework reportedly demands reopening the Strait of Hormuz, accepting nuclear inspections and disarming proxy forces. The new Supreme Leader, Mojtaba Khamenei, elected on 8 March following his father&rsquo;s assassination, is navigating his first major geopolitical crisis. Watch for whether a formal Iranian counter-proposal materialises before the weekend.</div></details>
+            </div>
+            <div class="curated-item" data-time="16:00">
+              <h4>Zelensky Calls Western Air Defence Disparity &ldquo;Obscene&rdquo; as 800 Patriots Fired in Three Days</h4>
+              <p>President Zelensky gave an impassioned address to European leaders, claiming US-allied nations expended over 800 Patriot interceptor missiles in three days &mdash; exceeding Ukraine&rsquo;s total stockpile accumulated over four years. He called the disparity &ldquo;obscene&rdquo; and urged Europe to build independent air defence production.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">A single Patriot PAC-3 MSE costs approximately $4 million; 800 missiles represent roughly $3.2 billion in 72 hours. European production capacity for comparable systems is measured in dozens per year, not hundreds. France and Germany are discussing a joint &ldquo;European Air Defence Accelerator&rdquo; programme, but meaningful production is 18&ndash;24 months away. Watch for whether the EU convenes an emergency defence summit.</div></details>
+            </div>
+            <div class="curated-item" data-time="15:20">
+              <h4>Russia&rsquo;s Baltic Oil Exports Halved as Ukraine Drone Campaign Devastates Ports</h4>
+              <p>Kpler confirmed Russian oil loadings from Baltic Sea ports have fallen approximately 50% since mid-March. Combined with the Hormuz closure, global oil supply disruption has reached levels not seen since the 1973 Arab oil embargo.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">A sustained 50% reduction in Baltic loadings could reduce Russian oil export revenue by $15&ndash;20 billion per quarter. The &ldquo;double chokepoint&rdquo; scenario has pushed the global oil market into uncharted territory. Strategic petroleum reserves in IEA member states total approximately 1.2 billion barrels, sufficient for roughly 90 days. Watch for whether IEA members coordinate a strategic reserve release.</div></details>
+            </div>
+            <div class="curated-item" data-time="17:15">
+              <h4>Democrat Flips Mar-a-Lago&rsquo;s Florida District in Special Election Shockwave</h4>
+              <p>Emily Gregory defeated Trump-endorsed Republican Jon Maples 51.15% to 48.85% in Florida House District 87 &mdash; which includes Mar-a-Lago. She is the first Democrat to win the district this century. Democrats have now flipped over 20 state legislative seats in special elections since last autumn.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Gregory&rsquo;s victory follows a consistent pattern: Democrats have outperformed their baseline by 8&ndash;12 points in special elections since 2024, driven by suburban women and younger voters. The Florida result is particularly notable because the state has trended strongly Republican. Watch for whether Republicans begin distancing themselves from Trump ahead of the 2026 midterms.</div></details>
+            </div>
+            <div class="curated-item" data-time="15:45">
+              <h4>LaGuardia Crash Probe: Fire Truck Had No Transponder, NTSB Widens Investigation</h4>
+              <p>The NTSB confirmed the Port Authority fire truck involved in the fatal 22 March collision was not equipped with a transponder. The two Air Canada Express pilots were killed when their CRJ900 struck the truck on landing. The NTSB has expanded its investigation to ground vehicle tracking at all major US airports.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The FAA mandates transponders on aircraft but ground vehicles at many airports rely on older tracking. The crash occurred in heavy rain with reduced visibility. The UK&rsquo;s CAA mandates Surface Movement Guidance and Control Systems at major airports, including Heathrow&rsquo;s A-SMGCS. Watch for whether the FAA issues an emergency directive requiring transponders on all runway-access vehicles.</div></details>
+            </div>
+          </div>
+        </div>
+        <div class="curated-column">
+          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
+          <div>
+            <div class="curated-item" data-time="17:50">
+              <h4>Consumer Confidence Crisis Deepens as Spending and Business Activity Fall</h4>
+              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: BRC data showed record lows &rarr; This evening: Bloomberg and ONS confirm collapse translating into measurable falls in spending</div>
+              <p>Bloomberg confirmed UK household confidence has plunged to the lowest level under Starmer, with the BRC index at minus 53. The ONS business survey showed 25% of firms reporting falling turnover, with economic uncertainty cited by 32% as the primary challenge.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Consumer spending accounts for approximately 60% of UK GDP. The BCC warned of stagflationary conditions. Unlike the 1970s, the UK enters this crisis with government debt at approximately 100% of GDP, limiting fiscal space. Watch for Q1 GDP data in May.</div></details>
+            </div>
+            <div class="curated-item" data-time="16:40">
+              <h4>Energy Price Cap to Fall in April &mdash; But July Surge of &pound;322 Looms</h4>
+              <p>Ofgem confirmed the cap falls 7% from 1 April to &pound;1,641. Cornwall Insight forecasts a &pound;322 increase in July to &pound;1,963 as wartime energy costs feed through. Miliband faces growing pressure on North Sea drilling.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The UK&rsquo;s chronic gas storage deficit &mdash; 2% of annual demand versus Germany&rsquo;s 25% &mdash; means Britain is a price taker with no buffer. Cornwall Insight&rsquo;s projection may prove conservative if Brent stays above $105. Watch for Miliband&rsquo;s statement expected after Easter.</div></details>
+            </div>
+            <div class="curated-item" data-time="15:35">
+              <h4>Starmer&rsquo;s North Sea Dilemma: Cabinet Split Widens Over Drilling</h4>
+              <p>The split deepened with Reeves publicly backing new licences while Reed emphasised Net Zero. Starmer continued to defer to Miliband. Industry groups estimate expedited licensing could support 75,000 jobs.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">One option under discussion is a &ldquo;security licensing&rdquo; framework that would approve new fields for UK domestic supply, with enhanced decommissioning guarantees and a hypothecated windfall tax to fund renewables. Watch for whether Miliband announces a decision before Easter recess ends.</div></details>
+            </div>
+            <div class="curated-item" data-time="17:40">
+              <h4>Pension Schemes Bill Passes Third Reading in Lords &mdash; Heads to Commons</h4>
+              <p>The Lords completed Third Reading, sending the Bill to the Commons with contested amendments removing ministerial powers to mandate asset allocations. The government has signalled it will seek to reverse key amendments after 13 April.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The rebellion was substantial &mdash; 191 to 118. For savers, the practical implications depend on which version prevails. The new value-for-money framework from 2028 will for the first time require schemes to benchmark on investment returns, not just charges. Watch for whether the government whips Commons votes to reverse Lords amendments.</div></details>
+            </div>
+            <div class="curated-item" data-time="16:15">
+              <h4>&pound;108 Billion in UK Savings at Risk of Tax as ISA Deadline Approaches</h4>
+              <p>With 5 April nine days away, advisers warned &pound;108 billion in taxable savings could be shielded using unused ISA allowances. Cash ISA rates remain around 4.5%. The government&rsquo;s planned review could reduce the &pound;20,000 annual limit.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">A higher-rate taxpayer earning 4.5% on &pound;20,000 saves approximately &pound;360 annually. Over a five-year fix, that compounds to over &pound;2,000 in tax savings. The government&rsquo;s review could reduce allowances, merge ISA types or restrict the Lifetime ISA. Watch for conclusions expected in the Autumn Budget.</div></details>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="one-to-read">
+        <span class="otr-label">One To Read</span>
+        <a href="https://www.bbc.com/news/articles/cg547ljepvzo" target="_blank" rel="noopener noreferrer">
+          <h4>Oil Traders Bet Millions Minutes Before Trump&rsquo;s Iran Post</h4>
+          <span class="otr-source">BBC News</span>
+          <span class="otr-dot">&middot;</span>
+          <span class="otr-desc">A riveting investigation into suspicious trading in oil futures that raises serious questions about information leakage from the White House during wartime.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── MORNING 27 MARCH (08:10) ── -->
+    <div class="curated-edition morning" data-date="2026-03-27" data-time="08:10" data-markets='{"FTSE":{"price":9830,"change":-0.12},"SP":{"price":6570,"change":-0.08},"Brent":{"price":106.06,"change":-0.11},"GBP":{"price":1.3355,"change":-0.19},"Gold":{"price":4580,"change":0.46},"EURGBP":{"price":0.8665,"change":0.10},"Gilt":{"price":4.85,"change":0.62},"VIX":{"price":26.90,"change":0.38},"BTC":{"price":70250,"change":-0.24},"UST":{"price":4.41,"change":0.00}}'>
+      <div class="edition-header">
+        <span class="edition-icon">&#9788;</span>
+        <h2>Morning Briefing</h2>
+      </div>
+      <div class="curated-meta">Friday 27 March 2026 &mdash; 08:10 GMT</div>
+      <div class="impact-box">
+        <h3 class="impact-heading">What It Means For You</h3>
+        <ul class="impact-list">
+          <li>Fill up today if you can &mdash; petrol prices are rising daily and could breach 155p next week. Filling up before the weekend could save &pound;5&ndash;8 per tank.</li>
+          <li>Tax year-end planning &mdash; with 5 April approaching, use remaining ISA allowances (&pound;20,000) and consider topping up your pension.</li>
+          <li>Travel disruption ahead &mdash; Parliament rising means peak Friday traffic out of London. Allow extra time if flying transatlantic due to TSA staffing issues.</li>
+        </ul>
+      </div>
+      <div class="curated-grid">
+        <div class="curated-column">
+          <h3><span class="dot geo"></span> Geopolitical</h3>
+          <div>
+            <div class="curated-item" data-time="07:15">
+              <h4>Oil Traders Placed Millions in Bets Minutes Before Trump&rsquo;s Iran Deadline Post</h4>
+              <p>The BBC revealed that oil traders placed millions in futures bets minutes before Trump posted his announcement extending the Iran energy strike deadline to 6 April. The suspicious activity is under scrutiny by the CFTC. Brent opened at $106.06.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The trading pattern echoes a familiar Trump-era concern. During his first term, academics documented market movements before major posts. With Brent 47% above pre-war levels, even a brief informational advantage could yield enormous returns. The market&rsquo;s backwardation structure amplifies potential gains from insider knowledge. Watch for whether the CFTC identifies specific accounts linked to the trades.</div></details>
+            </div>
+            <div class="curated-item" data-time="08:30">
+              <h4>Ukraine Cripples 40% of Russia&rsquo;s Oil Export Capacity in Unprecedented Drone Campaign</h4>
+              <p>Reuters confirmed that Ukrainian drone strikes have halted approximately 40% of Russia&rsquo;s oil export capacity &mdash; the worst disruption in modern Russian history. Ust-Luga suspended loading after Tuesday&rsquo;s strike. Russia intercepted 389 Ukrainian drones overnight.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">March 2026 is the first month Ukraine&rsquo;s long-range drone launches have roughly matched Russia&rsquo;s. The &ldquo;double chokepoint&rdquo; scenario &mdash; Baltic and Hormuz disruptions simultaneously &mdash; is unprecedented. Russia&rsquo;s war economy depends on oil for 40% of federal budget income. Watch for whether Russia retaliates against Ukrainian grain infrastructure.</div></details>
+            </div>
+            <div class="curated-item" data-time="06:45">
+              <h4>Pentagon&rsquo;s Ukraine Arms Diversion Draws Sharp European Backlash</h4>
+              <p>European allies reacted with alarm to reports the Pentagon may redirect Ukraine-bound weapons. Germany&rsquo;s Defence Minister called it &ldquo;deeply concerning.&rdquo; The Pentagon informed Congress of plans to redirect approximately $750 million from PURL allocations.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The PURL programme supplied 75% of Ukraine&rsquo;s Patriot missiles. European production capacity is wholly inadequate. The UK&rsquo;s ASTER stocks are limited. Watch for an emergency NATO defence ministerial and whether the EU activates its European Peace Facility.</div></details>
+            </div>
+            <div class="curated-item" data-time="07:50">
+              <h4>OpenAI Shuts Down Sora, Ending $1 Billion Disney Partnership</h4>
+              <p>OpenAI confirmed Sora&rsquo;s closure, citing $15 million per day in compute costs against lifetime revenue of $2.1 million. The shutdown collapsed Disney&rsquo;s planned $1 billion investment. The team will pivot to robotics research.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Sora reached 3.3 million downloads at peak but each generation cost $4.50 in compute versus pennies in subscription revenue. Consumer willingness to pay for generative content remains far below production costs. Watch for whether this triggers broader retrenchment in AI video investment.</div></details>
+            </div>
+            <div class="curated-item" data-time="08:10">
+              <h4>WMO Report: Earth&rsquo;s Energy Imbalance Hits Record High</h4>
+              <p>The WMO&rsquo;s State of the Global Climate 2025 report confirmed the planet&rsquo;s energy imbalance has reached its highest level in 65 years of measurement. The 2015&ndash;2025 decade is the hottest on record.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The energy imbalance represents the fundamental thermodynamic driver of climate change. For the UK, warmer North Atlantic temperatures are linked to more intense winter storms. The report risks being overlooked amid the Iran conflict. Watch for the UK Climate Change Committee&rsquo;s spring progress report in April.</div></details>
+            </div>
+          </div>
+        </div>
+        <div class="curated-column">
+          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
+          <div>
+            <div class="curated-item" data-time="07:30">
+              <h4>Bank of England Holds at 3.75% &mdash; Rate Cuts Paused Until Inflation Clears</h4>
+              <p>The MPC voted unanimously to hold at 3.75%, citing the Iran conflict. Governor Bailey warned CPI is expected to reach 3&ndash;3.5% over the next two quarters. Markets now price zero cuts before Q3 2026.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The UK&rsquo;s gas storage capacity &mdash; just 2% of annual demand versus Germany&rsquo;s 25% &mdash; makes Britain a price taker. The average two-year fixed mortgage stands at approximately 5.2%. Watch for April inflation data due mid-May.</div></details>
+            </div>
+            <div class="curated-item" data-time="08:45">
+              <h4>Petrol Surges Past 150p as Drivers Face Highest Prices Since 2023</h4>
+              <p>Petrol hit 149.9p per litre, up from 135p at the start of March, with diesel at 176.6p. The RAC warned prices could breach 155p within days. The AA called for a temporary fuel duty reduction.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The 15p surge translates to &pound;8&ndash;10 extra per fill. Combined fuel duty and VAT means the Treasury takes 45% of the pump price. Cutting duty would ease pressure but widen the deficit. Watch for whether the Chancellor announces relief before Easter.</div></details>
+            </div>
+            <div class="curated-item" data-time="06:20">
+              <h4>Reform UK Projected to Take Three County Councils in May Elections</h4>
+              <p>PollCheck projects Reform winning approximately 2,260 net council seats in May, potentially controlling Essex, Norfolk and Suffolk. YouGov puts Reform at 23%, Labour at 19%, Greens at 18%, Conservatives at 17%.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Reform held fewer than 30 seats twelve months ago. The collapse is tri-directional: Labour, Conservatives and Liberal Democrats are all losing ground. The crypto donations ban is widely seen as targeting Reform&rsquo;s fundraising. Watch for Conservative councillor defections before May.</div></details>
+            </div>
+            <div class="curated-item" data-time="07:00">
+              <h4>Kent Meningitis: No New Cases as UKHSA Signals Containment</h4>
+              <p>No new cases recorded. Total stands at 20 confirmed, 2 probable, 2 deaths. Over 10,500 antibiotic doses and 4,500 vaccinations administered. The WHO issued a situation report. Mass prophylaxis appeared effective.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Canterbury&rsquo;s student population returns home for Easter, reducing density in the hotspot but creating potential seeding risk. The strain is a MenB variant not fully covered by Bexsero. The Meningitis Research Foundation has called for an urgent vaccination review. Watch for UKHSA&rsquo;s formal outbreak review in April.</div></details>
+            </div>
+            <div class="curated-item" data-time="08:20">
+              <h4>Parliament Rises for Easter as Lords Complete Pension Bill</h4>
+              <p>The Commons rose yesterday, the Lords follows today. Return date: 13 April. The Lords will complete Third Reading of the Pension Schemes Bill and question Ministers on onshore wind, Ukraine aid and online AGMs.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The recess coincides with Trump&rsquo;s 6 April Iran deadline &mdash; MPs may return to a dramatically changed geopolitical landscape. The government has avoided a substantive Iran debate. Watch for whether a full debate is scheduled for the first week back.</div></details>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="one-to-read">
+        <span class="otr-label">One To Read</span>
+        <a href="https://www.washingtonpost.com/national-security/2026/03/26/us-iran-war-ukraine-missile-defense/" target="_blank" rel="noopener noreferrer">
+          <h4>U.S. Considers Diverting Military Aid From Ukraine to the Middle East</h4>
+          <span class="otr-source">The Washington Post</span>
+          <span class="otr-dot">&middot;</span>
+          <span class="otr-desc">How the Iran war is creating impossible trade-offs between America&rsquo;s two active military commitments, with direct implications for European security.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── EVENING 26 MARCH (17:45) ── -->
+    <div class="curated-edition evening" data-date="2026-03-26" data-time="17:45" data-markets='{"FTSE":{"price":9842,"change":-0.54},"SP":{"price":6575,"change":-0.26},"Brent":{"price":106.18,"change":-0.52},"GBP":{"price":1.3365,"change":-0.11},"Gold":{"price":4572,"change":0.29},"EURGBP":{"price":0.8661,"change":0.06},"Gilt":{"price":4.84,"change":0.42},"VIX":{"price":26.80,"change":2.84},"BTC":{"price":70420,"change":-0.61},"UST":{"price":4.41,"change":0.46}}'>
+      <div class="edition-header">
+        <span class="edition-icon">&#9790;</span>
+        <h2>Evening Briefing</h2>
+      </div>
+      <div class="curated-meta">Thursday 26 March 2026 &mdash; 17:45 GMT</div>
+      <div class="impact-box">
+        <h3 class="impact-heading">What It Means For You</h3>
+        <ul class="impact-list">
+          <li>Fuel bills climbing fast &mdash; petrol has risen to 149.9p per litre and diesel to 176.6p. Budget an extra &pound;10&ndash;15 per tank. The April energy cap drops to &pound;1,641, but a &pound;322 rise is forecast for July.</li>
+          <li>Savings rates on hold &mdash; the Bank of England at 3.75% means mortgage rates stay elevated but savings accounts remain attractive. Lock in a fixed-rate ISA before 5 April.</li>
+          <li>Pension check-up time &mdash; the Pension Schemes Bill could reshape your workplace pension. Check performance against benchmarks.</li>
+        </ul>
+      </div>
+      <div class="curated-grid">
+        <div class="curated-column">
+          <h3><span class="dot geo"></span> Geopolitical</h3>
+          <div>
+            <div class="curated-item" data-time="17:42">
+              <h4>Trump Extends Iran Energy Strike Deadline to 6 April as Back-Channel Talks Intensify</h4>
+              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: fresh salvos hit central Israel &rarr; This evening: Trump extends energy strike deadline, back-channel talks via Pakistan intensify</div>
+              <p>The US president announced a further ten-day pause on strikes against Iran&rsquo;s energy infrastructure, pushing the deadline to 6 April. Trump claimed &ldquo;talks are going very well&rdquo; while envoy Witkoff confirmed a 15-point framework had been transmitted to Tehran via Pakistan. Iran publicly denied any negotiations.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The extension marks Trump&rsquo;s second postponement &mdash; revealing tension between rhetoric and reality on Day 27. The US has struck over 9,000 targets since 28 February. The Hormuz closure has proven more potent than Tehran&rsquo;s arsenal. Brent closed at $106.18. Watch for whether Iran responds before 6 April.</div></details>
+            </div>
+            <div class="curated-item" data-time="16:15">
+              <h4>Pentagon Weighs Diverting Ukraine Weapons to the Middle East</h4>
+              <p>The Pentagon is considering redirecting military aid earmarked for Ukraine as the Iran campaign depletes Patriot and THAAD interceptors. Zelensky claimed US-aligned nations fired over 800 Patriots in three days, exceeding Ukraine&rsquo;s total four-year stockpile.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The PURL programme supplied 75% of Ukraine&rsquo;s Patriot missiles. The Pentagon reportedly plans to redirect $750 million. NATO&rsquo;s Rutte offered assurances that equipment &ldquo;continues to flow.&rdquo; Watch for European reaction and whether NATO members fill the gap.</div></details>
+            </div>
+            <div class="curated-item" data-time="15:30">
+              <h4>Russia Launches Nearly 1,000 Drones at Ukraine in One of the War&rsquo;s Largest Attacks</h4>
+              <p>Russia fired approximately 948 drones including a rare daytime assault of 550. NATO scrambled jets from Poland and Romania. Ukraine hit Ust-Luga, sparking fires at one of Russia&rsquo;s most important oil export hubs.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">March 2026 is the first month Ukraine&rsquo;s long-range drones roughly match Russia&rsquo;s. Ukrainian strikes have halted about 40% of Russia&rsquo;s oil export capacity. Watch for Russian retaliation against Ukrainian energy infrastructure.</div></details>
+            </div>
+            <div class="curated-item" data-time="17:10">
+              <h4>Meta and YouTube Found Liable in Landmark Youth Addiction Verdicts</h4>
+              <p>A jury found Meta and YouTube liable for addictive platform design, awarding $6 million. Meta was 70% responsible. A separate New Mexico trial hit Meta with $375 million for failing to protect children. Over 2,000 similar lawsuits are pending.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">This establishes a precedent that platform design choices can constitute negligence. In the UK, the Online Safety Act&rsquo;s enforcement could be accelerated. Watch for the New Mexico trial&rsquo;s second phase on 4 May.</div></details>
+            </div>
+            <div class="curated-item" data-time="15:55">
+              <h4>Denmark&rsquo;s Inconclusive Election Triggers Coalition Talks</h4>
+              <p>Frederiksen was named formateur after her Social Democrats won 38 seats but fell short of a majority. Rasmussen&rsquo;s centrist Moderates (14 seats) are kingmaker. The 21.9% vote share was the Social Democrats&rsquo; worst since 1903.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Frederiksen called the snap election over Greenland but voters focused on domestic issues. Denmark&rsquo;s fragmentation mirrors a broader European trend. Watch for whether she forms a government before Easter.</div></details>
+            </div>
+          </div>
+        </div>
+        <div class="curated-column">
+          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
+          <div>
+            <div class="curated-item" data-time="16:30">
+              <h4>Consumer Confidence Collapses to Record Low as Iran Conflict Fuels Fears</h4>
+              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: BRC expectations plunged to minus 53 &rarr; This evening: personal finance expectations also hit record low of minus 17</div>
+              <p>The BRC&rsquo;s economic expectations hit minus 53 &mdash; the worst since records began. Personal finance expectations fell to minus 17. CNBC described a coming &ldquo;brutal&rdquo; inflation surge with ING forecasting CPI could peak at 4% in autumn.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">A 23-point single-month collapse exceeds the 2022 mini-budget crisis. Retailers face a triple squeeze. Watch for the April energy cap change and the projected July increase.</div></details>
+            </div>
+            <div class="curated-item" data-time="17:25">
+              <h4>Government Bans Crypto Donations to Political Parties</h4>
+              <p>Starmer announced an immediate moratorium following the Rycroft Review. Reform UK MPs walked out. The ban will be embedded in the Representation of the People Bill.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The ban targets Reform UK, which openly accepts cryptocurrency. Reform leads polls at 23% with May elections looming. Watch for legal challenges from Reform.</div></details>
+            </div>
+            <div class="curated-item" data-time="15:48">
+              <h4>North Sea Drilling Row Splits Cabinet</h4>
+              <p>Starmer deferred to Miliband as Reeves pushed for new licences. Petrol prices have surged past 149p amid Hormuz disruption. Industry groups estimate 75,000 jobs from expedited licensing.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Miliband&rsquo;s green credentials make a U-turn treacherous. But with Brent above $106, every barrel of domestic production is strategically valuable. Watch for a decision before Easter recess.</div></details>
+            </div>
+            <div class="curated-item" data-time="16:55">
+              <h4>Kent Meningitis Passes Peak &mdash; 20 Cases, Two Deaths</h4>
+              <p>No new infections reported on 26 March. Over 10,500 antibiotic doses administered. The WHO issued a situation report. The strain is not fully covered by the current Bexsero vaccine.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The Canterbury outbreak is the largest MenB cluster since Bexsero was introduced in 2015. Watch for UKHSA&rsquo;s formal containment declaration before Easter.</div></details>
+            </div>
+            <div class="curated-item" data-time="17:35">
+              <h4>Pension Schemes Bill Heads to Final Stage as Lords Rebel</h4>
+              <p>Lords voted 191&ndash;118 to remove the government&rsquo;s power to mandate pension asset allocations. The Bill awaits Third Reading on Friday before Easter recess.</p>
+              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The amendment preserves flexibility for well-performing smaller schemes. The broader reform agenda remains intact. Watch for whether the government triggers ping-pong after Easter.</div></details>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="one-to-read">
+        <span class="otr-label">One To Read</span>
+        <a href="https://www.cnbc.com/2026/03/25/uk-inflation-february-2026-iran-war-energy-prices-cpi.html" target="_blank" rel="noopener noreferrer">
+          <h4>Don&rsquo;t Be Fooled by the UK&rsquo;s Pre-War Inflation Print</h4>
+          <span class="otr-source">CNBC</span>
+          <span class="otr-dot">&middot;</span>
+          <span class="otr-desc">Why February&rsquo;s 3.0% CPI figure masks the true inflationary impact of the Iran conflict, and what households should expect in the months ahead.</span>
+        </a>
+      </div>
+    </div>
+
+        <!-- ── MORNING 26 MARCH (08:05) ── -->
     <div class="curated-edition morning" data-date="2026-03-26" data-time="08:05" data-markets='{"FTSE":{"price":9895,"change":-1.94},"SP":{"price":6592,"change":-0.27},"Brent":{"price":96.68,"change":-3.08},"GBP":{"price":1.3380,"change":-0.07},"Gold":{"price":4559,"change":0.20},"EURGBP":{"price":0.8656,"change":0.06},"Gilt":{"price":4.82,"change":0.84},"VIX":{"price":26.06,"change":1.80},"BTC":{"price":70856,"change":-1.14},"UST":{"price":4.39,"change":0.46}}'>
       <div class="edition-header">
         <span class="edition-icon">&#9788;</span>
@@ -3282,185 +3486,6 @@
         </a>
       </div>
     </div>
-
-    <div class="curated-edition evening" data-date="2026-03-19" data-time="18:05" data-markets='{"FTSE":{"price":10052,"change":-1.27},"SP":{"price":6589,"change":-0.81},"Brent":{"price":111.06,"change":4.93},"GBP":{"price":1.3372,"change":0.09},"Gold":{"price":4708,"change":-4.33},"EURGBP":{"price":0.8631,"change":-0.08},"Gilt":{"price":4.68,"change":-0.85},"VIX":{"price":26.48,"change":2.63},"BTC":{"price":69370,"change":-5.19},"UST":{"price":4.28,"change":0.00}}'>
-      <div class="edition-header">
-        <span class="edition-icon">&#9789;</span>
-        <h2>Evening Briefing</h2>
-      </div>
-      <div class="curated-meta">Thursday 19 March 2026 &mdash; 18:05 GMT</div>
-      <div class="impact-box">
-        <h3 class="impact-heading">What It Means For You</h3>
-        <ul class="impact-list">
-          <li>Brent crude hit $119 before settling at $111 &mdash; petrol heading past 155p/litre by Monday; budget for &pound;90+ to fill a family car; diesel likely past 170p within the week</li>
-          <li>Bank of England holds at 3.75% unanimously (9&ndash;0) &mdash; first unanimous hold since September 2021; no rate cut until autumn at the earliest; mortgage rates stuck above 3.85% for five-year fixes</li>
-          <li>Canterbury meningitis outbreak: 27 cases now under investigation, two deaths &mdash; vaccination programme under way at the University of Kent; anyone linked to Club Chemistry on 5&ndash;7 March should seek antibiotics</li>
-        </ul>
-      </div>
-      <div class="curated-grid">
-        <div class="curated-column">
-          <h3><span class="dot geo"></span> Geopolitical</h3>
-          <div>
-            <div class="curated-item">
-              <h4>Iran Strikes Qatar, Saudi and UAE Energy Sites After South Pars Hit</h4>
-              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: Israel struck South Pars &rarr; This evening: Iran retaliates across three Gulf states</div>
-              <p>Iran launched missiles at energy infrastructure across Qatar, Saudi Arabia and the UAE in retaliation for Israel&rsquo;s overnight strike on the South Pars gasfield. Qatar&rsquo;s Ras Laffan LNG hub suffered &ldquo;extensive damage,&rdquo; knocking out 17 per cent of Qatari export capacity. Two Saudi refineries in Riyadh were struck. The IRGC warned further attacks would continue &ldquo;until complete destruction.&rdquo;</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The strikes represent a fundamental escalation &mdash; for the first time, Iran has attacked the energy infrastructure of three separate Gulf states simultaneously, transforming the bilateral US&ndash;Israel&ndash;Iran conflict into a regional energy war. Qatar&rsquo;s Ras Laffan supplies roughly 25 per cent of global LNG exports; Saudi Arabia&rsquo;s refineries process crude for both domestic consumption and export. The IRGC&rsquo;s explicit promise of continued strikes until &ldquo;complete destruction&rdquo; signals Tehran is prepared to absorb the diplomatic cost of targeting non-belligerents. European gas prices surged 15 per cent as traders priced in prolonged disruption to LNG supply chains.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Saudi Arabia Warns Iran &ldquo;Patience Has Limits&rdquo;; Military Action Reserved</h4>
-              <p>Saudi Foreign Minister Prince Faisal bin Farhan declared Riyadh&rsquo;s trust in Iran &ldquo;completely shattered&rdquo; and stated the kingdom &ldquo;reserves the right to take military action if deemed necessary.&rdquo; Gulf states raised air defences to their highest level since the conflict began. CNBC reported Gulf capitals warned that the attacks &ldquo;cannot go unanswered.&rdquo;</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Prince Faisal&rsquo;s statement marks the sharpest break in Saudi&ndash;Iranian relations since the 2016 diplomatic severance &mdash; and arguably more significant, given the 2023 China-brokered rapprochement that was supposed to have buried the hatchet. The explicit reservation of military action goes further than any Gulf state has gone since the conflict began on 28 February. If Saudi Arabia or the UAE strike Iranian targets, the war expands from an Israeli&ndash;American campaign to a genuine regional conflict involving the world&rsquo;s largest oil producers. The diplomatic question is whether Washington wants Gulf states fighting or restraining &mdash; Trump&rsquo;s simultaneous threat to destroy South Pars suggests the former.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Brent Crude Hits $119 Before Settling at $111; Markets in Turmoil</h4>
-              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: Brent at $114 &rarr; This evening: spiked to $119, settled at $111</div>
-              <p>Brent crude surged to $119 a barrel &mdash; its highest since 2022 &mdash; before settling at $111, still up 4.9 per cent on the day. The FTSE 100 fell 1.3 per cent. Gold crashed through the $5,000 barrier, falling 4.3 per cent to $4,708 as investors liquidated bullion to cover margin calls. Bitcoin dropped 5.2 per cent to $69,370.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The intraday swing from $119 to $111 reflects the extreme volatility now embedded in energy markets &mdash; an $8 range in a single session is extraordinary for Brent. Gold&rsquo;s 4 per cent collapse is counterintuitive during a geopolitical crisis but mirrors the pattern of 2008 and early 2020, when forced selling to meet margin calls overwhelmed safe-haven demand. The FTSE 100&rsquo;s decline was concentrated in airlines, housebuilders and retailers &mdash; sectors most exposed to consumer spending pressures from higher energy costs. Defence stocks bucked the trend, with BAE Systems and Rolls-Royce both higher.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Pentagon Weighs Sending Thousands More Troops to the Gulf</h4>
-              <p>The Trump administration is considering deploying thousands of additional troops to the Middle East as the conflict enters its third week. The 31st Marine Expeditionary Unit, a rapid-response force of 2,200 personnel, has been ordered to deploy. Roughly 50,000 US soldiers are already in the region. The White House said no decision on ground troops had been taken.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The troop reinforcement discussion signals the administration is preparing for a prolonged campaign rather than the &ldquo;short, sharp&rdquo; operation Trump initially promised. The USS Tripoli, believed to be carrying marines, was tracked off Singapore on Monday, suggesting deployment to the Gulf within days. The distinction between &ldquo;reinforcements&rdquo; and &ldquo;ground troops&rdquo; is politically significant &mdash; the White House is careful to avoid language that implies an Iraq-style invasion. But the scale of deployments, combined with the Senate&rsquo;s rejection of the war powers resolution, removes the last practical constraints on American military escalation.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Israel Strikes Caspian Sea Naval Targets; Death Toll Passes 2,200</h4>
-              <p>Israel carried out strikes against Iranian naval targets in the Caspian Sea &mdash; the first such operations in three weeks of war &mdash; extending the conflict&rsquo;s geographical reach. The total death toll across the Middle East has surpassed 2,200, with Lebanon reporting more than 1,000 killed. Israel struck 200 targets across western and central Iran on Wednesday alone.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The Caspian Sea strikes are significant because they demonstrate Israel&rsquo;s ability to project power across the entirety of Iranian territory &mdash; the Caspian coast is Iran&rsquo;s most distant frontier from Israeli bases. The 200 targets hit in a single day represents the most intensive 24-hour bombardment since the war began, suggesting Israel is accelerating operations rather than winding down. The 2,200 death toll, whilst significant, remains far below the casualties of comparable regional conflicts; the political and economic consequences of this war are disproportionately large relative to the human toll, reflecting the centrality of energy infrastructure to the global economy.</div></details>
-            </div>
-          </div>
-        </div>
-        <div class="curated-column">
-          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
-          <div>
-            <div class="curated-item">
-              <h4>Bank of England Holds at 3.75% Unanimously; Warns of Rate Rises</h4>
-              <div class="change-diff"><span class="diff-arrow">&circlearrowright;</span> This morning: hold expected, vote split unknown &rarr; This evening: 9&ndash;0 unanimous hold confirmed</div>
-              <p>The MPC voted 9&ndash;0 to hold rates at 3.75 per cent &mdash; the first unanimous decision since September 2021, and a dramatic shift from February&rsquo;s 5&ndash;4 split. The Bank warned that if the conflict persists, a &ldquo;more restrictive policy stance&rdquo; may be needed. Growth forecasts were cut to 0.9 per cent for 2026. Mortgage rates are expected to remain elevated through the summer.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The unanimous vote is the most significant signal since the war began. In February, four members voted for a cut; the fact that all nine now back holding &mdash; with an explicit warning that rates could rise &mdash; tells the market that the Bank sees the oil shock as more than transitory. The growth downgrade to 0.9 per cent confirms the UK is on the edge of stagnation, yet the MPC judged inflation risk too great to ease. For 1.4 million homeowners whose fixed deals expire this year, the practical consequence is that rate relief has been pushed to autumn at the earliest &mdash; and a hike cannot be ruled out if Brent stays above $110.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Greens Lay Out Alternative Economic Plan as Labour Faces May Rout</h4>
-              <p>Green Party leader Zack Polanski unveiled an economic blueprint calling for higher borrowing and taxes to cushion Britons from rising prices, positioning the Greens as the primary left-wing alternative to Labour. With Labour polling at 17 per cent and projected to lose up to 37 councils in May, Rayner publicly criticised the party&rsquo;s immigration reforms as &ldquo;un-British.&rdquo;</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The Greens&rsquo; surge to 19 per cent in the latest YouGov poll &mdash; tied with the Conservatives &mdash; represents the most significant left-wing challenge to Labour since the SDP split in the 1980s. Polanski&rsquo;s pitch is explicitly Keynesian: borrow to invest, tax wealth to fund public services, and use the energy crisis as justification for a green transition. Angela Rayner&rsquo;s public criticism of her own government&rsquo;s immigration policy underscores the scale of Labour&rsquo;s internal crisis. With May&rsquo;s local elections eight weeks away, the party faces a three-front war against Reform on the right, the Greens on the left, and its own backbenchers in the middle.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Canterbury Meningitis: 27 Cases Under Investigation; Vaccination Begins</h4>
-              <p>The Canterbury meningitis outbreak has grown to 27 cases under investigation, including 15 laboratory-confirmed. Two deaths remain the total. UKHSA confirmed the targeted MenB vaccination programme is under way at the University of Kent, initially covering 5,000 students in campus halls. Chief Medical Officer Chris Whitty called the outbreak &ldquo;unprecedented.&rdquo;</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The jump from 20 to 27 cases under investigation in 24 hours suggests the outbreak&rsquo;s true scale is still emerging. UKHSA&rsquo;s decision to investigate all suspected cases rather than wait for laboratory confirmation reflects the urgency of the response. The vaccination programme&rsquo;s initial scope of 5,000 students may prove insufficient if transmission extends beyond the university community. Whitty&rsquo;s description of the outbreak as &ldquo;unprecedented&rdquo; is notable &mdash; he is typically measured in his language. The MenB vaccine takes approximately two weeks to confer protection, meaning the next fortnight remains a critical window for further cases.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Heating Oil Fund Under Fire as Brent Hits $119; Rural Areas Worst Hit</h4>
-              <p>The Government&rsquo;s &pound;53 million heating oil fund faced renewed criticism after Brent crude hit $119, pushing kerosene prices to levels that could add &pound;1,800 to annual heating costs. Northern Ireland, where 62 per cent of homes rely on heating oil, is worst affected. At roughly &pound;35 per household, the fund covers barely a week&rsquo;s heating at current prices.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The fund was announced when Brent stood at $106 on Sunday; at $119 it is already woefully inadequate. The energy bill cap through June saves mains gas households roughly &pound;117, but heating oil is not covered by Ofgem&rsquo;s price cap &mdash; leaving 1.5 million homes fully exposed to market prices. The political pressure is particularly acute in Northern Ireland, where heating oil dependency is ten times the English average and cross-community anger over energy costs could destabilise the restored power-sharing Executive. The comparison with 2022&rsquo;s &pound;40 billion Energy Price Guarantee is unavoidable; the Treasury is understood to be modelling scenarios for a broader intervention if Brent stays above $115.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Employment Rights: Day-One Sick Pay Now 18 Days Away</h4>
-              <p>With the Employment Rights Act&rsquo;s flagship provisions taking effect on 6 April, the new Fair Work Agency confirmed it will begin enforcement immediately. An estimated 1.3 million low-paid workers gain SSP entitlement for the first time. The CBI warned the &pound;1.1 billion annual cost to employers falls on sectors already struggling with rising energy bills and the NI increase.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The Fair Work Agency&rsquo;s confirmation of immediate enforcement signals the Government intends the new rights to have teeth from day one. Employers in retail, hospitality and social care face a triple squeeze: the national insurance increase from April, SSP expansion, and energy costs rising faster than they can pass through to consumers. The TUC estimates 1.3 million workers previously excluded from statutory sick pay will gain entitlement &mdash; a significant expansion of the welfare floor. The timing is awkward for the Government: introducing business costs during an energy crisis risks accelerating the insolvencies already rising in the hospitality sector.</div></details>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="one-to-read">
-        <span class="otr-label">One To Read</span>
-        <a href="https://www.cnbc.com/2026/03/19/gulf-states-iran-attacks-retaliation-strikes-energy-oil-gas-water-strait-of-hormuz.html" target="_blank" rel="noopener noreferrer">
-          <h4>Gulf States Have Tolerated Iranian Strikes &mdash; But Their Patience Won&rsquo;t Last</h4>
-          <span class="otr-source">CNBC</span>
-          <span class="otr-dot">&middot;</span>
-          <span class="otr-desc">Why Saudi Arabia&rsquo;s explicit threat of military action signals a turning point &mdash; and what happens to the global economy if the Gulf states enter the war.</span>
-        </a>
-      </div>
-    </div>
-
-    <!-- ── MORNING 19 MARCH ── -->
-    <div class="curated-edition morning" data-date="2026-03-19" data-time="07:57" data-markets='{"FTSE":{"price":10182,"change":-2.17},"SP":{"price":6643,"change":-0.48},"Brent":{"price":114.25,"change":7.94},"GBP":{"price":1.3360,"change":0.28},"Gold":{"price":4921,"change":0.76},"EURGBP":{"price":0.8638,"change":-0.12},"Gilt":{"price":4.72,"change":1.51},"VIX":{"price":25.80,"change":19.39},"BTC":{"price":69450,"change":-4.24},"UST":{"price":4.28,"change":1.18}}'>
-      <div class="edition-header">
-        <span class="edition-icon">&#9788;</span>
-        <h2>Morning Briefing</h2>
-      </div>
-      <div class="curated-meta">Thursday 19 March 2026 &mdash; 07:57 GMT</div>
-      <div class="impact-box">
-        <h3 class="impact-heading">What It Means For You</h3>
-        <ul class="impact-list">
-          <li>Oil surges past $114 after Gulf energy strikes &mdash; petrol heading above 150p/litre within days; diesel likely past 165p; budget for &pound;85+ to fill a family car by the weekend</li>
-          <li>Bank of England decides at noon today &mdash; a hold at 3.75% is near-certain; mortgage products being pulled daily, best five-year fix now around 3.85%; lock a rate if remortgaging</li>
-          <li>Canterbury meningitis outbreak: 20 confirmed cases, two deaths &mdash; anyone who visited Club Chemistry on 5&ndash;7 March should seek preventative antibiotics immediately</li>
-        </ul>
-      </div>
-      <div class="curated-grid">
-        <div class="curated-column">
-          <h3><span class="dot geo"></span> Geopolitical</h3>
-          <div>
-            <div class="curated-item">
-              <h4>Israel Strikes South Pars Gasfield; Iran Retaliates Against Qatar&rsquo;s Ras Laffan</h4>
-              <p>Israel struck Iran&rsquo;s South Pars natural gas field overnight with US coordination, the first direct hit on Iran&rsquo;s most critical energy asset. Iran retaliated within hours, firing missiles at Qatar&rsquo;s Ras Laffan complex &mdash; the world&rsquo;s largest LNG export facility &mdash; causing &ldquo;extensive damage.&rdquo; Qatar expelled Iranian military and security attach&eacute;s.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The mutual targeting of energy infrastructure marks a dangerous new phase in the conflict. South Pars holds the world&rsquo;s largest natural gas reserve, shared with Qatar&rsquo;s North Field &mdash; meaning both sides of the same geological formation are now under fire. Iran&rsquo;s decision to strike Ras Laffan, which supplies roughly 25 per cent of global LNG exports, is a calculated escalation designed to punish Gulf states for allowing their airspace to be used in Israeli operations. Qatar&rsquo;s expulsion of Iranian diplomats signals a definitive break in Doha&rsquo;s long-standing policy of balancing relations with Tehran and Washington. European gas prices spiked 12 per cent overnight; the continent imported 40 per cent of its LNG from Qatar last year.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Trump Threatens to &ldquo;Blow Up&rdquo; Entire South Pars If Iran Hits Qatar Again</h4>
-              <p>President Trump warned he would &ldquo;massively blow up&rdquo; the entirety of Iran&rsquo;s South Pars gasfield if Tehran launches further strikes against Qatari energy infrastructure. The threat came as Saudi Arabia declared its &ldquo;trust&rdquo; in Iranian diplomacy &ldquo;gone&rdquo; and raised air defences to their highest level since the conflict began on 28 February.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Trump&rsquo;s ultimatum is designed to deter further Iranian attacks on Gulf allies, but it risks catastrophic escalation. Destroying South Pars entirely would remove roughly 14 per cent of global natural gas supply and send European and Asian energy markets into crisis for years, not months. Saudi Arabia&rsquo;s statement marks the sharpest break in Saudi&ndash;Iranian relations since the 2016 diplomatic severance, and signals Riyadh is preparing for direct military involvement. The IRGC had already named five specific Gulf facilities as targets; whether Trump&rsquo;s threat deters or accelerates the next strike is the critical question for global energy security.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Khatib Confirmed Dead &mdash; Fourth Senior Iranian Official Killed in Three Days</h4>
-              <p>Iran confirmed the killing of intelligence minister Esmaeil Khatib in an Israeli airstrike, the fourth senior official eliminated since Monday. President Pezeshkian called it &ldquo;an act of war against the Iranian state.&rdquo; Khatib&rsquo;s death follows Ali Larijani, Basij commander Gholamreza Soleimani, and an unnamed IRGC intelligence deputy.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The systematic decapitation of Iran&rsquo;s security apparatus suggests Israel has penetrated the regime&rsquo;s secure communications at an unprecedented level. The loss of four senior officials in 72 hours exceeds even the 2020 Soleimani assassination in strategic impact. With Supreme Leader Mojtaba Khamenei still absent from public view, effective authority may have devolved to IRGC field commanders operating independently. The risk is that decentralised command leads to more erratic and aggressive retaliatory strikes, particularly against civilian targets and Gulf infrastructure.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Brent Surges Past $114 as Gulf Energy War Escalates; VIX Spikes</h4>
-              <p>Brent crude jumped 7.9 per cent to $114.25 a barrel, its highest since 2022, after overnight strikes on South Pars and Ras Laffan. The VIX fear index surged 19 per cent to 25.8. The FTSE 100 fell 2.2 per cent in early trading. Gold recovered 0.8 per cent as investors sought safe havens; Bitcoin dropped 4.2 per cent.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The simultaneous attacks on both sides of the world&rsquo;s largest gas reserve have triggered the most severe single-day energy price shock since Russia&rsquo;s invasion of Ukraine in February 2022. The IEA&rsquo;s emergency reserve release is being consumed at roughly 4 million barrels per day; at this rate, strategic stockpiles risk falling below the 90-day minimum by late summer. Insurance premiums for Gulf-based energy assets have risen to record levels. The widening of the conflict to include direct attacks on third-party nations&rsquo; energy infrastructure &mdash; Qatar was not a belligerent &mdash; represents an escalation that could trigger force majeure clauses across global LNG contracts.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>US Senate Rejects War Powers Resolution 47&ndash;53; Fed Holds Rates Steady</h4>
-              <p>The US Senate voted 47&ndash;53 to reject a war powers resolution that sought to limit American military involvement in the Iran conflict. Separately, the Federal Reserve held interest rates at 3.5&ndash;3.75 per cent, citing &ldquo;elevated uncertainty&rdquo; from the Middle East. The dot plot projects just one rate cut this year.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The Senate vote effectively removes the last domestic political constraint on American military operations in the Gulf, allowing the White House to continue strikes without a formal declaration of war. The bipartisan majority against the resolution included several Democrats who had previously expressed reservations. The Fed&rsquo;s decision to hold rates was widely expected, but the upward revision of inflation projections &mdash; PCE now forecast at 2.7 per cent &mdash; signals the central bank sees the oil shock as more than transitory. For the UK, the Fed&rsquo;s stance reinforces the Bank of England&rsquo;s likely hold at noon today.</div></details>
-            </div>
-          </div>
-        </div>
-        <div class="curated-column">
-          <h3><span class="dot dom"></span> UK Domestic Politics</h3>
-          <div>
-            <div class="curated-item">
-              <h4>Bank of England to Decide at Noon &mdash; Hold at 3.75% All but Certain</h4>
-              <p>The Monetary Policy Committee announces its rate decision at noon, with markets pricing a near-certain hold at 3.75 per cent. The overnight oil surge to $114 has extinguished any remaining prospect of a cut. Inflation sits at 3.0 per cent and is forecast to approach 4 per cent by summer. Mortgage product withdrawals accelerated, with the best five-year fix now around 3.85 per cent.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The overnight energy price spike has settled the debate decisively. Just three weeks ago, markets priced a 60 per cent probability of a cut; that has collapsed to near zero. Governor Bailey faces the worst policy dilemma since the 2022 energy crisis: the economy recorded zero growth in January and unemployment has climbed to 5.2 per cent, yet cutting rates while oil is surging would risk embedding a wage&ndash;price spiral. The Fed&rsquo;s hold overnight removes any political cover for divergence. For 1.4 million homeowners whose fixed deals expire this year, the practical consequence is mortgage rates remaining elevated through summer at minimum.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Starmer&rsquo;s &pound;53m Heating Oil Fund Under Fire as Prices Double Again</h4>
-              <p>The Government&rsquo;s &pound;53 million heating oil support package faces fresh criticism after oil&rsquo;s overnight surge to $114 threatens to push kerosene prices even higher. The fund covers 1.5 million vulnerable households, predominantly in rural areas. At roughly &pound;35 per household, critics say it amounts to barely a week&rsquo;s heating. Energy bills are capped until June.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">The &pound;53 million package was announced on Sunday when Brent stood at $106; it is already inadequate at $114. Northern Ireland, where 62 per cent of homes rely on heating oil, is worst affected &mdash; kerosene has doubled in price since the war began, adding roughly &pound;1,500 to annual heating costs. The Government&rsquo;s energy bill cap through June saves the average household &pound;117, but the cap applies only to mains gas and electricity, not heating oil. With Ofgem&rsquo;s next price cap review in July, the question is whether the Government will extend or expand the scheme &mdash; the 2022 Energy Price Guarantee cost &pound;40 billion by comparison.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Canterbury Meningitis: Mass Vaccination Begins at University of Kent</h4>
-              <p>A targeted MenB vaccination programme has begun at the University of Kent after the Canterbury meningitis outbreak reached 20 confirmed cases and two deaths. Over 2,500 antibiotic doses have been administered. The initial programme covers 5,000 students in campus halls, with potential extension. UKHSA confirmed the outbreak is group B meningococcal disease linked to a nightclub.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">This is the largest emergency meningitis response in England since the 1999&ndash;2000 introduction of the MenC vaccine. Group B meningococcal disease carries a fatality rate of approximately 10 per cent, with a further 20 per cent of survivors suffering permanent disability. The concentration among young adults is unusual, suggesting either a particularly virulent strain or a high-transmission environment at Club Chemistry, where more than 2,000 people were potentially exposed over three nights. The ECDC has assessed the risk to other EU and EEA countries as &ldquo;very low,&rdquo; but the outbreak&rsquo;s rapid spread underscores the vulnerability of university populations.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Reform UK Lead Narrows to Seven Points as Labour Falls to 17%</h4>
-              <p>The latest YouGov poll puts Reform UK on 23 per cent, the Conservatives and Greens tied at 19 per cent, Labour at 17 per cent, and the Liberal Democrats at 14 per cent. Reform&rsquo;s lead has narrowed by eight points since November. Several high-profile Tory defections to Reform &mdash; including Suella Braverman and Robert Jenrick &mdash; have not halted the slide.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">Labour&rsquo;s collapse to 17 per cent &mdash; less than half its 2024 general election share &mdash; reflects a broad fragmentation of British politics. The Greens&rsquo; surge to 19 per cent represents the most significant left-wing challenge to Labour since the SDP split in the 1980s. Reform&rsquo;s slide from 30 per cent to 23 per cent coincides with scrutiny of its local government record and internal scandals, but the party remains the largest single force in British polling. With May&rsquo;s local elections approaching, Labour is projected to lose up to 37 councils &mdash; a result that would intensify pressure on Starmer&rsquo;s leadership.</div></details>
-            </div>
-            <div class="curated-item">
-              <h4>Employment Rights Act: Day-One Sick Pay Takes Effect in 18 Days</h4>
-              <p>The Employment Rights Act&rsquo;s flagship provisions take effect on 6 April: statutory sick pay from day one, day-one paternity leave, and doubled protective awards for collective redundancy failures. An estimated 1.3 million low-paid workers gain SSP entitlement for the first time. The new Fair Work Agency launches on 7 April to enforce compliance.</p>
-              <details class="dive-deeper"><summary>Dive deeper</summary><div class="deeper-content">These are the biggest changes to employment law since the introduction of the minimum wage in 1998. The removal of the three-day waiting period and lower earnings limit for SSP brings 1.3 million part-time and gig workers into the system for the first time. The CBI estimates an aggregate &pound;1.1 billion annual cost to employers, concentrated in retail, hospitality and social care &mdash; sectors already struggling with the national insurance increase and rising energy bills. SSP rises to &pound;123.25 per week; employers with fewer than 250 staff should update payroll systems before the 6 April deadline.</div></details>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="one-to-read">
-        <span class="otr-label">One To Read</span>
-        <a href="https://www.atlanticcouncil.org/dispatches/how-the-iran-war-could-trigger-a-european-energy-crisis/" target="_blank" rel="noopener noreferrer">
-          <h4>How the Iran War Could Trigger a European Energy Crisis</h4>
-          <span class="otr-source">Atlantic Council</span>
-          <span class="otr-dot">&middot;</span>
-          <span class="otr-desc">Why attacks on both sides of the world&rsquo;s largest gas reserve threaten Europe&rsquo;s energy security far more gravely than Russia&rsquo;s 2022 invasion of Ukraine &mdash; and what policymakers are getting wrong.</span>
-        </a>
-      </div>
-    </div>
-
 </div><!-- /all-editions -->
 
   </div>
@@ -3997,16 +4022,6 @@ window._marketData = {};
   // Expose globally so briefing key-figures and ref-figures can use it
   window.openMarketModal = openMarketModal;
 
-  // Click handler for reference figures bar (UK Base Rate, CPI, etc.)
-  var refBar = document.getElementById('refFiguresBar');
-  if (refBar) {
-    refBar.addEventListener('click', function(e) {
-      var fig = e.target.closest('.ref-figure[data-market]');
-      if (!fig) return;
-      var val = fig.querySelector('strong');
-      openMarketModal(fig.dataset.market, { staticVal: val ? val.textContent : '' });
-    });
-  }
 
   // Close handlers — also schedule ticker resume
   function closeModal() {
