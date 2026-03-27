@@ -3980,9 +3980,13 @@ window._marketData = {};
       downTarget = null;
     }
 
-    // Suppress click events on the track — we handle everything via mouseup
+    // Fallback click handler — catches taps that the drag system misses
     track.addEventListener('click', function(e) {
-      e.stopPropagation();
+      if (wasDrag) { e.stopPropagation(); return; }
+      var item = e.target.closest('.market-item[data-market]');
+      if (item && window.openMarketModal) {
+        window.openMarketModal(item.dataset.market);
+      }
     });
 
     track.addEventListener('mousedown', onStart);
