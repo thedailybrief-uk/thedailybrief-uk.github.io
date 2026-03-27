@@ -281,18 +281,33 @@
       display: flex; align-items: center; justify-content: center; gap: 0;
       padding: 0; border-top: 1px solid var(--border-light); flex-wrap: wrap;
     }
-    /* Row 1: section links with accent underlines */
+    /* Desktop: single row — links left, utilities right */
+    @media (min-width: 601px) {
+      .masthead-nav {
+        justify-content: space-between; flex-wrap: nowrap; padding: 0 8px;
+      }
+      .masthead-nav > a {
+        margin-right: auto;
+      }
+      .masthead-nav > a:nth-of-type(2) {
+        margin-right: 0;
+      }
+      .nav-utility-row {
+        border-top: none !important; width: auto !important; padding: 0 !important; gap: 16px !important;
+      }
+    }
+    /* Section links with accent underlines */
     .masthead-nav > a {
       font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
       color: var(--text-primary); text-decoration: none; transition: all 0.2s;
-      padding: 12px 24px 10px; font-family: var(--sans);
+      padding: 12px 20px 10px; font-family: var(--sans);
       min-height: 44px; display: inline-flex; align-items: center;
       border-bottom: 3px solid transparent; position: relative;
     }
     .masthead-nav > a:first-of-type { border-bottom-color: var(--accent-geo); }
     .masthead-nav > a:nth-of-type(2) { border-bottom-color: var(--accent-dom); }
     .masthead-nav > a:hover { color: var(--text-primary); opacity: 0.7; }
-    /* Row 2: utility items */
+    /* Utility items */
     .masthead-nav button {
       font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
       color: var(--text-secondary); text-decoration: none; transition: color 0.2s; padding: 10px 4px;
