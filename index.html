@@ -840,7 +840,7 @@
     .also-item:last-child { border-bottom: none; }
     .also-item .also-source {
       font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
-      white-space: nowrap; padding-top: 3px; min-width: 90px;
+      white-space: nowrap; padding-top: 3px; width: 110px; min-width: 110px; flex-shrink: 0;
     }
     .also-item .also-source.geo { color: var(--accent-geo); }
     .also-item .also-source.dom { color: var(--accent-dom); }
@@ -1648,7 +1648,7 @@
     /* ── Mobile text overflow safety net ── */
     @media (max-width: 600px) {
       .container, .masthead-inner { padding: 0 12px; }
-      .also-item .also-source { min-width: auto; }
+      .also-item .also-source { width: auto; min-width: auto; flex-shrink: 0; }
       .section-header { flex-wrap: wrap; gap: 8px; }
       .dive-deeper .deeper-content { overflow-wrap: break-word; word-break: break-word; }
       .impact-box { overflow-wrap: break-word; word-break: break-word; }
