@@ -1,0 +1,122 @@
+<!--
+  The Daily Brief — thedailybrief.co.uk
+  Copyright © 2026 The Daily Brief. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found — The Daily Brief</title>
+  <meta name="theme-color" content="#f5f2eb" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='16.8' y='21.5' text-anchor='middle' font-family='Georgia,Times,serif' font-weight='700' font-size='13' fill='%23f0ece4' letter-spacing='-0.5'>TDB</text></svg>" />
+  <style>
+    @font-face {
+      font-family: 'Playfair Display';
+      font-style: normal;
+      font-weight: 400 800;
+      font-display: swap;
+      src: url(/fonts/playfair-display-latin.woff2) format('woff2');
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 300 600;
+      font-display: swap;
+      src: url(/fonts/inter-latin.woff2) format('woff2');
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f5f2eb;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #999;
+      --border: #e0ddd6;
+      --accent-geo: #e0425e;
+      --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #141414;
+        --text-primary: #e8e6e1;
+        --text-secondary: #b0aea8;
+        --text-muted: #666;
+        --border: #333;
+      }
+    }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      text-align: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    .error-code {
+      font-family: var(--serif);
+      font-size: clamp(72px, 15vw, 128px);
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 440px;
+      margin-bottom: 28px;
+    }
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--accent-geo);
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 6px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .home-link:hover {
+      background: #a63045;
+      transform: translateY(-1px);
+    }
+    .brand {
+      margin-top: 48px;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-code">404</div>
+  <h1>Page Not Found</h1>
+  <p>The page you are looking for does not exist or has been moved. Head back to the homepage for the latest briefings.</p>
+  <a href="/" class="home-link">
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m7-7l-7 7 7 7"/></svg>
+    Back to The Daily Brief
+  </a>
+  <div class="brand">The Daily Brief</div>
+</body>
+</html>

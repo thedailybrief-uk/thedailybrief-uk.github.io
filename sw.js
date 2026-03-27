@@ -1,7 +1,8 @@
-const CACHE_NAME = 'daily-brief-v13';
+const CACHE_NAME = 'daily-brief-v14';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
+  '/404.html',
   '/manifest.json',
   '/og-image.png',
   '/legal-styles.css',
@@ -11,8 +12,16 @@ const STATIC_ASSETS = [
   '/subscribe-terms.html',
   '/sitemap.xml',
   '/robots.txt',
+  '/fonts/inter-latin.woff2',
+  '/fonts/inter-latin-ext.woff2',
+  '/fonts/playfair-display-latin.woff2',
+  '/fonts/playfair-display-latin-ext.woff2',
+  '/fonts/source-serif-4-latin.woff2',
+  '/fonts/source-serif-4-latin-ext.woff2',
+  '/fonts/source-serif-4-italic-latin.woff2',
+  '/fonts/source-serif-4-italic-latin-ext.woff2',
 ];
-const FONT_CACHE = 'daily-brief-fonts-v1';
+const FONT_CACHE = 'daily-brief-fonts-v2';
 
 // Install: cache static assets
 self.addEventListener('install', (e) => {
@@ -36,8 +45,8 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
 
-  // Cache-first for Google Fonts (they rarely change)
-  if (url.hostname.includes('fonts.googleapis.com') || url.hostname.includes('fonts.gstatic.com')) {
+  // Cache-first for self-hosted fonts (they rarely change)
+  if (url.origin === self.location.origin && url.pathname.startsWith('/fonts/')) {
     e.respondWith(
       caches.open(FONT_CACHE).then(cache =>
         cache.match(e.request).then(cached => {
