@@ -831,10 +831,11 @@
     }
     .also-today { display: flex; flex-direction: column; gap: 0; }
     .also-item {
-      display: flex; align-items: flex-start; gap: 14px;
+      display: flex; align-items: flex-start; gap: 10px;
       padding: 12px 0; border-bottom: 1px solid var(--border-light);
       text-decoration: none; color: inherit; transition: background 0.15s;
     }
+    .also-item > div { flex: 1; min-width: 0; }
     .also-item:hover { background: rgba(0,0,0,0.015); }
     [data-theme="dark"] .also-item:hover { background: var(--highlight-bg); }
     .also-item:last-child { border-bottom: none; }
@@ -3932,9 +3933,8 @@ window._marketData = {};
 
     function onStart(e) {
       var raw = e.touches ? e.touches[0] : e;
-      if (!e.touches) e.preventDefault(); // prevent text selection on desktop
-      // Find the market item under the pointer at this instant
-      downTarget = document.elementFromPoint(raw.clientX, raw.clientY);
+      // Capture the actual target from the event (reliable, unlike elementFromPoint on animated elements)
+      downTarget = e.target || (e.touches && e.touches[0] ? document.elementFromPoint(raw.clientX, raw.clientY) : null);
       dragging = true;
       wasDrag = false;
       clearTimeout(resumeTimer);
@@ -3958,17 +3958,17 @@ window._marketData = {};
       track.style.transform = `translate3d(${offset}px,0,0)`;
     }
 
-    function onEnd() {
+    function onEnd(e) {
       if (!dragging) return;
       dragging = false;
 
       if (!wasDrag && downTarget) {
-        // Simple click (no drag) — use the element captured at mousedown
+        // Simple click (no drag) — open the market modal
         var item = downTarget.closest('.market-item[data-market]');
         if (item && window.openMarketModal) {
           window.openMarketModal(item.dataset.market);
           downTarget = null;
-          return; // modal calls _tickerPause
+          return;
         }
         // Clicked on gap — pause ticker, resume after 4s
         pauseAtCurrentPos();
@@ -3980,9 +3980,10 @@ window._marketData = {};
       downTarget = null;
     }
 
-    // Fallback click handler — catches taps that the drag system misses
+    // Click handler — primary method for opening market modals
+    // Works because we no longer preventDefault on mousedown
     track.addEventListener('click', function(e) {
-      if (wasDrag) { e.stopPropagation(); return; }
+      if (wasDrag) return;
       var item = e.target.closest('.market-item[data-market]');
       if (item && window.openMarketModal) {
         window.openMarketModal(item.dataset.market);
