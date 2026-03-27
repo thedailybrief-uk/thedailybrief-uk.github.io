@@ -597,8 +597,15 @@
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
       transition: color 0.15s;
     }
+    /* When expanded: show full headline, timestamp, and updated tag */
+    .curated-item-accordion:not(.curated-item-collapsed) h4 {
+      -webkit-line-clamp: unset; overflow: visible; display: block;
+    }
     .curated-item p { font-family: var(--body-serif); font-size: 17px; line-height: 1.6; color: var(--text-secondary); margin: 0; }
-    @media (max-width: 768px) { .curated-item h4 { -webkit-line-clamp: 3; } .curated-item p { font-size: 18.5px; line-height: 1.55; text-align: left; } }
+    @media (max-width: 768px) { .curated-item h4 { -webkit-line-clamp: 3; }
+      .curated-item-accordion:not(.curated-item-collapsed) h4 { -webkit-line-clamp: unset; overflow: visible; display: block; }
+      .curated-item p { font-size: 18.5px; line-height: 1.55; text-align: left; }
+    }
     .dive-deeper { margin-top: 8px; }
     .dive-deeper summary {
       font-size: 13px; font-weight: 600; letter-spacing: 0.3px; color: var(--text-tertiary);
