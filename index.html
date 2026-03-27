@@ -493,7 +493,8 @@
     .edition-badge {
       font-family: var(--sans); font-size: 10px; font-weight: 700;
       letter-spacing: 1.5px; text-transform: uppercase;
-      padding: 4px 12px; border-radius: 4px; margin-left: 4px;
+      padding: 4px 10px; border-radius: 4px;
+      align-self: center; vertical-align: middle;
     }
     .morning .edition-badge {
       background: rgba(212,162,78,0.15); color: #b8862d;
@@ -4618,14 +4619,14 @@ window._marketData = {};
       dayContainer.appendChild(clone);
     });
 
-    // Add edition badges (MORNING / EVENING)
+    // Add edition badges (MORNING / EVENING) — as sibling in flex header row
     dayContainer.querySelectorAll('.curated-edition').forEach(function(ed) {
-      var h2 = ed.querySelector('.edition-header h2');
-      if (h2 && !h2.querySelector('.edition-badge')) {
+      var header = ed.querySelector('.edition-header');
+      if (header && !header.querySelector('.edition-badge')) {
         var badge = document.createElement('span');
         badge.className = 'edition-badge';
         badge.textContent = ed.classList.contains('morning') ? 'AM' : 'PM';
-        h2.appendChild(badge);
+        header.appendChild(badge);
       }
     });
 
