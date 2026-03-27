@@ -394,6 +394,26 @@
       border-bottom: 2px solid var(--border);
     }
     .curated-edition:last-child { border-bottom: none; }
+    /* Collapsed past editions */
+    .curated-edition.past-collapsed .curated-grid,
+    .curated-edition.past-collapsed .impact-box,
+    .curated-edition.past-collapsed .one-to-read,
+    .curated-edition.past-collapsed .key-figures {
+      display: none;
+    }
+    .curated-edition.past-collapsed .curated-meta {
+      border-bottom: none; padding-bottom: 0; margin-bottom: 0;
+    }
+    .expand-edition-btn {
+      display: none;
+      font-family: var(--sans); font-size: 13px; font-weight: 600;
+      color: var(--text-tertiary); background: var(--bg-section);
+      border: 1px solid var(--border-light); border-radius: 6px;
+      padding: 8px 18px; cursor: pointer; transition: all 0.2s;
+      margin-top: 8px; letter-spacing: 0.5px;
+    }
+    .past-collapsed .expand-edition-btn { display: inline-block; }
+    .expand-edition-btn:hover { background: var(--border-light); color: var(--text-primary); }
     @media (max-width: 768px) {
       .curated-edition { padding: 18px 10px; }
       .curated-section { padding: 12px 8px; }
@@ -4517,6 +4537,30 @@ window._marketData = {};
         });
       }
       dayContainer.appendChild(clone);
+    });
+
+    // Collapse past editions — first edition fully visible, rest collapsed with expand button
+    var allRendered = dayContainer.querySelectorAll('.curated-edition');
+    allRendered.forEach(function(ed, idx) {
+      if (idx === 0) return; // first edition stays expanded
+      ed.classList.add('past-collapsed');
+      var btn = document.createElement('button');
+      btn.className = 'expand-edition-btn';
+      btn.textContent = 'Read this briefing ▾';
+      btn.addEventListener('click', function() {
+        var wasCollapsed = ed.classList.contains('past-collapsed');
+        if (wasCollapsed) {
+          ed.classList.remove('past-collapsed');
+          btn.textContent = 'Collapse ▴';
+        } else {
+          ed.classList.add('past-collapsed');
+          btn.textContent = 'Read this briefing ▾';
+          ed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+      // Insert button after the meta line
+      var meta = ed.querySelector('.curated-meta');
+      if (meta) meta.after(btn);
     });
 
     const isToday = dateStr === today;
