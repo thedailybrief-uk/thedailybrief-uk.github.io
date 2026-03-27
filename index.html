@@ -403,8 +403,28 @@
       border-radius: 0; padding: 28px 32px; margin-bottom: 0;
       background: transparent; color: var(--text-primary);
       border-bottom: 2px solid var(--border);
+      position: relative;
     }
     .curated-edition:last-child { border-bottom: none; }
+    /* Morning: warm amber accent */
+    .curated-edition.morning {
+      border-left: 4px solid #d4a24e;
+      background: linear-gradient(90deg, rgba(212,162,78,0.06) 0%, transparent 30%);
+    }
+    .curated-edition.morning .edition-icon { color: #d4a24e; }
+    /* Evening: cool indigo accent */
+    .curated-edition.evening {
+      border-left: 4px solid #6366f1;
+      background: linear-gradient(90deg, rgba(99,102,241,0.06) 0%, transparent 30%);
+    }
+    .curated-edition.evening .edition-icon { color: #6366f1; }
+    /* Dark mode — slightly stronger wash */
+    [data-theme="dark"] .curated-edition.morning {
+      background: linear-gradient(90deg, rgba(212,162,78,0.08) 0%, transparent 30%);
+    }
+    [data-theme="dark"] .curated-edition.evening {
+      background: linear-gradient(90deg, rgba(99,102,241,0.08) 0%, transparent 30%);
+    }
     /* Collapsed past editions */
     .curated-edition.past-collapsed .curated-grid,
     .curated-edition.past-collapsed .impact-box,
@@ -467,9 +487,28 @@
       flex-wrap: wrap;
     }
     .edition-icon {
-      font-size: 20px; opacity: 0.6; color: var(--text-tertiary);
+      font-size: 22px; opacity: 1;
     }
     .edition-header h2 { font-family: var(--serif); font-size: 26px; font-weight: 700; color: var(--text-primary); }
+    .edition-badge {
+      font-family: var(--sans); font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 4px; margin-left: 4px;
+    }
+    .morning .edition-badge {
+      background: rgba(212,162,78,0.15); color: #b8862d;
+      border: 1px solid rgba(212,162,78,0.3);
+    }
+    .evening .edition-badge {
+      background: rgba(99,102,241,0.12); color: #6366f1;
+      border: 1px solid rgba(99,102,241,0.25);
+    }
+    [data-theme="dark"] .morning .edition-badge {
+      background: rgba(212,162,78,0.2); color: #e8b94e;
+    }
+    [data-theme="dark"] .evening .edition-badge {
+      background: rgba(99,102,241,0.18); color: #a5b4fc;
+    }
     /* Thin rule between edition header and content */
     .edition-header + .curated-meta { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 14px; }
     /* Edition market strips removed */
@@ -4577,6 +4616,17 @@ window._marketData = {};
         });
       }
       dayContainer.appendChild(clone);
+    });
+
+    // Add edition badges (MORNING / EVENING)
+    dayContainer.querySelectorAll('.curated-edition').forEach(function(ed) {
+      var h2 = ed.querySelector('.edition-header h2');
+      if (h2 && !h2.querySelector('.edition-badge')) {
+        var badge = document.createElement('span');
+        badge.className = 'edition-badge';
+        badge.textContent = ed.classList.contains('morning') ? 'AM' : 'PM';
+        h2.appendChild(badge);
+      }
     });
 
     // Collapse past editions — first edition fully visible, rest collapsed with expand button
