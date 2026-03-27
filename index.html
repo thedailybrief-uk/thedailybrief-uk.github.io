@@ -1697,11 +1697,11 @@
   <!-- Breaking stories: newest first. JS picks the active one based on time rules.
        Lifecycle: 3h primary + 2h extension = 5h max per story.
        - Stories < 3h old take priority and display immediately
-       - At 3h: swaps to next valid story if available; if not, keeps current for 2 more hours
-       - Hard expiry at 5h from "posted" (or at "expires" if set)
-       - Optional "expires" field overrides the 5h default (e.g. for major events)
+       - At 3h: if a newer breaking story exists, swap to it. If not, keep current story.
+       - Hard expiry at 8h from "posted" (or at "expires" if set) — banner comes down
+       - Optional "expires" field overrides the 8h default (e.g. for major events)
        To add a new breaking story, prepend an entry here with the current ISO timestamp. -->
-  <script id="breaking-stories" type="application/json">[]</script>
+  <script id="breaking-stories" type="application/json">[{"headline":"Israel kills IRGC Navy chief Tangsiri in Bandar Abbas strike \u2014 11:33 GMT","posted":"2026-03-26T11:33:00Z","category":"Geopolitical","summary":"Israel says it killed Alireza Tangsiri, commander of Iran\u2019s Revolutionary Guard navy, in an overnight air strike on a naval base in Bandar Abbas near the Strait of Hormuz. Defence Minister Katz said the strike also killed other senior naval officers. Tangsiri oversaw the mining and blockade of the Strait of Hormuz to international shipping.","facts":[{"label":"Target","value":"Alireza Tangsiri, IRGC Navy commander"},{"label":"Location","value":"Bandar Abbas naval base, near Strait of Hormuz"},{"label":"Significance","value":"Tangsiri directed the Hormuz blockade that has stranded 2,000 vessels and 20,000 seafarers"},{"label":"Iran response","value":"No official confirmation or comment from Tehran so far"}]}]</script>
   <div class="breaking-banner" id="breakingBanner">
     <div class="breaking-inner">
       <span class="breaking-label">BREAKING</span>
@@ -4746,9 +4746,11 @@ if ('serviceWorker' in navigator) {
   var currentStory = null;
 
   if (jsonMode) {
-    // Time thresholds: 3h primary display + 2h extension = 5h max
+    // Time thresholds: 3h primary display, then keep for up to 8h total
+    // At 3h: if a newer story exists, swap to it. If not, keep current.
+    // At 8h: banner comes down regardless.
     const THREE_HOURS = 3 * 60 * 60 * 1000;
-    const FIVE_HOURS  = 5 * 60 * 60 * 1000;
+    const EIGHT_HOURS = 8 * 60 * 60 * 1000;
     const now = Date.now();
 
     // Clean up stale localStorage dismiss keys (> 24h old)
@@ -4762,10 +4764,10 @@ if ('serviceWorker' in navigator) {
       });
     } catch(e) {}
 
-    // Expiry: use per-story "expires" field if set, else posted + 5h
+    // Expiry: use per-story "expires" field if set, else posted + 8h
     function storyExpiry(s) {
       if (s.expires) return new Date(s.expires).getTime();
-      return new Date(s.posted).getTime() + FIVE_HOURS;
+      return new Date(s.posted).getTime() + EIGHT_HOURS;
     }
 
     // Filter: remove expired stories, sort newest first
@@ -4801,20 +4803,22 @@ if ('serviceWorker' in navigator) {
 
       showStory(active, false);
 
-      // Auto-rotate at 3h
+      // Auto-rotate at 3h: if a newer story exists, swap. If not, keep current until 8h.
       if (active === fresh) {
         const msUntil3h = THREE_HOURS - active.age;
         setTimeout(() => {
           const next = valid.find(s => s !== active && !localStorage.getItem(dismissKey(s)));
           if (next) {
+            // Newer story available — swap to it, set its own 8h expiry
             showStory(next, true);
             const msUntilNextExpiry = storyExpiry(next) - Date.now();
             if (msUntilNextExpiry > 0) setTimeout(hideBanner, msUntilNextExpiry);
           }
+          // No newer story — keep current, it will expire at 8h via the hard expiry below
         }, msUntil3h);
       }
 
-      // Hard expiry for active story
+      // Hard expiry at 8h from posted — banner comes down regardless
       const msUntilHide = storyExpiry(active) - now;
       if (msUntilHide > 0) setTimeout(hideBanner, msUntilHide);
     }
