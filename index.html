@@ -1751,12 +1751,14 @@
       color: var(--text-muted);
       transition: color 0.2s;
     }
-    .curated-item-accordion:hover h4::before { color: var(--text-tertiary); }
     .curated-item-collapsed h4::before {
       content: '\25B8';
     }
-    .curated-item-collapsed:hover h4 { color: var(--accent-geo); }
-    .curated-column:last-child .curated-item-collapsed:hover h4 { color: var(--accent-dom); }
+    @media (hover: hover) {
+      .curated-item-accordion:hover h4::before { color: var(--text-tertiary); }
+      .curated-item-collapsed:hover h4 { color: var(--accent-geo); }
+      .curated-column:last-child .curated-item-collapsed:hover h4 { color: var(--accent-dom); }
+    }
 
     /* ── Collapsible impact box ── */
     .impact-details { margin: 14px 0 18px; }
