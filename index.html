@@ -412,17 +412,7 @@
     .edition-header h2 { font-family: var(--serif); font-size: 26px; font-weight: 700; color: var(--text-primary); }
     /* Thin rule between edition header and content */
     .edition-header + .curated-meta { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 14px; }
-    /* Compact market strip below meta */
-    .edition-market-strip {
-      display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px;
-      font-family: var(--sans); font-size: 12px; color: var(--text-muted);
-    }
-    .edition-market-strip .ems-item { display: flex; align-items: center; gap: 4px; }
-    .edition-market-strip .ems-label { font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 10px; color: var(--text-tertiary); }
-    .edition-market-strip .ems-val { font-weight: 600; color: var(--text-secondary); }
-    .edition-market-strip .ems-chg { font-size: 11px; font-weight: 700; }
-    .edition-market-strip .ems-chg.up { color: var(--accent-green); }
-    .edition-market-strip .ems-chg.down { color: var(--accent-red); }
+    /* Edition market strips removed */
     @media (max-width: 768px) {
       .edition-header { gap: 6px 8px; }
       .edition-header h2 { font-size: 20px; flex: 1; }
@@ -5966,44 +5956,7 @@ if ('serviceWorker' in navigator) {
   document.head.appendChild(script);
 })();
 
-// ── Edition Market Strips ──
-(function() {
-  var editions = document.querySelectorAll('#all-editions .curated-edition[data-markets]');
-  editions.forEach(function(ed) {
-    var marketsJson = ed.getAttribute('data-markets');
-    if (!marketsJson) return;
-    try {
-      var data = JSON.parse(marketsJson);
-    } catch(e) { return; }
-    // Pick 4 key figures: FTSE, Brent, GBP, Gold
-    var keys = [
-      { id: 'FTSE', label: 'FTSE' },
-      { id: 'Brent', label: 'Brent' },
-      { id: 'GBP', label: 'GBP/USD' },
-      { id: 'Gold', label: 'Gold' }
-    ];
-    var strip = document.createElement('div');
-    strip.className = 'edition-market-strip';
-    keys.forEach(function(k) {
-      var m = data[k.id];
-      if (!m) return;
-      var item = document.createElement('span');
-      item.className = 'ems-item';
-      var price = k.id === 'GBP' ? m.price.toFixed(4) : m.price.toLocaleString('en-GB', { maximumFractionDigits: 2 });
-      var sign = m.change >= 0 ? '+' : '';
-      var cls = m.change >= 0 ? 'up' : 'down';
-      item.innerHTML = '<span class="ems-label">' + k.label + '</span> <span class="ems-val">' + price + '</span> <span class="ems-chg ' + cls + '">' + sign + m.change.toFixed(2) + '%</span>';
-      strip.appendChild(item);
-    });
-    // Insert after .curated-meta
-    var meta = ed.querySelector('.curated-meta');
-    if (meta && meta.nextSibling) {
-      meta.parentNode.insertBefore(strip, meta.nextSibling);
-    } else if (meta) {
-      meta.parentNode.appendChild(strip);
-    }
-  });
-})();
+// ── Edition Market Strips removed — cluttered the briefing view ──
 </script>
 
 <!-- ── Auto-refresh when returning from background (PWA / home screen) ── -->
