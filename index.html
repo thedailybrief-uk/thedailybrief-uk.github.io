@@ -281,32 +281,39 @@
     @media (max-width: 600px) {
       .masthead-nav {
         gap: 0; padding: 0; justify-content: center;
-        row-gap: 0; flex-wrap: wrap;
+        flex-wrap: wrap;
       }
-      /* Row 1: section navigation links — equal halves, fill full width */
+      /* Row 1: section navigation links — equal halves */
       .masthead-nav a:not(.nav-instagram) {
         flex: 1 1 50%; text-align: center; justify-content: center;
-        padding: 10px 0 8px; font-size: 11px; letter-spacing: 0.8px;
+        padding: 12px 0 10px; font-size: 11px; letter-spacing: 0.8px;
+        border-bottom: 1px solid var(--border-light);
       }
-      /* Row 2: utility items in wrapper div — full-width border */
+      /* Row 2: theme toggle + subscribe centred */
       .masthead-nav .nav-utility-row {
         flex: 1 1 100%; display: flex; align-items: center; justify-content: center;
-        border-top: 1px solid var(--border-light); gap: 0;
+        border-top: none; gap: 0;
+        padding: 6px 0;
       }
-      .nav-utility-row button,
-      .nav-utility-row a {
-        flex: 1 1 auto; justify-content: center; text-align: center;
-        padding: 8px 4px; font-size: 11px;
+      /* Hide text labels on mobile for theme toggle — icon only */
+      .nav-utility-row #darkToggle {
+        font-size: 0; padding: 8px 12px; min-width: 44px;
       }
+      .nav-utility-row #darkToggle .toggle-icon { font-size: 16px; }
+      /* Saved — icon-like */
+      .nav-utility-row .bookmarks-nav-btn {
+        font-size: 10px; padding: 8px 10px; letter-spacing: 0.5px;
+      }
+      /* Subscribe — compact pill */
       .nav-utility-row button.subscribe-btn {
-        margin-top: 0; padding: 6px 12px; font-size: 9px;
+        margin: 0; padding: 6px 14px; font-size: 9px;
         min-height: 32px;
       }
-      .nav-utility-row a.nav-instagram {
-        min-width: 44px; max-width: 44px;
-      }
+      /* Instagram + bell — fixed icon size */
+      .nav-utility-row a.nav-instagram,
       .nav-utility-row .notify-btn {
-        min-width: 44px; max-width: 44px; padding: 8px 4px;
+        min-width: 40px; max-width: 40px; padding: 8px 4px;
+        justify-content: center;
       }
     }
     .nav-utility-row { display: contents; }
