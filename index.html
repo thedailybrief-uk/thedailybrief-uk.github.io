@@ -4776,6 +4776,8 @@ if ('serviceWorker' in navigator) {
       .filter(s => now < storyExpiry(s) && s.age >= 0)
       .sort((a, b) => a.age - b.age);
 
+    if (!valid.length) { hideBanner(); return; }
+
     if (valid.length) {
       const fresh = valid.find(s => s.age < THREE_HOURS);
       const active = fresh || valid[0];
