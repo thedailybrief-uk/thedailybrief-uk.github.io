@@ -1090,8 +1090,27 @@
     .breaking-text {
       font-family: var(--sans); font-size: 14px; font-weight: 500; line-height: 1.4; flex: 1;
       cursor: pointer; transition: opacity 0.2s;
+      overflow: hidden;
     }
     .breaking-text:hover { opacity: 0.85; }
+    /* Mobile: scroll the headline text in a loop */
+    @media (max-width: 600px) {
+      .breaking-text {
+        white-space: nowrap; overflow: hidden; position: relative;
+      }
+      .breaking-text-inner {
+        display: inline-block; padding-right: 80px;
+        animation: breakingScroll 12s linear infinite;
+      }
+      .breaking-text-inner::after {
+        content: attr(data-text);
+        padding-left: 80px;
+      }
+      @keyframes breakingScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+    }
     .breaking-readmore {
       font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text-primary);
       cursor: pointer; white-space: nowrap; border-bottom: 1px solid rgba(255,255,255,0.3);
@@ -5188,6 +5207,14 @@ if ('serviceWorker' in navigator) {
 
   // Helper: get display text (headline with text fallback)
   function displayText(s) { return s.headline || s.text || ''; }
+  // Wrap text in scrolling inner span for mobile
+  function setBreakingText(text) {
+    if (window.innerWidth <= 600) {
+      breakingTextEl.innerHTML = '<span class="breaking-text-inner" data-text="' + text.replace(/"/g, '&quot;') + '">' + text + '</span>';
+    } else {
+      breakingTextEl.textContent = text;
+    }
+  }
   // Helper: dismiss key
   function dismissKey(s) { return 'breakingDismissed_' + displayText(s).slice(0, 80); }
 
@@ -5248,13 +5275,13 @@ if ('serviceWorker' in navigator) {
           breakingTextEl.style.opacity = '0';
           setTimeout(() => {
             currentStory = s;
-            breakingTextEl.textContent = displayText(s);
+            setBreakingText(displayText(s));
             breakingTextEl.style.opacity = '1';
             setTimeout(linkBanner, 200);
           }, 300);
         } else {
           currentStory = s;
-          breakingTextEl.textContent = displayText(s);
+          setBreakingText(displayText(s));
         }
       }
 
@@ -5285,6 +5312,12 @@ if ('serviceWorker' in navigator) {
   banner.style.display = '';
   banner.classList.remove('dismissed');
   document.body.classList.add('has-breaking-banner');
+
+  // Wrap existing text for mobile scroll if not already wrapped
+  if (window.innerWidth <= 600 && !breakingTextEl.querySelector('.breaking-text-inner')) {
+    var existingText = breakingTextEl.textContent.trim();
+    if (existingText) setBreakingText(existingText);
+  }
 
   // Dismiss handler
   if (dismiss) dismiss.addEventListener('click', (e) => {
