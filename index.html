@@ -406,14 +406,27 @@
     }
     .expand-edition-btn {
       display: none;
+      font-family: var(--sans); font-size: 14px; font-weight: 700;
+      color: #fff; background: var(--accent-geo);
+      border: none; border-radius: 8px;
+      padding: 14px 28px; cursor: pointer; transition: all 0.2s;
+      margin-top: 12px; letter-spacing: 0.8px; text-transform: uppercase;
+    }
+    .curated-edition.evening .expand-edition-btn { background: var(--accent-dom); }
+    .past-collapsed .expand-edition-btn { display: inline-flex; align-items: center; gap: 8px; }
+    .expand-edition-btn:hover { opacity: 0.85; transform: scale(1.02); }
+    .expand-edition-btn svg { width: 16px; height: 16px; transition: transform 0.2s; }
+    /* Collapse button at bottom of expanded edition */
+    .collapse-edition-btn {
+      display: block; width: 100%; text-align: center;
       font-family: var(--sans); font-size: 13px; font-weight: 600;
       color: var(--text-tertiary); background: var(--bg-section);
-      border: 1px solid var(--border-light); border-radius: 6px;
-      padding: 8px 18px; cursor: pointer; transition: all 0.2s;
-      margin-top: 8px; letter-spacing: 0.5px;
+      border: 1px solid var(--border-light); border-radius: 8px;
+      padding: 12px; cursor: pointer; transition: all 0.2s;
+      margin-top: 20px; letter-spacing: 0.5px;
     }
-    .past-collapsed .expand-edition-btn { display: inline-block; }
-    .expand-edition-btn:hover { background: var(--border-light); color: var(--text-primary); }
+    .collapse-edition-btn:hover { background: var(--border-light); color: var(--text-primary); }
+    .collapse-edition-btn svg { width: 14px; height: 14px; vertical-align: -2px; margin-left: 6px; }
     @media (max-width: 768px) {
       .curated-edition { padding: 18px 10px; }
       .curated-section { padding: 12px 8px; }
@@ -4540,27 +4553,42 @@ window._marketData = {};
     });
 
     // Collapse past editions — first edition fully visible, rest collapsed with expand button
+    var chevronDown = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>';
+    var chevronUp = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>';
     var allRendered = dayContainer.querySelectorAll('.curated-edition');
     allRendered.forEach(function(ed, idx) {
-      if (idx === 0) return; // first edition stays expanded
+      if (idx === 0) return;
       ed.classList.add('past-collapsed');
-      var btn = document.createElement('button');
-      btn.className = 'expand-edition-btn';
-      btn.textContent = 'Read this briefing ▾';
-      btn.addEventListener('click', function() {
-        var wasCollapsed = ed.classList.contains('past-collapsed');
-        if (wasCollapsed) {
-          ed.classList.remove('past-collapsed');
-          btn.textContent = 'Collapse ▴';
-        } else {
-          ed.classList.add('past-collapsed');
-          btn.textContent = 'Read this briefing ▾';
-          ed.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-      // Insert button after the meta line
+
+      // Expand button (after meta)
+      var expandBtn = document.createElement('button');
+      expandBtn.className = 'expand-edition-btn';
+      expandBtn.innerHTML = 'Read this briefing ' + chevronDown;
+
+      // Collapse button (at bottom of edition)
+      var collapseBtn = document.createElement('button');
+      collapseBtn.className = 'collapse-edition-btn';
+      collapseBtn.innerHTML = 'Collapse briefing' + chevronUp;
+      collapseBtn.style.display = 'none';
+
+      function expand() {
+        ed.classList.remove('past-collapsed');
+        expandBtn.style.display = 'none';
+        collapseBtn.style.display = 'block';
+      }
+      function collapse() {
+        ed.classList.add('past-collapsed');
+        expandBtn.style.display = '';
+        collapseBtn.style.display = 'none';
+        ed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      expandBtn.addEventListener('click', expand);
+      collapseBtn.addEventListener('click', collapse);
+
       var meta = ed.querySelector('.curated-meta');
-      if (meta) meta.after(btn);
+      if (meta) meta.after(expandBtn);
+      ed.appendChild(collapseBtn);
     });
 
     const isToday = dateStr === today;
