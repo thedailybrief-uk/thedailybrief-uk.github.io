@@ -1782,7 +1782,11 @@
       font-family: var(--sans); font-size: 11px; font-weight: 600;
       color: var(--text-muted); letter-spacing: 0.3px;
       margin-left: 8px; white-space: nowrap;
-      vertical-align: middle;
+      vertical-align: baseline; display: none;
+    }
+    /* Show timestamp inline at end of headline when expanded */
+    .curated-item-accordion:not(.curated-item-collapsed) .story-time {
+      display: inline;
     }
 
     /* ── Accordion curated items — chevron on all, smooth expand/collapse ── */
@@ -4400,7 +4404,7 @@ window._marketData = {};
         const time = document.createElement('span');
         time.className = 'story-time';
         time.textContent = item.dataset.time;
-        h4.after(time);
+        h4.appendChild(time);
       });
 
       // #3 Key figures strip — pick 3 most relevant from market data based on edition content
