@@ -4340,6 +4340,7 @@ window._marketData = {};
                 item.classList.remove('curated-item-collapsed');
               } else {
                 item.classList.add('curated-item-collapsed');
+                item.classList.remove('tapped');
               }
             });
           }
@@ -4828,7 +4829,10 @@ if (!window.matchMedia('(hover: hover)').matches) {
   document.addEventListener('click', function(e) {
     var item = e.target.closest('.curated-item');
     document.querySelectorAll('.curated-item.tapped').forEach(function(el) { el.classList.remove('tapped'); });
-    if (item) item.classList.add('tapped');
+    // Only highlight if the item is being expanded (not collapsed)
+    if (item && item.classList.contains('curated-item-collapsed')) {
+      item.classList.add('tapped');
+    }
   });
 }
 
