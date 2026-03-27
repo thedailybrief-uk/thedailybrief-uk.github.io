@@ -542,7 +542,7 @@
     .updated-tag {
       display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
       text-transform: uppercase; background: var(--bg-section); color: var(--text-muted);
-      padding: 2px 7px; border-radius: 3px; margin-left: 8px; vertical-align: middle;
+      padding: 2px 7px; border-radius: 3px; margin-bottom: 4px; vertical-align: middle;
       border: 1px solid var(--border-light);
     }
 
@@ -4388,7 +4388,7 @@ window._marketData = {};
             const tag = document.createElement('span');
             tag.className = 'updated-tag';
             tag.textContent = 'Updated from morning';
-            h4.appendChild(tag);
+            h4.after(tag);
           }
         });
       }
@@ -4400,7 +4400,7 @@ window._marketData = {};
         const time = document.createElement('span');
         time.className = 'story-time';
         time.textContent = item.dataset.time;
-        h4.appendChild(time);
+        h4.after(time);
       });
 
       // #3 Key figures strip — pick 3 most relevant from market data based on edition content
@@ -5617,7 +5617,7 @@ if ('serviceWorker' in navigator) {
         if (!h4 || item.querySelector('.story-thread')) return;
 
         // Get headline text excluding any appended tags (Updated, etc.)
-        const updatedTag = h4.querySelector('.updated-tag');
+        const updatedTag = h4.parentElement.querySelector('.updated-tag');
         let headline = h4.textContent.trim();
         if (updatedTag) {
           headline = headline.replace(updatedTag.textContent, '').trim();
@@ -5943,7 +5943,7 @@ if ('serviceWorker' in navigator) {
       if (!h4) return;
 
       // Get headline text (excluding "Updated" tag)
-      const updatedTag = h4.querySelector('.updated-tag');
+      const updatedTag = h4.parentElement ? h4.parentElement.querySelector('.updated-tag') : null;
       let headline = h4.textContent.trim();
       if (updatedTag) headline = headline.replace(updatedTag.textContent, '').trim();
       const summary = p ? p.textContent.trim() : '';
