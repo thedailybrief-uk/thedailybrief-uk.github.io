@@ -487,7 +487,14 @@
       border-radius: 4px; margin: 0 -4px;
       transition: background 0.15s ease;
     }
-    .curated-item:hover { background: var(--highlight-bg); }
+    @media (hover: hover) {
+      .curated-item:hover { background: var(--highlight-bg); }
+      .curated-item:hover h4 { color: var(--accent-geo); }
+      .curated-column:last-child .curated-item:hover h4 { color: var(--accent-dom); }
+    }
+    .curated-item.tapped { background: var(--highlight-bg); }
+    .curated-item.tapped h4 { color: var(--accent-geo); }
+    .curated-column:last-child .curated-item.tapped h4 { color: var(--accent-dom); }
     .curated-item:last-child { border-bottom: none; }
     .curated-item h4 {
       font-family: var(--serif); font-size: 21px; font-weight: 700;
@@ -495,8 +502,6 @@
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
       transition: color 0.15s;
     }
-    .curated-item:hover h4 { color: var(--accent-geo); }
-    .curated-column:last-child .curated-item:hover h4 { color: var(--accent-dom); }
     .curated-item p { font-family: var(--body-serif); font-size: 17px; line-height: 1.6; color: var(--text-secondary); margin: 0; }
     @media (max-width: 768px) { .curated-item h4 { -webkit-line-clamp: 3; } .curated-item p { font-size: 18.5px; line-height: 1.55; text-align: left; } }
     .dive-deeper { margin-top: 8px; }
@@ -4810,6 +4815,15 @@ async function init() {
 }
 
 init();
+
+// ── Mobile tap highlight (no sticky hover) ──
+if (!window.matchMedia('(hover: hover)').matches) {
+  document.addEventListener('click', function(e) {
+    var item = e.target.closest('.curated-item');
+    document.querySelectorAll('.curated-item.tapped').forEach(function(el) { el.classList.remove('tapped'); });
+    if (item) item.classList.add('tapped');
+  });
+}
 
 // ── Scroll to top ──
 const sb = document.getElementById('scrollTop');
