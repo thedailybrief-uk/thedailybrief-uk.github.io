@@ -4840,7 +4840,16 @@ if ('serviceWorker' in navigator) {
   const swVersion = document.querySelector('script[id="embedded-markets"]')?.textContent
     ? JSON.parse(document.querySelector('script[id="embedded-markets"]').textContent).ts || ''
     : Date.now();
-  navigator.serviceWorker.register('/sw.js?v=' + encodeURIComponent(swVersion))
+  // Force clear old caches and re-register service worker
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(reg) { reg.update(); });
+  });
+  caches.keys().then(function(keys) {
+    keys.forEach(function(k) {
+      if (k !== 'daily-brief-v16' && k !== 'daily-brief-fonts-v2') caches.delete(k);
+    });
+  });
+  navigator.serviceWorker.register('/sw.js?v=16')
     .then(reg => { if (reg) reg.update(); })
     .catch(() => {});
 }
