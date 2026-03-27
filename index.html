@@ -497,9 +497,9 @@
       .curated-item:hover h4 { color: var(--accent-geo); }
       .curated-column:last-child .curated-item:hover h4 { color: var(--accent-dom); }
     }
-    .curated-item.tapped { background: var(--highlight-bg); }
-    .curated-item.tapped h4 { color: var(--accent-geo); }
-    .curated-column:last-child .curated-item.tapped h4 { color: var(--accent-dom); }
+    /* Active headline — only the currently open story gets coloured */
+    .curated-item.active-headline h4 { color: var(--accent-geo); }
+    .curated-column:last-child .curated-item.active-headline h4 { color: var(--accent-dom); }
     .curated-item:last-child { border-bottom: none; }
     .curated-item h4 {
       font-family: var(--serif); font-size: 21px; font-weight: 700;
@@ -4333,14 +4333,18 @@ window._marketData = {};
               if (Math.abs(diveDeepDrift) > 1) window.scrollBy(0, diveDeepDrift);
 
               // Step 4: Now run the accordion — smooth grid transition
+              // Clear active-headline from all items first
               items.forEach(it => {
-                if (it !== item) it.classList.add('curated-item-collapsed');
+                if (it !== item) { it.classList.add('curated-item-collapsed'); it.classList.remove('active-headline'); }
               });
               if (wasCollapsed) {
+                // Opening this item
                 item.classList.remove('curated-item-collapsed');
+                item.classList.add('active-headline');
               } else {
+                // Closing this item
                 item.classList.add('curated-item-collapsed');
-                item.classList.remove('tapped');
+                item.classList.remove('active-headline');
               }
             });
           }
@@ -4824,17 +4828,7 @@ async function init() {
 
 init();
 
-// ── Mobile tap highlight (no sticky hover) ──
-if (!window.matchMedia('(hover: hover)').matches) {
-  document.addEventListener('click', function(e) {
-    var item = e.target.closest('.curated-item');
-    document.querySelectorAll('.curated-item.tapped').forEach(function(el) { el.classList.remove('tapped'); });
-    // Only highlight if the item is being expanded (not collapsed)
-    if (item && item.classList.contains('curated-item-collapsed')) {
-      item.classList.add('tapped');
-    }
-  });
-}
+// ── Active headline managed by accordion click handler (no separate tap logic needed) ──
 
 // ── Scroll to top ──
 const sb = document.getElementById('scrollTop');
