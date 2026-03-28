@@ -4664,12 +4664,14 @@ window._marketData = {};
       }
     });
 
-    // Collapse past editions — first edition fully visible, rest collapsed with expand button
+    // Collapse editions — on today: first edition expanded, rest collapsed
+    // On past days: ALL editions collapsed
+    var viewingToday = dateStr === today;
     var chevronDown = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>';
     var chevronUp = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>';
     var allRendered = dayContainer.querySelectorAll('.curated-edition');
     allRendered.forEach(function(ed, idx) {
-      if (idx === 0) return;
+      if (viewingToday && idx === 0) return; // only skip first on today
       ed.classList.add('past-collapsed');
 
       // Build preview — top 3 headlines as bullet points
