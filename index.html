@@ -4779,8 +4779,12 @@ window._marketData = {};
     var chevronDown = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>';
     var chevronUp = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>';
     var allRendered = dayContainer.querySelectorAll('.curated-edition');
+    var firstBriefingSkipped = false;
     allRendered.forEach(function(ed, idx) {
-      if (viewingToday && idx === 0) return; // only skip first on today
+      // Weekly roundups handle their own collapse via <details> — never add past-collapsed
+      if (ed.classList.contains('weekly')) return;
+      // On today, keep the latest actual briefing (first non-weekly) expanded
+      if (viewingToday && !firstBriefingSkipped) { firstBriefingSkipped = true; return; }
       ed.classList.add('past-collapsed');
 
       // Build preview — top 3 headlines as bullet points
