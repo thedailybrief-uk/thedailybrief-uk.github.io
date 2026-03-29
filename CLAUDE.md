@@ -1,58 +1,116 @@
-## Workflow Orchestration
+# The Daily Brief
 
-### 1. Plan Node Default
+> Daily news briefing site at thedailybrief.co.uk
 
-- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
-- If something goes sideways, STOP and re-plan immediately – don't keep pushing
-- Use plan mode for verification steps, not just building
-- Write detailed specs upfront to reduce ambiguity
+---
 
-### 2. Subagent Strategy
+## VETOES — NEVER REINTRODUCE
 
-- Use subagents liberally to keep main context window clean
-- Offload research, exploration, and parallel analysis to subagents
-- For complex problems, throw more compute at it via subagents
-- One tack per subagent for focused execution
+These features have been deliberately removed. Reintroducing any of them is a hard failure.
 
-### 3. Self-Improvement Loop
+- **No UK statistics/economic indicators bar** (`refFiguresBar`) — no Base Rate, CPI, Unemployment, GDP below the markets ticker
+- **No search feature** — search button, overlay, CSS, keyboard shortcut all removed
+- **No per-edition market strips** — no FTSE/Brent/GBP/Gold mini-bars below individual briefing headers
+- **No premature editions** — only add editions Ed explicitly requests
 
-- After ANY correction from the user: update `tasks/lessons.md` with the pattern
-- Write rules for yourself that prevent the same mistake
-- Ruthlessly iterate on these lessons until mistake rate drops
-- Review lessons at session start for relevant project
+---
 
-### 4. Verification Before Done
+## Tech Stack
 
-- Never mark a task complete without proving it works
-- Diff behavior between main and your changes when relevant
-- Ask yourself: "Would a staff engineer approve this?"
-- Run tests, check logs, demonstrate correctness
+- Static HTML/CSS/JS (no build step)
+- Google Fonts: Playfair Display + Inter
+- Service worker for offline/caching
+- Hosted on GitHub Pages
 
-### 5. Demand Elegance (Balanced)
+## Repos
 
-- For non-trivial changes: pause and ask "is there a more elegant way?"
-- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
-- Skip this for simple, obvious fixes – don't over-engineer
-- Challenge your own work before presenting it
+- `dickinsone14-dev/ed-news-briefing` (origin)
+- `thedailybrief-uk/thedailybrief-uk.github.io` (org)
+- Push to both: `git push origin main && git push org main`
 
-### 6. Autonomous Bug Fixing
+## Commands
 
-- When given a bug report: just fix it. Don't ask for hand-holding
-- Point at logs, errors, failing tests – then resolve them
-- Zero context switching required from the user
-- Go fix failing CI tests without being told how
+No build step. Edit HTML files and push.
 
-## Task Management
+```bash
+# Deploy
+git push origin main && git push org main
+```
 
-1. **Plan First**: Write plan to `tasks/todo.md` with checkable items
-2. **Verify Plan**: Check in before starting implementation
-3. **Track Progress**: Mark items complete as you go
-4. **Explain Changes**: High-level summary at each step
-5. **Document Results**: Add review section to `tasks/todo.md`
-6. **Capture Lessons**: Update `tasks/lessons.md` after corrections
+---
 
-## Core Principles
+## Critical Rules
 
-- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
-- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
-- **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
+- **7 FULL DAYS of past editions** must be visible on the site at all times. NEVER delete editions less than 7 days old. This has been broken multiple times and is unacceptable.
+- **Bump service worker cache version** when adding new files
+- **British English** throughout all user-facing copy
+- **Never commit files not changed in the current session** — run `git diff <file>` on every file before staging
+- **When Ed corrects or vetoes anything**, save it as a feedback memory immediately
+
+---
+
+## Instagram Workflow
+
+### Daily Carousels (update at 6:15 PM, after evening briefing)
+
+- `instagram-geo.html` — geopolitical, burgundy theme
+- `instagram-uk.html` — UK domestic, navy theme
+- Top 5 **stories** (not "headlines") of the entire day — both morning and evening editions combined
+- 1080x1350px (4:5), absolute-positioned layout
+
+### Weekly Roundup
+
+- `instagram-weekly.html` — teal theme
+- Sunday before midday
+- Structure: Moved Forward (green) / Stalled (amber) / Watch Next Week (teal)
+- Uses `weekly-news-log.md` accumulated through the week
+
+### PMQs
+
+- `instagram-pmqs.html` — deep purple theme (`#663399`)
+- After PMQs each Wednesday
+
+### Breaking News
+
+- `instagram-story.html` — 9:16 format (1080x1920px)
+- 3-hour rotation; 8-hour max display
+- Export PNG to Desktop for AirDrop
+
+---
+
+## Unsplash Rules
+
+- **Never guess photo IDs** — Unsplash CDN IDs (`photo-XXXXX`) don't describe content
+- **Always verify via slug**: search `site:unsplash.com/photos "description"`, get slug URL, then curl to extract CDN ID
+- **No duplicates** across any Instagram HTML files
+- **Never reuse** images from previous days
+- **Verify HTTP 200** before applying any image URL
+- Every slide must have a relevant, contemporary, high-resolution background photo at 8% opacity
+
+---
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `index.html` | Main site — all editions in `#all-editions` container |
+| `instagram-geo.html` | Geopolitical carousel |
+| `instagram-uk.html` | UK domestic carousel |
+| `instagram-weekly.html` | Weekly roundup carousel |
+| `instagram-pmqs.html` | PMQs carousel |
+| `instagram-story.html` | Breaking news story (9:16) |
+| `weekly-news-log.md` | Accumulates daily stories for Sunday roundup |
+| `export-slides.js` | Carousel PNG export |
+| `export-story.html` | Story PNG export |
+| `sw.js` | Service worker |
+
+---
+
+## Design Conventions
+
+- Left-aligned text, vertically centred on slides
+- Consistent element positions across all slides (headers same spot, footers same spot)
+- Thin line separators, not card gaps
+- Full summaries visible (no truncation)
+- Monochrome + accent colour per theme
+- Dive Deeper sections: 150-200 words of analytical commentary with historical context, data points, and forward-looking indicators
