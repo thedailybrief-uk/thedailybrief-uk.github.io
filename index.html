@@ -6113,13 +6113,12 @@ if ('serviceWorker' in navigator) {
       e.stopPropagation();
       readStory(item, btn);
     });
-    // Desktop: place inline after the h4 headline
-    // Mobile: append to item (CSS positions it absolute top-right)
     var h4 = item.querySelector('h4');
     if (window.innerWidth > 768 && h4) {
-      h4.style.display = 'inline';
-      h4.after(btn);
+      // Desktop: append inside the h4 so it sits at the end of the headline text
+      h4.appendChild(btn);
     } else {
+      // Mobile: append to item (CSS positions it absolute top-right)
       if (getComputedStyle(item).position === 'static') item.style.position = 'relative';
       item.appendChild(btn);
     }
