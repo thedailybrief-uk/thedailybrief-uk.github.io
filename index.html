@@ -352,6 +352,7 @@
       overflow: hidden; white-space: nowrap;
       background: var(--bg-section);
       position: relative;
+      min-height: 32px;
     }
     .markets-bar::before, .markets-bar::after {
       content: ''; position: absolute; top: 0; bottom: 0; width: 24px; z-index: 2; pointer-events: none;
@@ -483,7 +484,7 @@
     [data-theme="dark"] .curated-edition.morning { background: transparent; }
     .edition-header {
       display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
-      flex-wrap: wrap;
+      flex-wrap: wrap; min-height: 38px;
     }
     .edition-icon {
       font-size: 22px; opacity: 1;
@@ -1024,6 +1025,7 @@
     .day-nav-label {
       font-family: var(--serif); font-size: 18px; font-weight: 600;
       color: var(--text-primary); text-align: center; min-width: 180px;
+      min-height: 44px;
       transition: opacity 0.3s ease;
     }
     .day-nav-sub {
@@ -1046,6 +1048,7 @@
     /* Day transition */
     #day-editions {
       transition: opacity 0.3s ease, transform 0.3s ease;
+      contain: layout style;
     }
     #day-editions.fade-out {
       opacity: 0; transform: translateY(6px);
@@ -1072,7 +1075,7 @@
 
     /* ── Feature 1: Breaking Alert Banner ── */
     .breaking-banner {
-      position: sticky; top: 0; z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: linear-gradient(135deg, #8b2332, #a63045);
       color: #fff; overflow: hidden;
       transition: transform 0.4s ease, opacity 0.4s ease;
