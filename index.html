@@ -289,8 +289,8 @@
       min-height: 44px; display: inline-flex; align-items: center;
       border-bottom: 3px solid transparent; position: relative;
     }
-    .masthead-nav > a:first-of-type { border-bottom-color: var(--accent-geo); }
-    .masthead-nav > a:nth-of-type(2) { border-bottom-color: var(--accent-dom); }
+    .masthead-nav > a:first-of-type { border-bottom-color: var(--accent-dom); }
+    .masthead-nav > a:nth-of-type(2) { border-bottom-color: var(--accent-geo); }
     .masthead-nav > a:hover { color: var(--text-primary); opacity: 0.7; }
     /* Desktop: section links + utilities on one tight line with a dot separator */
     @media (min-width: 601px) {
@@ -323,19 +323,21 @@
         gap: 0; padding: 4px 0; border-top: 1px solid var(--border-light);
       }
       .nav-utility-row > * {
-        flex: 1 1 auto; text-align: center; justify-content: center;
+        flex: 1 1 33.33%; text-align: center; justify-content: center;
       }
       .nav-utility-row #darkToggle { font-size: 11px; padding: 8px 6px; }
       .nav-utility-row .bookmarks-nav-btn { font-size: 11px; padding: 8px 6px; }
       .nav-utility-row button.subscribe-btn {
         margin: 0; padding: 6px 12px; font-size: 9px; min-height: 32px;
-        flex: 0 0 auto;
       }
     }
     .nav-utility-row {
       display: flex; align-items: center; justify-content: center;
-      gap: 24px; width: 100%; padding: 8px 0;
+      gap: 0; width: 100%; padding: 8px 0;
       border-top: 1px solid var(--border-light);
+    }
+    .nav-utility-row > * {
+      flex: 1 1 33.33%; text-align: center; justify-content: center;
     }
     .masthead-nav button:hover { color: var(--text-primary); }
     .toggle-icon { display: inline-block; vertical-align: -1px; line-height: 1; font-size: 14px; }
@@ -1977,13 +1979,12 @@
         <div class="nav-utility-row">
           <!-- #4 Dark mode toggle -->
           <button id="darkToggle" aria-label="Toggle dark mode"><span class="toggle-icon sun">&#9788;</span> Light / <span class="toggle-icon moon">&#9790;</span> Dark</button>
-          <!-- #10: Bookmarks button -->
+          <!-- #10: Bookmarks button (centred) -->
           <button class="bookmarks-nav-btn" id="bookmarksBtn" title="Saved stories (B)">
             Saved <span class="bookmarks-count" id="bookmarksCountBadge" style="display:none;">0</span>
           </button>
           <!-- Subscribe Button -->
           <button class="subscribe-btn" id="subscribeBtn" title="Subscribe to premium (S)">Subscribe</button>
-          <!-- Instagram + bell moved to masthead-top -->
         </div>
       </nav>
     </div>
