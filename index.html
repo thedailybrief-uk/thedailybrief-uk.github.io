@@ -5273,17 +5273,6 @@ if ('serviceWorker' in navigator) {
     const EIGHT_HOURS = 8 * 60 * 60 * 1000;
     const now = Date.now();
 
-    // Clean up stale localStorage dismiss keys (> 24h old)
-    try {
-      const DAY = 24 * 60 * 60 * 1000;
-      Object.keys(localStorage).forEach(k => {
-        if (k.startsWith('breakingDismissed_')) {
-          const ts = parseInt(localStorage.getItem(k + '_ts'), 10);
-          if (ts && now - ts > DAY) { localStorage.removeItem(k); localStorage.removeItem(k + '_ts'); }
-        }
-      });
-    } catch(e) {}
-
     // Expiry: use per-story "expires" field if set, else posted + 8h
     function storyExpiry(s) {
       if (s.expires) return new Date(s.expires).getTime();
@@ -5303,8 +5292,7 @@ if ('serviceWorker' in navigator) {
       const active = fresh || valid[0];
       currentStory = active;
 
-      // Check if user dismissed this specific headline
-      if (localStorage.getItem(dismissKey(active))) { hideBanner(); return; }
+      // Dismiss is session-only — banner reappears on refresh/new tab
 
       // Helper: show a story with crossfade
       function showStory(s, animate) {
@@ -5329,7 +5317,7 @@ if ('serviceWorker' in navigator) {
       if (active === fresh) {
         const msUntil3h = THREE_HOURS - active.age;
         setTimeout(() => {
-          const next = valid.find(s => s !== active && !localStorage.getItem(dismissKey(s)));
+          const next = valid.find(s => s !== active);
           if (next) {
             // Newer story available — swap to it, set its own 8h expiry
             showStory(next, true);
@@ -5361,10 +5349,6 @@ if ('serviceWorker' in navigator) {
   if (dismiss) dismiss.addEventListener('click', (e) => {
     e.stopPropagation();
     hideBanner();
-    if (currentStory) {
-      localStorage.setItem(dismissKey(currentStory), '1');
-      localStorage.setItem(dismissKey(currentStory) + '_ts', String(Date.now()));
-    }
   });
 
   // ── Breaking Modal ──
