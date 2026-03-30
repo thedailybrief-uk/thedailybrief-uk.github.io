@@ -1418,14 +1418,22 @@
     .share-btn:hover { color: var(--text-primary); background: var(--border-light); }
     .listen-btn.playing { color: var(--accent-green); }
     .curated-item .listen-btn {
-      position: absolute; top: 2px; right: 0;
       background: none; border: none; cursor: pointer;
-      color: var(--text-muted); opacity: 0.4; transition: opacity 0.2s, color 0.2s;
-      padding: 4px; display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); opacity: 0.55; transition: opacity 0.2s, color 0.2s;
+      padding: 4px; display: inline-flex; align-items: center; justify-content: center;
+      vertical-align: middle; margin-left: 6px; flex-shrink: 0;
     }
-    .curated-item .listen-btn:hover { opacity: 0.8; }
+    .curated-item .listen-btn:hover { opacity: 0.9; }
     .curated-item .listen-btn.playing { opacity: 1; color: var(--accent-green); }
     .curated-item.speaking { background: var(--highlight-bg); border-radius: 4px; }
+    /* Mobile: bolder, positioned top-right */
+    @media (max-width: 768px) {
+      .curated-item .listen-btn {
+        position: absolute; top: 2px; right: 0;
+        opacity: 0.65; margin-left: 0;
+      }
+      .curated-item .listen-btn svg { width: 16px; height: 16px; }
+    }
     .share-btn svg { width: 12px; height: 12px; }
     .share-copied {
       font-size: 11px; color: #4ade80; font-weight: 600; padding: 4px 10px;
@@ -6057,10 +6065,10 @@ if ('serviceWorker' in navigator) {
   window._stopEditionAudio = stopAll;
 
   function readStory(item, btn) {
-    // Toggle pause/resume on same story
+    // Toggle: if same story is playing or paused, fully stop it
     if (currentBtn === btn) {
-      if (synth.paused) { synth.resume(); btn.classList.add('playing'); return; }
-      if (synth.speaking) { synth.pause(); btn.classList.remove('playing'); return; }
+      stopAll();
+      return;
     }
     stopAll();
 
@@ -6097,8 +6105,6 @@ if ('serviceWorker' in navigator) {
 
   function addStoryListenBtn(item) {
     if (item.querySelector('.listen-btn')) return;
-    // Ensure the item has position relative for absolute positioning
-    if (getComputedStyle(item).position === 'static') item.style.position = 'relative';
     var btn = document.createElement('button');
     btn.className = 'listen-btn';
     btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>';
@@ -6107,7 +6113,16 @@ if ('serviceWorker' in navigator) {
       e.stopPropagation();
       readStory(item, btn);
     });
-    item.appendChild(btn);
+    // Desktop: place inline after the h4 headline
+    // Mobile: append to item (CSS positions it absolute top-right)
+    var h4 = item.querySelector('h4');
+    if (window.innerWidth > 768 && h4) {
+      h4.style.display = 'inline';
+      h4.after(btn);
+    } else {
+      if (getComputedStyle(item).position === 'static') item.style.position = 'relative';
+      item.appendChild(btn);
+    }
   }
 
   // Observe day-editions for new content
