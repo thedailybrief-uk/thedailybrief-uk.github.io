@@ -4677,9 +4677,9 @@ window._marketData = {};
       }
     });
 
-    // Collapse editions — on today: first edition expanded, rest collapsed
-    // On past days: ALL editions collapsed
-    var viewingToday = dateStr === today;
+    // Collapse editions — on most recent day: latest edition expanded, rest collapsed
+    // On older days: ALL editions collapsed
+    var viewingToday = dateStr === dates[0];
     var chevronDown = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>';
     var chevronUp = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>';
     var allRendered = dayContainer.querySelectorAll('.curated-edition');
