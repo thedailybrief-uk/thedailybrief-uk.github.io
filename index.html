@@ -519,7 +519,6 @@
       .edition-header { gap: 6px 8px; }
       .edition-header h2 { font-size: 20px; flex: 1; }
       .edition-header .reading-time { order: 3; }
-      .edition-header .listen-btn { order: 4; margin-left: 0; }
     }
     .curated-meta { font-size: 13px; color: var(--text-tertiary); margin-bottom: 20px; padding-left: 30px; font-family: var(--sans); letter-spacing: 0.3px; }
 
@@ -1417,9 +1416,15 @@
       transition: all 0.2s;
     }
     .share-btn:hover { color: var(--text-primary); background: var(--border-light); }
-    .listen-btn.playing { color: var(--accent-green); border-color: rgba(26,122,58,0.3); background: rgba(26,122,58,0.08); }
-    .listen-btn .listen-progress { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--accent-green); border-radius: 0 0 4px 4px; transition: width 0.3s; }
-    .edition-header .listen-btn { position: relative; overflow: hidden; margin-left: 8px; font-size: 11px; padding: 2px 10px; height: 22px; border-radius: 10px; }
+    .listen-btn.playing { color: var(--accent-green); }
+    .curated-item .listen-btn {
+      position: absolute; top: 2px; right: 0;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); opacity: 0.4; transition: opacity 0.2s, color 0.2s;
+      padding: 4px; display: flex; align-items: center; justify-content: center;
+    }
+    .curated-item .listen-btn:hover { opacity: 0.8; }
+    .curated-item .listen-btn.playing { opacity: 1; color: var(--accent-green); }
     .curated-item.speaking { background: var(--highlight-bg); border-radius: 4px; }
     .share-btn svg { width: 12px; height: 12px; }
     .share-copied {
@@ -6041,11 +6046,7 @@ if ('serviceWorker' in navigator) {
   function stopAll() {
     synth.cancel();
     if (keepAlive) { clearInterval(keepAlive); keepAlive = null; }
-    if (currentBtn) {
-      currentBtn.classList.remove('playing');
-      var prog = currentBtn.querySelector('.listen-progress');
-      if (prog) prog.style.width = '0';
-    }
+    if (currentBtn) currentBtn.classList.remove('playing');
     items.forEach(function(el) { el.classList.remove('speaking'); });
     currentEdition = null;
     currentBtn = null;
@@ -6055,75 +6056,58 @@ if ('serviceWorker' in navigator) {
   }
   window._stopEditionAudio = stopAll;
 
-  function readEdition(editionEl, btn) {
-    // Toggle pause/resume on same edition
-    if (currentEdition === editionEl) {
+  function readStory(item, btn) {
+    // Toggle pause/resume on same story
+    if (currentBtn === btn) {
       if (synth.paused) { synth.resume(); btn.classList.add('playing'); return; }
       if (synth.speaking) { synth.pause(); btn.classList.remove('playing'); return; }
     }
-    // Stop any current playback
     stopAll();
 
-    currentEdition = editionEl;
     currentBtn = btn;
-    items = Array.from(editionEl.querySelectorAll('.curated-item'));
-    if (!items.length) return;
+    currentEdition = item;
+    items = [item];
 
-    var total = items.length;
-    utterances = items.map(function(item, i) {
-      var h4 = item.querySelector('h4');
-      var p = item.querySelector('p');
-      var text = (h4 ? h4.textContent : '') + '. ' + (p ? p.textContent : '');
-      var utt = new SpeechSynthesisUtterance(text);
-      utt.lang = 'en-GB';
-      if (bestVoice) utt.voice = bestVoice;
-      utt.rate = 0.95;
-      utt.pitch = 1.0;
-      utt.onstart = function() {
-        currentIdx = i;
-        items.forEach(function(el) { el.classList.remove('speaking'); });
-        item.classList.add('speaking');
-        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        var prog = btn.querySelector('.listen-progress');
-        if (prog) prog.style.width = ((i + 1) / total * 100) + '%';
-      };
-      utt.onend = function() {
-        item.classList.remove('speaking');
-        if (i === total - 1) {
-          if (keepAlive) { clearInterval(keepAlive); keepAlive = null; }
-          btn.classList.remove('playing');
-          var prog = btn.querySelector('.listen-progress');
-          if (prog) prog.style.width = '0';
-          currentEdition = null;
-          currentBtn = null;
-          utterances = [];
-          items = [];
-        }
-      };
-      return utt;
-    });
+    var h4 = item.querySelector('h4');
+    var p = item.querySelector('p');
+    var text = (h4 ? h4.textContent : '') + '. ' + (p ? p.textContent : '');
+    var utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'en-GB';
+    if (bestVoice) utt.voice = bestVoice;
+    utt.rate = 0.95;
+    utt.pitch = 1.0;
+    utt.onstart = function() {
+      item.classList.add('speaking');
+      btn.classList.add('playing');
+    };
+    utt.onend = function() {
+      item.classList.remove('speaking');
+      btn.classList.remove('playing');
+      if (keepAlive) { clearInterval(keepAlive); keepAlive = null; }
+      currentBtn = null;
+      currentEdition = null;
+    };
 
-    btn.classList.add('playing');
-    utterances.forEach(function(u) { synth.speak(u); });
-    // Chrome workaround: periodic pause/resume prevents 15s cutoff
+    synth.speak(utt);
     keepAlive = setInterval(function() {
       if (synth.speaking && !synth.paused) { synth.pause(); synth.resume(); }
       else if (!synth.speaking) { clearInterval(keepAlive); keepAlive = null; }
     }, 10000);
   }
 
-  function addListenBtn(header) {
-    if (header.querySelector('.listen-btn')) return;
+  function addStoryListenBtn(item) {
+    if (item.querySelector('.listen-btn')) return;
+    // Ensure the item has position relative for absolute positioning
+    if (getComputedStyle(item).position === 'static') item.style.position = 'relative';
     var btn = document.createElement('button');
-    btn.className = 'share-btn listen-btn';
-    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07"/><path d="M19.07 4.93a10 10 0 010 14.14"/></svg> Listen<span class="listen-progress" style="width:0"></span>';
-    btn.setAttribute('aria-label', 'Listen to this edition');
+    btn.className = 'listen-btn';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>';
+    btn.setAttribute('aria-label', 'Listen to this story');
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      var edition = header.closest('.curated-edition');
-      if (edition) readEdition(edition, btn);
+      readStory(item, btn);
     });
-    header.appendChild(btn);
+    item.appendChild(btn);
   }
 
   // Observe day-editions for new content
@@ -6131,13 +6115,13 @@ if ('serviceWorker' in navigator) {
   if (!container) return;
   var obs = new MutationObserver(function() {
     setTimeout(function() {
-      container.querySelectorAll('.edition-header').forEach(addListenBtn);
+      container.querySelectorAll('.curated-item').forEach(addStoryListenBtn);
     }, 200);
   });
   obs.observe(container, { childList: true });
   // Initial pass
   setTimeout(function() {
-    container.querySelectorAll('.edition-header').forEach(addListenBtn);
+    container.querySelectorAll('.curated-item').forEach(addStoryListenBtn);
   }, 300);
 })();
 
