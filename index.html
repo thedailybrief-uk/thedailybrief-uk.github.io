@@ -6008,12 +6008,35 @@ if ('serviceWorker' in navigator) {
 (function() {
   if (!window.speechSynthesis) return;
   var synth = window.speechSynthesis;
+  var bestVoice = null;
   var currentEdition = null;
   var currentBtn = null;
   var utterances = [];
   var currentIdx = 0;
   var items = [];
   var keepAlive = null;
+
+  // Select the most natural-sounding en-GB voice available
+  function pickBestVoice() {
+    var voices = synth.getVoices();
+    if (!voices.length) return;
+    var enGB = voices.filter(function(v) { return v.lang === 'en-GB'; });
+    if (!enGB.length) enGB = voices.filter(function(v) { return v.lang.startsWith('en'); });
+    if (!enGB.length) return;
+    // Priority: Premium > Enhanced > Google UK > any en-GB
+    var premium = enGB.find(function(v) { return /premium/i.test(v.name); });
+    if (premium) { bestVoice = premium; return; }
+    var enhanced = enGB.find(function(v) { return /enhanced/i.test(v.name); });
+    if (enhanced) { bestVoice = enhanced; return; }
+    var google = enGB.find(function(v) { return /google.*uk|google.*british/i.test(v.name); });
+    if (google) { bestVoice = google; return; }
+    // Prefer female voices (typically clearer for news reading)
+    var female = enGB.find(function(v) { return /female|kate|serena|stephanie|martha/i.test(v.name); });
+    if (female) { bestVoice = female; return; }
+    bestVoice = enGB[0];
+  }
+  pickBestVoice();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = pickBestVoice;
 
   function stopAll() {
     synth.cancel();
@@ -6053,7 +6076,9 @@ if ('serviceWorker' in navigator) {
       var text = (h4 ? h4.textContent : '') + '. ' + (p ? p.textContent : '');
       var utt = new SpeechSynthesisUtterance(text);
       utt.lang = 'en-GB';
-      utt.rate = 1.0;
+      if (bestVoice) utt.voice = bestVoice;
+      utt.rate = 0.95;
+      utt.pitch = 1.0;
       utt.onstart = function() {
         currentIdx = i;
         items.forEach(function(el) { el.classList.remove('speaking'); });
