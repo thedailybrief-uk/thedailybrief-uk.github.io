@@ -1005,54 +1005,57 @@
       color: var(--text-secondary); margin-bottom: 6px;
     }
 
-    /* ── Day Navigation ── */
+    /* ── Day Navigation — horizontal date strip ── */
     .day-nav {
-      display: flex; align-items: center; justify-content: center; gap: 20px;
-      margin-bottom: 20px; padding: 14px 0;
+      display: none; margin-bottom: 16px; padding: 0;
       position: sticky; top: 0; z-index: 45;
-      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
     }
-
-
-    .day-nav-btn {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 50%;
-      width: 40px; height: 40px; cursor: pointer; display: flex;
-      align-items: center; justify-content: center; color: var(--text-tertiary);
-      transition: all 0.25s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    .day-nav.visible { display: block; }
+    .day-tabs {
+      display: flex; align-items: stretch; justify-content: center;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; gap: 0;
     }
-    .day-nav-btn:hover:not(:disabled) {
-      border-color: var(--text-secondary); color: var(--text-primary);
-      background: var(--bg-section); box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transform: scale(1.05);
+    .day-tabs::-webkit-scrollbar { display: none; }
+    .day-tab {
+      flex: 1 1 0; min-width: 0; max-width: 140px;
+      padding: 14px 8px 12px; cursor: pointer;
+      text-align: center; border: none; background: none;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease; position: relative;
+      font-family: var(--sans);
     }
-    .day-nav-btn:active:not(:disabled) { transform: scale(0.95); }
-    .day-nav-btn:disabled { opacity: 0.15; cursor: default; }
-    .day-nav-btn svg { width: 15px; height: 15px; stroke-width: 2.5; }
-    [data-theme="dark"] .day-nav-btn { box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-    [data-theme="dark"] .day-nav-btn:hover:not(:disabled) { box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .day-nav-label {
-      font-family: var(--serif); font-size: 18px; font-weight: 600;
-      color: var(--text-primary); text-align: center; min-width: 180px;
-      min-height: 44px;
-      transition: opacity 0.3s ease;
+    .day-tab:hover { background: var(--highlight-bg); }
+    .day-tab.active {
+      border-bottom-color: var(--text-primary);
     }
-    .day-nav-sub {
-      font-size: 11px; font-weight: 500; color: var(--text-muted);
-      font-family: var(--sans); display: block; margin-top: 3px;
-      letter-spacing: 0.5px; text-transform: uppercase;
+    .day-tab-day {
+      display: block; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 3px;
     }
-    /* ── Day dots (timeline indicator) ── */
-    .day-dots {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 0 0 12px; margin-top: -8px;
+    .day-tab.active .day-tab-day { color: var(--text-primary); }
+    .day-tab-date {
+      display: block; font-size: 20px; font-weight: 800;
+      color: var(--text-tertiary);
+      font-family: 'Inter', var(--sans);
+      letter-spacing: -0.5px;
     }
-    .day-dot {
-      width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
-      background: var(--border); cursor: pointer; transition: all 0.2s;
+    .day-tab.active .day-tab-date { color: var(--text-primary); }
+    .day-tab-today {
+      display: block; font-size: 9px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--accent-dom); margin-top: 2px;
     }
-    .day-dot:hover { background: var(--text-tertiary); transform: scale(1.3); }
-    .day-dot.active { background: var(--text-primary); transform: scale(1.2); }
+    @media (max-width: 600px) {
+      .day-tab { padding: 12px 6px 10px; }
+      .day-tab-date { font-size: 16px; }
+      .day-tab-day { font-size: 10px; }
+    }
 
     /* Day transition */
     #day-editions {
@@ -2139,19 +2142,9 @@
   <div class="curated-section" id="curated" role="main" aria-label="Curated briefings">
 
     <!-- ── DAY NAVIGATION ── -->
-    <div class="day-nav" id="dayNav" style="display:none;">
-      <button class="day-nav-btn" id="dayPrev" aria-label="Previous day">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-      </button>
-      <div class="day-nav-label" id="dayLabel" aria-live="polite"></div>
-      <button class="day-nav-btn" id="dayNext" aria-label="Next day">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </button>
+    <div class="day-nav" id="dayNav">
+      <div class="day-tabs" id="dayTabs"></div>
     </div>
-    <!-- Day dots (timeline indicator) -->
-    <div class="day-dots" id="dayDots"></div>
-    <!-- #7 Swipe hint for mobile -->
-    <div class="swipe-hint" id="swipeHint">Swipe left or right to browse days</div>
 
     <!-- ── VISIBLE EDITIONS (JS swaps day content here) ── -->
     <div id="day-editions"></div>
@@ -4382,9 +4375,7 @@ window._marketData = {};
   const allEditions = document.getElementById('all-editions');
   const dayContainer = document.getElementById('day-editions');
   const dayNav = document.getElementById('dayNav');
-  const dayLabel = document.getElementById('dayLabel');
-  const prevBtn = document.getElementById('dayPrev');
-  const nextBtn = document.getElementById('dayNext');
+  const dayTabs = document.getElementById('dayTabs');
 
   const editions = Array.from(allEditions.querySelectorAll('.curated-edition'));
   if (!editions.length) {
@@ -4761,32 +4752,32 @@ window._marketData = {};
       ed.appendChild(collapseBtn);
     });
 
-    const isToday = dateStr === today;
-    const formatted = formatDate(dateStr);
-    dayLabel.innerHTML = isToday
-      ? formatted + '<span class="day-nav-sub">Today</span>'
-      : formatted;
-
-    prevBtn.disabled = (index >= dates.length - 1);
-    nextBtn.disabled = (index <= 0);
-    dayNav.style.display = dates.length > 1 ? 'flex' : 'none';
-
-    // Update day dots (chronological: oldest left, newest right)
-    const dotsContainer = document.getElementById('dayDots');
-    if (dotsContainer && dates.length > 1) {
-      if (!dotsContainer.children.length) {
+    // Build day tabs (chronological: oldest left, newest right)
+    if (dates.length > 1) {
+      dayNav.classList.add('visible');
+      if (!dayTabs.children.length) {
+        var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         for (let i = dates.length - 1; i >= 0; i--) {
-          const dot = document.createElement('button');
-          dot.className = 'day-dot';
-          dot.setAttribute('aria-label', formatDate(dates[i]));
-          dot.addEventListener('click', () => showDay(i, true));
-          dotsContainer.appendChild(dot);
+          var d = new Date(dates[i] + 'T12:00:00');
+          var tab = document.createElement('button');
+          tab.className = 'day-tab';
+          var dayName = dayNames[d.getDay()];
+          var dateNum = d.getDate();
+          var isTabToday = dates[i] === today;
+          tab.innerHTML = '<span class="day-tab-day">' + dayName + '</span>' +
+            '<span class="day-tab-date">' + dateNum + '</span>' +
+            (isTabToday ? '<span class="day-tab-today">Today</span>' : '');
+          tab.setAttribute('aria-label', formatDate(dates[i]));
+          tab.addEventListener('click', (function(idx) { return function() { showDay(idx, true); }; })(i));
+          dayTabs.appendChild(tab);
         }
       }
-      const dots = dotsContainer.querySelectorAll('.day-dot');
-      dots.forEach((dot, di) => {
-        dot.classList.toggle('active', (dates.length - 1 - di) === index);
+      var tabs = dayTabs.querySelectorAll('.day-tab');
+      tabs.forEach(function(tab, ti) {
+        tab.classList.toggle('active', (dates.length - 1 - ti) === index);
       });
+      var activeTab = dayTabs.querySelector('.day-tab.active');
+      if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
     } // end renderContent
 
@@ -4810,12 +4801,7 @@ window._marketData = {};
 
   let _prevIndex = 0;
 
-  prevBtn.addEventListener('click', () => {
-    if (currentIndex < dates.length - 1) showDay(currentIndex + 1, true);
-  });
-  nextBtn.addEventListener('click', () => {
-    if (currentIndex > 0) showDay(currentIndex - 1, true);
-  });
+  // Tab strip handles navigation — no prev/next buttons needed
 
   // #11 Keyboard navigation (enhanced with #1 shortcuts)
   document.addEventListener('keydown', (e) => {
