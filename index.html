@@ -1925,7 +1925,7 @@
        - Hard expiry at 8h from "posted" (or at "expires" if set) — banner comes down
        - Optional "expires" field overrides the 8h default (e.g. for major events)
        To add a new breaking story, prepend an entry here with the current ISO timestamp. -->
-  <script id="breaking-stories" type="application/json">[{"posted":"2026-03-30T18:30:00Z","headline":"Trump threatens to obliterate Iran oil infrastructure if Hormuz deal fails - 18:30 GMT","body":"<p>President Trump told the Financial Times he could seize Kharg Island and destroy Iran's power plants and oil wells if the Strait of Hormuz is not reopened. Pakistan confirmed it will host direct US-Iran talks in coming days.</p>"}]</script>
+  <script id="breaking-stories" type="application/json">[{"posted":"2026-03-30T18:30:00Z","headline":"Trump threatens to obliterate Iran oil infrastructure if Hormuz deal fails — 18:30 GMT","category":"GEOPOLITICAL","summary":"President Trump told the Financial Times he could seize Kharg Island and destroy Iran's power plants and oil wells if the Strait of Hormuz is not reopened by his 6 April deadline. Pakistan confirmed it will host direct US–Iran talks in coming days, with foreign ministers from Egypt, Turkey and Saudi Arabia already in Islamabad.","facts":[{"label":"Deadline","value":"6 April"},{"label":"Target","value":"Kharg Island"},{"label":"Talks","value":"Pakistan hosting"},{"label":"Oil price","value":"Brent $114+"}]}]</script>
   <div class="breaking-banner" id="breakingBanner">
     <div class="breaking-inner">
       <span class="breaking-label">BREAKING</span>
@@ -5366,7 +5366,8 @@ if ('serviceWorker' in navigator) {
     var cleanHeadline = displayText(s).replace(/\s*[\u2014—–-]\s*\d{1,2}:\d{2}\s*(GMT|BST|UTC)$/i, '');
     html += '<div class="breaking-modal-headline">' + cleanHeadline + '</div>';
     html += '<div class="breaking-modal-time">' + dateStr + ' at ' + timeStr + '</div>';
-    if (s.summary) html += '<div class="breaking-modal-summary">' + s.summary + '</div>';
+    var summaryText = s.summary || s.body || '';
+    if (summaryText) html += '<div class="breaking-modal-summary">' + summaryText + '</div>';
     if (s.facts && s.facts.length) {
       html += '<div class="breaking-modal-facts">';
       s.facts.forEach(function(f) {
