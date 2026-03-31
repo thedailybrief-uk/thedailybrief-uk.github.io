@@ -5277,6 +5277,7 @@ if ('serviceWorker' in navigator) {
   function hideBanner() {
     banner.classList.add('dismissed');
     document.body.classList.remove('has-breaking-banner');
+    setTimeout(function() { banner.style.display = 'none'; }, 400);
   }
 
   // Track current story for modal (null in text-only mode)
