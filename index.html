@@ -22,7 +22,7 @@
   <link rel="apple-touch-icon" href="/icon-192.png" />
   <!-- #9 Meta tags for sharing -->
   <meta property="og:title" content="The Daily Brief" />
-  <meta property="og:description" content="Curated geopolitical and UK domestic news briefings, updated at 10:00 AM and 5:00 PM daily." />
+  <meta property="og:description" content="Curated geopolitical and UK domestic news briefings. Updated at 08:00 and 18:00 BST daily." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://thedailybrief.co.uk" />
   <meta property="og:image" content="https://thedailybrief.co.uk/og-image.png" />
@@ -30,7 +30,7 @@
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The Daily Brief" />
-  <meta name="twitter:description" content="Curated geopolitical and UK domestic news briefings, updated at 08:00 and 18:00 GMT daily." />
+  <meta name="twitter:description" content="Curated geopolitical and UK domestic news briefings. Updated at 08:00 and 18:00 BST daily." />
   <meta name="twitter:image" content="https://thedailybrief.co.uk/og-image.png" />
   <meta name="description" content="Curated geopolitical and UK domestic news briefings, updated at 10:00 AM and 5:00 PM daily." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='16.8' y='21.5' text-anchor='middle' font-family='Georgia,Times,serif' font-weight='700' font-size='13' fill='%23f0ece4' letter-spacing='-0.5'>TDB</text></svg>" />
@@ -1066,13 +1066,6 @@
       opacity: 0; transform: translateY(6px);
     }
 
-    /* #7 Swipe hint */
-    .swipe-hint {
-      display: none; text-align: center; font-size: 11px; color: var(--text-muted);
-      padding: 0 0 8px; animation: fadeHint 4s ease forwards;
-    }
-    @media (max-width: 768px) { .swipe-hint { display: block; } }
-    @keyframes fadeHint { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
 
     /* ── Scroll to top ── */
     .scroll-top {
@@ -1540,8 +1533,7 @@
 
     /* ── #19: ARIA focus styles ── */
     [role="navigation"] a:focus-visible,
-    [role="navigation"] button:focus-visible,
-    .day-nav-btn:focus-visible {
+    [role="navigation"] button:focus-visible {
       outline: 2px solid var(--accent-geo); outline-offset: 2px;
     }
 
@@ -1998,10 +1990,10 @@
       <div class="masthead-top">
         <span class="masthead-date" id="currentDate"></span>
         <div class="masthead-icons">
-          <a href="https://www.instagram.com/thedailybriefuk" target="_blank" rel="noopener noreferrer" class="masthead-icon" title="Follow us on Instagram">
+          <a href="https://www.instagram.com/thedailybriefuk" target="_blank" rel="noopener noreferrer" class="masthead-icon" title="Follow us on Instagram" aria-label="Follow us on Instagram">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
           </a>
-          <button class="masthead-icon" id="notifyBtn" title="Get notified when new editions are published">
+          <button class="masthead-icon" id="notifyBtn" title="Get notified when new editions are published" aria-label="Enable push notifications">
             <svg class="notify-icon" viewBox="0 0 24 24" width="15" height="15">
               <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="currentColor"/>
             </svg>
@@ -4831,7 +4823,6 @@ window._marketData = {};
   document.addEventListener('keydown', (e) => {
     // Escape closes any open overlay
     if (e.key === 'Escape') {
-      document.getElementById('searchOverlay')?.classList.remove('open');
       document.getElementById('kbdOverlay')?.classList.remove('open');
       document.getElementById('notifyModal')?.classList.remove('open');
       document.getElementById('subscribeModal')?.classList.remove('open');
@@ -4845,8 +4836,6 @@ window._marketData = {};
       return;
     }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    // "/" opens search
-    if (e.key === '/') { e.preventDefault(); document.getElementById('searchOverlay')?.classList.add('open'); setTimeout(() => document.getElementById('searchInput')?.focus(), 50); return; }
     // "?" opens keyboard shortcuts
     if (e.key === '?') { document.getElementById('kbdOverlay')?.classList.toggle('open'); return; }
     // "b" opens bookmarks
@@ -5855,135 +5844,7 @@ if ('serviceWorker' in navigator) {
   }, { passive: true });
 })();
 
-// ── #5: Search Across Editions ──
-(function() {
-  const overlay = document.getElementById('searchOverlay');
-  const input = document.getElementById('searchInput');
-  const resultsEl = document.getElementById('searchResults');
-  const searchBtn = document.getElementById('searchBtn');
-  if (!overlay || !input || !resultsEl) return;
-
-  // Build search index from all editions
-  const searchIndex = [];
-  document.querySelectorAll('#all-editions .curated-edition:not(.weekly)').forEach(ed => {
-    const date = ed.dataset.date;
-    const time = ed.dataset.time || '00:00';
-    const isMorning = parseInt(time.split(':')[0]) < 14;
-    const type = isMorning ? 'Morning' : 'Evening';
-    const d = new Date(date + 'T12:00:00');
-    const dateLabel = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) + ' — ' + type;
-
-    ed.querySelectorAll('.curated-item').forEach(item => {
-      const h4 = item.querySelector('h4');
-      const p = item.querySelector('p');
-      const deeper = item.querySelector('.deeper-content');
-      if (!h4) return;
-      searchIndex.push({
-        headline: h4.textContent.trim(),
-        summary: p ? p.textContent.trim() : '',
-        deeper: deeper ? deeper.textContent.trim() : '',
-        dateLabel, date, time
-      });
-    });
-  });
-
-  function highlightText(text, query) {
-    if (!query) return escHtml(text);
-    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return escHtml(text).replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
-  }
-
-  function doSearch(query) {
-    if (!query || query.length < 2) {
-      resultsEl.innerHTML = '<div class="search-no-results">Type to search across all editions...</div>';
-      return;
-    }
-    const q = query.toLowerCase();
-    const matches = searchIndex.filter(item =>
-      item.headline.toLowerCase().includes(q) ||
-      item.summary.toLowerCase().includes(q) ||
-      item.deeper.toLowerCase().includes(q)
-    ).slice(0, 12);
-
-    if (!matches.length) {
-      resultsEl.innerHTML = '<div class="search-no-results">No results for "' + escHtml(query) + '"</div>';
-      return;
-    }
-
-    resultsEl.innerHTML = matches.map(m => {
-      const summarySnippet = m.summary.length > 120 ? m.summary.slice(0, 120) + '...' : m.summary;
-      return '<div class="search-result" data-date="' + m.date + '" data-headline="' + escHtml(m.headline) + '">' +
-        '<div class="search-result-date">' + escHtml(m.dateLabel) + '</div>' +
-        '<h4>' + highlightText(m.headline, query) + '</h4>' +
-        '<p>' + highlightText(summarySnippet, query) + '</p>' +
-      '</div>';
-    }).join('');
-
-    // Click to navigate, scroll to matching story, and highlight it
-    resultsEl.querySelectorAll('.search-result').forEach(el => {
-      el.addEventListener('click', () => {
-        const targetDate = el.dataset.date;
-        const targetHeadline = el.dataset.headline;
-        const dates = window._briefDates;
-        const showDayFn = window._showDay;
-        if (dates && showDayFn) {
-          const idx = dates.indexOf(targetDate);
-          if (idx !== -1) showDayFn(idx, false);
-        }
-        overlay.classList.remove('open');
-        input.value = '';
-        resultsEl.innerHTML = '';
-
-        // Find and scroll to the matching story
-        setTimeout(() => {
-          const dayEditions = document.getElementById('day-editions');
-          if (!dayEditions) return;
-          const items = dayEditions.querySelectorAll('.curated-item');
-          let match = null;
-          items.forEach(item => {
-            const h4 = item.querySelector('h4');
-            if (h4 && h4.textContent.trim() === targetHeadline) match = item;
-          });
-          if (match) {
-            // Expand parent column if collapsed on mobile
-            const col = match.closest('.curated-column');
-            if (col && !col.classList.contains('col-expanded')) {
-              const expandBtn = col.querySelector('.col-expand-btn');
-              if (expandBtn) expandBtn.click();
-            }
-            // Auto-expand collapsed story when navigating to it
-            match.classList.remove('curated-item-collapsed');
-            match.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Highlight the story
-            match.classList.remove('highlight-flash');
-            match.offsetHeight;
-            match.classList.add('highlight-flash');
-            match.addEventListener('animationend', () => {
-              match.classList.remove('highlight-flash');
-            }, { once: true });
-          } else {
-            document.getElementById('curated').scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 150);
-      });
-    });
-  }
-
-  let debounceTimer;
-  input.addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => doSearch(input.value.trim()), 150);
-  });
-
-  searchBtn.addEventListener('click', () => {
-    overlay.classList.add('open');
-    setTimeout(() => input.focus(), 50);
-  });
-
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) { overlay.classList.remove('open'); input.value = ''; resultsEl.innerHTML = ''; }
-  });
-})();
+// Search feature removed
 
 // ── #9: Share Buttons + #10: Bookmarks ──
 (function() {
