@@ -5274,11 +5274,10 @@ if ('serviceWorker' in navigator) {
   // Helper: dismiss key
   function dismissKey(s) { return 'breakingDismissed_' + displayText(s).slice(0, 80); }
 
-  // Helper: hide the banner
+  // Helper: hide the banner — instant, no animation glitch
   function hideBanner() {
-    banner.classList.add('dismissed');
+    banner.style.display = 'none';
     document.body.classList.remove('has-breaking-banner');
-    setTimeout(function() { banner.style.display = 'none'; }, 400);
   }
 
   // Track current story for modal (null in text-only mode)
