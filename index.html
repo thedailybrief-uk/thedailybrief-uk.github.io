@@ -4491,12 +4491,35 @@ window._marketData = {};
       }
 
       // Inject per-story timestamps from data-time attributes
+      // If story time doesn't fit within the edition window, prefix with day name
+      var editionTime = el.dataset.time || '12:00';
+      var editionHour = parseInt(editionTime.split(':')[0], 10);
+      var isMorningEdition = editionHour < 14;
+      var editionDate = new Date(dateStr + 'T12:00:00');
+      var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
       clone.querySelectorAll('.curated-item[data-time]').forEach(item => {
         const h4 = item.querySelector('h4');
         if (!h4) return;
-        const time = document.createElement('span');
+        var storyTime = item.dataset.time;
+        var storyHour = parseInt(storyTime.split(':')[0], 10);
+        var time = document.createElement('span');
         time.className = 'story-time';
-        time.textContent = item.dataset.time;
+
+        // Morning editions cover overnight/previous day — if story time is after edition time, it's from yesterday
+        // Evening editions cover same day — if story time is before ~06:00, it's overnight (same day early hours)
+        var fromPreviousDay = false;
+        if (isMorningEdition && storyHour > editionHour) {
+          fromPreviousDay = true;
+        }
+
+        if (fromPreviousDay) {
+          var prevDate = new Date(editionDate);
+          prevDate.setDate(prevDate.getDate() - 1);
+          time.textContent = dayNames[prevDate.getDay()] + ' ' + storyTime;
+        } else {
+          time.textContent = storyTime;
+        }
         h4.appendChild(time);
       });
 
