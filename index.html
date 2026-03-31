@@ -4623,7 +4623,13 @@ window._marketData = {};
               // Step 4: Now run the accordion — smooth grid transition
               // Clear active-headline from all items first
               items.forEach(it => {
-                if (it !== item) { it.classList.add('curated-item-collapsed'); it.classList.remove('active-headline'); }
+                if (it !== item) {
+                  it.classList.add('curated-item-collapsed'); it.classList.remove('active-headline');
+                  // Close any open thread timelines and dive-deeper in collapsed items
+                  it.querySelectorAll('.thread-timeline.open').forEach(t => t.classList.remove('open'));
+                  it.querySelectorAll('.thread-btn.open').forEach(b => b.classList.remove('open'));
+                  it.querySelectorAll('.dive-deeper[open]').forEach(d => { d.open = false; });
+                }
               });
               if (wasCollapsed) {
                 // Opening this item
