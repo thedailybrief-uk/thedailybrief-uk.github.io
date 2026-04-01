@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>The Daily Brief — Instagram Story: Breaking News</title>
+<title>The Daily Brief — Instagram Reel: Breaking News</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,29 +28,27 @@
     --slide-bg: var(--default-bg);
   }
 
-  /* ── Background photo layer (static) ── */
+  /* -- Background photo layer -- */
   .story::after {
     content: '';
     position: absolute;
     inset: 0;
     background: var(--slide-bg) center/cover no-repeat;
-    opacity: 0.22;
+    opacity: 0;
     pointer-events: none;
     z-index: 0;
+    animation: bgReveal 2s ease forwards 0.3s;
   }
+  @keyframes bgReveal {
+    to { opacity: 0.22; }
+  }
+
   .story > * {
     position: relative;
     z-index: 1;
   }
 
-  /*
-    INSTAGRAM STORY SAFE ZONES (9:16, 1080x1920):
-    - Top 200px: username, profile pic, story progress bars
-    - Bottom 250px: reply bar, share button, message input
-    - All critical content between y:200 and y:1670
-  */
-
-  /* ── Red top bar ── */
+  /* -- Red top bar -- */
   .red-bar {
     position: absolute;
     top: 0;
@@ -58,9 +56,12 @@
     right: 0;
     height: 10px;
     background: #c0392b;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: barExtend 0.8s ease forwards 0.1s;
   }
 
-  /* ── Red bottom bar ── */
+  /* -- Red bottom bar -- */
   .red-bar-bottom {
     position: absolute;
     bottom: 0;
@@ -68,19 +69,30 @@
     right: 0;
     height: 10px;
     background: #c0392b;
+    transform: scaleX(0);
+    transform-origin: right;
+    animation: barExtend 0.8s ease forwards 0.3s;
   }
 
-  /* ── Red side accent ── */
+  @keyframes barExtend {
+    to { transform: scaleX(1); }
+  }
+
+  /* -- Red side accent -- */
   .side-accent {
     position: absolute;
     top: 0;
     left: 0;
     width: 8px;
-    height: 100%;
+    height: 0%;
     background: #c0392b;
+    animation: sideGrow 1.2s ease forwards 0.5s;
+  }
+  @keyframes sideGrow {
+    to { height: 100%; }
   }
 
-  /* ── Red glow ── */
+  /* -- Red glow -- */
   .red-glow {
     position: absolute;
     top: -200px;
@@ -89,9 +101,11 @@
     height: 800px;
     background: radial-gradient(circle, rgba(192,57,43,0.3) 0%, transparent 70%);
     pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 0.5s;
   }
 
-  /* ── Top bar — pushed below IG overlay ── */
+  /* -- Brand header -- */
   .story-header {
     position: absolute;
     top: 220px;
@@ -107,10 +121,15 @@
     color: #fff;
     letter-spacing: 1px;
     opacity: 0;
-    animation: fadeIn 0.5s ease forwards 0.05s;
+    transform: translateX(-30px);
+    animation: slideRight 0.6s ease forwards 1.5s;
   }
 
-  /* ── Breaking news banner — below header ── */
+  @keyframes slideRight {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* -- Breaking news banner -- */
   .breaking-banner {
     position: absolute;
     top: 300px;
@@ -124,8 +143,8 @@
     gap: 28px;
     box-shadow: 0 8px 40px rgba(192,57,43,0.5), 0 0 120px rgba(192,57,43,0.2);
     opacity: 0;
-    transform: translateY(-20px);
-    animation: slideDown 0.6s ease forwards 0.1s;
+    transform: translateY(-40px);
+    animation: slideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.6s;
   }
 
   @keyframes slideDown {
@@ -138,13 +157,15 @@
     background: #fff;
     border-radius: 50%;
     flex-shrink: 0;
-    position: relative;
     box-shadow: 0 0 16px rgba(255,255,255,0.6);
+    opacity: 0;
+    animation: pulseIn 0.4s ease forwards 1.2s;
   }
 
-  /* Live indicator: static dot */
-  .breaking-icon::after {
-    display: none;
+  @keyframes pulseIn {
+    0% { opacity: 0; transform: scale(0); }
+    60% { transform: scale(1.4); }
+    100% { opacity: 1; transform: scale(1); }
   }
 
   .breaking-banner .breaking-text {
@@ -156,7 +177,7 @@
     color: #fff;
   }
 
-  /* ── Time stamp — fades in on load ── */
+  /* -- Timestamp -- */
   .timestamp {
     position: absolute;
     top: 480px;
@@ -170,10 +191,11 @@
     text-transform: uppercase;
     padding-top: 20px;
     opacity: 0;
-    animation: fadeIn 1s ease forwards;
+    transform: translateX(-20px);
+    animation: slideRight 0.5s ease forwards 2s;
   }
 
-  /* ── Content: centred in safe zone ── */
+  /* -- Content area -- */
   .story-content {
     position: absolute;
     top: 935px;
@@ -191,9 +213,11 @@
     color: #e74c3c;
     margin-bottom: 20px;
     opacity: 0;
-    animation: fadeIn 0.5s ease forwards 0.2s;
+    transform: translateX(-20px);
+    animation: slideRight 0.5s ease forwards 2.4s;
   }
 
+  /* Headline lines slide in staggered */
   .story-content h1 {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 62px;
@@ -201,10 +225,17 @@
     color: #fff;
     line-height: 1.08;
     margin-bottom: 36px;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideUp 0.8s ease forwards 0.3s;
   }
+
+  .story-content h1 .line {
+    display: block;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .story-content h1 .line:nth-child(1) { animation-delay: 2.7s; }
+  .story-content h1 .line:nth-child(2) { animation-delay: 2.95s; }
+  .story-content h1 .line:nth-child(3) { animation-delay: 3.2s; }
 
   .story-content h1 em {
     font-style: normal;
@@ -212,13 +243,15 @@
   }
 
   .story-content .divider {
-    width: 100px;
+    width: 0;
     height: 5px;
     background: #c0392b;
     border-radius: 2px;
     margin-bottom: 36px;
-    opacity: 0;
-    animation: fadeIn 0.4s ease forwards 0.6s;
+    animation: dividerExtend 0.6s ease forwards 4.2s;
+  }
+  @keyframes dividerExtend {
+    to { width: 100px; }
   }
 
   .story-content .summary {
@@ -228,7 +261,8 @@
     color: rgba(255,255,255,0.6);
     line-height: 1.55;
     opacity: 0;
-    animation: fadeIn 0.6s ease forwards 0.8s;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease forwards 4.8s;
   }
 
   .story-content .key-facts {
@@ -236,20 +270,24 @@
     gap: 60px;
     margin-top: 44px;
     padding-top: 36px;
-    border-top: 2px solid rgba(192,57,43,0.3);
+    border-top: 2px solid rgba(192,57,43,0);
+    animation: borderReveal 0.4s ease forwards 6.2s;
+  }
+  @keyframes borderReveal {
+    to { border-top-color: rgba(192,57,43,0.3); }
   }
 
   .story-content .fact {
     display: flex;
     flex-direction: column;
     opacity: 0;
-    transform: translateY(12px);
-    animation: slideUp 0.5s ease forwards;
+    transform: translateY(20px);
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-  .story-content .fact:nth-child(1) { animation-delay: 1.2s; }
-  .story-content .fact:nth-child(2) { animation-delay: 1.35s; }
-  .story-content .fact:nth-child(3) { animation-delay: 1.5s; }
-  .story-content .fact:nth-child(4) { animation-delay: 1.65s; }
+  .story-content .fact:nth-child(1) { animation-delay: 6.4s; }
+  .story-content .fact:nth-child(2) { animation-delay: 6.8s; }
+  .story-content .fact:nth-child(3) { animation-delay: 7.2s; }
+  .story-content .fact:nth-child(4) { animation-delay: 7.6s; }
 
   .story-content .fact-value {
     font-family: 'Inter', sans-serif;
@@ -269,7 +307,7 @@
     margin-top: 6px;
   }
 
-  /* ── Bottom bar — above IG reply zone ── */
+  /* -- Footer -- */
   .story-footer {
     position: absolute;
     bottom: 280px;
@@ -279,7 +317,17 @@
     justify-content: space-between;
     align-items: center;
     padding-top: 24px;
-    border-top: 1px solid rgba(255,255,255,0.04);
+    border-top: 1px solid rgba(255,255,255,0);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: footerIn 0.6s ease forwards 8.5s;
+  }
+  @keyframes footerIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      border-top-color: rgba(255,255,255,0.04);
+    }
   }
 
   .footer-brand {
@@ -298,7 +346,7 @@
     letter-spacing: 1.5px;
   }
 
-  /* ── Lower-third ticker strip ── */
+  /* -- Ticker strip -- */
   .ticker-strip {
     position: absolute;
     bottom: 350px;
@@ -317,9 +365,12 @@
     width: 100%;
     height: 100%;
     background: #c0392b;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: barExtend 0.8s ease forwards 8.2s;
   }
 
-  /* ── Entrance animation keyframes ── */
+  /* -- Keyframes -- */
   @keyframes slideUp {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -328,7 +379,7 @@
     to { opacity: 1; }
   }
 
-  /* Scale for preview */
+  /* Scale for browser preview */
   @media screen {
     .story { transform: scale(0.35); transform-origin: top left; margin-bottom: -1248px; margin-right: -702px; }
   }
@@ -336,7 +387,7 @@
 </head>
 <body>
 
-<!-- BREAKING NEWS STORY -->
+<!-- BREAKING NEWS REEL — 10s animation sequence -->
 <div class="story" style="--slide-bg: url('https://images.unsplash.com/photo-1684778522082-c6f91d8fc4c3?w=1080&q=80')">
   <div class="red-bar"></div>
   <div class="side-accent"></div>
@@ -352,7 +403,11 @@
 
   <div class="story-content">
     <div class="category">Geopolitical</div>
-    <h1>Trump &lsquo;Strongly Considering&rsquo; Pulling US Out of <em>NATO</em></h1>
+    <h1>
+      <span class="line">Trump &lsquo;Strongly</span>
+      <span class="line">Considering&rsquo; Pulling</span>
+      <span class="line">US Out of <em>NATO</em></span>
+    </h1>
     <div class="divider"></div>
     <div class="summary">Calls the 77-year-old alliance a &lsquo;paper tiger&rsquo; after allies refused to join the war on Iran. PM Starmer: Britain is &lsquo;fully committed to NATO&rsquo;.</div>
     <div class="key-facts">

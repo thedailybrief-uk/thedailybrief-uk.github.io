@@ -4,7 +4,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 
 const file = process.argv[2] || 'instagram-story.html';
-const duration = parseInt(process.argv[3] || '10', 10); // seconds
+const duration = parseInt(process.argv[3] || '15', 10); // seconds (10s animation + 5s hold)
 const fps = 30;
 const totalFrames = duration * fps;
 
@@ -30,7 +30,7 @@ const framesDir = '/tmp/breaking-news-frames';
   const filePath = `file://${path.resolve(file)}`;
   await page.goto(filePath, { waitUntil: 'networkidle0', timeout: 30000 });
 
-  // Remove the preview scaling and body padding so story fills viewport
+  // Override preview scaling for full-resolution capture
   await page.addStyleTag({
     content: `
       @media screen {
@@ -40,21 +40,33 @@ const framesDir = '/tmp/breaking-news-frames';
     `
   });
 
-  // Brief pause for fonts only — animations must play during capture
+  // Wait for fonts to fully load
+  await page.evaluate(() => document.fonts.ready);
   await new Promise(r => setTimeout(r, 300));
+
+  // Reset all animations and pause them — we'll seek frame by frame
+  await page.evaluate(() => {
+    document.getAnimations().forEach(a => {
+      a.cancel();
+      a.play();
+      a.pause();
+    });
+  });
 
   console.log(`Capturing ${totalFrames} frames at ${fps}fps (${duration}s)...`);
 
-  const frameInterval = 1000 / fps;
-
   for (let i = 0; i < totalFrames; i++) {
+    const timeMs = (i / fps) * 1000;
+
+    // Seek every animation to the exact time for this frame
+    await page.evaluate((t) => {
+      document.getAnimations().forEach(a => {
+        a.currentTime = t;
+      });
+    }, timeMs);
+
     const framePath = path.join(framesDir, `frame-${String(i).padStart(4, '0')}.png`);
     await page.screenshot({ path: framePath, type: 'png' });
-
-    // Wait for next frame timing
-    if (i < totalFrames - 1) {
-      await new Promise(r => setTimeout(r, frameInterval));
-    }
 
     if ((i + 1) % 30 === 0) {
       console.log(`  ${i + 1}/${totalFrames} frames captured (${Math.round((i + 1) / totalFrames * 100)}%)`);
@@ -68,7 +80,7 @@ const framesDir = '/tmp/breaking-news-frames';
   // Encode with H.264, high quality, Instagram-compatible
   const ffmpegPath = path.join(__dirname, 'node_modules/ffmpeg-static/ffmpeg');
   execSync(`"${ffmpegPath}" -y -framerate ${fps} -i "${framesDir}/frame-%04d.png" \
-    -c:v libx264 -preset slow -crf 18 \
+    -c:v libx264 -preset slow -crf 14 \
     -pix_fmt yuv420p \
     -vf "scale=1080:1920:flags=lanczos" \
     -movflags +faststart \
