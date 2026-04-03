@@ -1,4 +1,4 @@
-const CACHE_NAME = 'daily-brief-v31';
+const CACHE_NAME = 'daily-brief-v32';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -81,6 +81,29 @@ self.addEventListener('fetch', (e) => {
 
 // ── Web Push Notifications ──
 
+/** Strip HTML entities and tags from notification text */
+function cleanNotificationText(text) {
+  if (!text) return text;
+  // Decode common HTML entities
+  const entities = {
+    '&ldquo;': '\u201C', '&rdquo;': '\u201D', '&lsquo;': '\u2018', '&rsquo;': '\u2019',
+    '&mdash;': '\u2014', '&ndash;': '\u2013', '&amp;': '&', '&lt;': '<', '&gt;': '>',
+    '&pound;': '\u00A3', '&minus;': '\u2212', '&nbsp;': ' ', '&middot;': '\u00B7',
+    '&hellip;': '\u2026', '&quot;': '"', '&apos;': "'",
+  };
+  let clean = text;
+  // Decode named entities
+  for (const [entity, char] of Object.entries(entities)) {
+    clean = clean.split(entity).join(char);
+  }
+  // Decode numeric entities (&#8212; &#x2014; etc.)
+  clean = clean.replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(parseInt(n, 10)));
+  clean = clean.replace(/&#x([0-9a-fA-F]+);/g, (_, h) => String.fromCodePoint(parseInt(h, 16)));
+  // Strip any remaining HTML tags
+  clean = clean.replace(/<[^>]*>/g, '');
+  return clean.trim();
+}
+
 self.addEventListener('push', (e) => {
   // Always show a notification — even if payload is empty or decryption failed
   let data = { title: 'The Daily Brief', body: 'New update available' };
@@ -92,6 +115,10 @@ self.addEventListener('push', (e) => {
       try { data.body = e.data.text(); } catch { /* keep default */ }
     }
   }
+
+  // Clean notification text — strip HTML entities, tags, and encoding artefacts
+  if (data.title) data.title = cleanNotificationText(data.title);
+  if (data.body) data.body = cleanNotificationText(data.body);
 
   const options = {
     body: data.body || 'New update available',

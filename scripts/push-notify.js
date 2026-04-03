@@ -26,9 +26,55 @@ const VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || 'BJ8KRLYBThmYGP1dcFNbMpWRJS
 const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY;
 const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:ed@thedailybrief.co.uk';
 
+const SITE_URL = 'https://thedailybrief.co.uk';
+const DEPLOY_POLL_INTERVAL = 10_000; // 10 seconds
+const DEPLOY_TIMEOUT = 300_000;      // 5 minutes max
+
 function usage() {
-  console.error('Usage: node scripts/push-notify.js "<message>" [--type edition|breaking] [--title "Custom Title"] [--url "/path"]');
+  console.error('Usage: node scripts/push-notify.js "<message>" [--type edition|breaking] [--title "Custom Title"] [--url "/path"] [--no-verify]');
   process.exit(1);
+}
+
+/**
+ * Wait for the live site to reflect the current sw.js cache version.
+ * Reads the local sw.js to get the expected version, then polls the
+ * live site until it matches or timeout is reached.
+ */
+async function waitForDeploy() {
+  const fs = require('fs');
+  const path = require('path');
+
+  // Read expected version from local sw.js
+  const swPath = path.resolve(__dirname, '..', 'sw.js');
+  const swContent = fs.readFileSync(swPath, 'utf-8');
+  const match = swContent.match(/CACHE_NAME\s*=\s*'([^']+)'/);
+  if (!match) {
+    console.log('  ⚠ Could not read local SW version — skipping deploy check');
+    return true;
+  }
+  const expectedVersion = match[1];
+  console.log(`  Waiting for deploy... (expecting ${expectedVersion})`);
+
+  const start = Date.now();
+  while (Date.now() - start < DEPLOY_TIMEOUT) {
+    try {
+      const res = await fetch(`${SITE_URL}/sw.js?_=${Date.now()}`, {
+        headers: { 'Cache-Control': 'no-cache' },
+      });
+      if (res.ok) {
+        const text = await res.text();
+        if (text.includes(expectedVersion)) {
+          const elapsed = ((Date.now() - start) / 1000).toFixed(0);
+          console.log(`  ✓ Live site updated (${elapsed}s)`);
+          return true;
+        }
+      }
+    } catch {}
+    await new Promise(r => setTimeout(r, DEPLOY_POLL_INTERVAL));
+  }
+
+  console.error(`  ✗ Deploy not detected after ${DEPLOY_TIMEOUT / 1000}s — sending notification anyway`);
+  return false;
 }
 
 async function main() {
@@ -40,11 +86,13 @@ async function main() {
   let type = 'edition';
   let title = '';
   let url = '/';
+  let verify = true;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--type' && args[i + 1]) { type = args[++i]; continue; }
     if (args[i] === '--title' && args[i + 1]) { title = args[++i]; continue; }
     if (args[i] === '--url' && args[i + 1]) { url = args[++i]; continue; }
+    if (args[i] === '--no-verify') { verify = false; continue; }
     if (args[i].startsWith('--')) { console.error(`Unknown flag: ${args[i]}`); usage(); }
     body = args[i];
   }
@@ -79,6 +127,11 @@ async function main() {
   if (!subscriptions.length) {
     console.log('No subscribers — nothing to send.');
     return;
+  }
+
+  // Wait for GitHub Pages deploy before notifying
+  if (verify) {
+    await waitForDeploy();
   }
 
   const payload = JSON.stringify({ title, body, url, type });
