@@ -4,6 +4,15 @@ on:
   push:
     branches: [main]
     paths: [index.html]
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Notification message'
+        required: true
+      type:
+        description: 'Notification type (edition or breaking)'
+        required: false
+        default: 'edition'
 
 jobs:
   notify:
@@ -28,8 +37,9 @@ jobs:
           VAPID_SUBJECT: "mailto:ed@thedailybrief.co.uk"
           PUSH_WORKER_URL: "https://daily-brief-push.thedailybrief.workers.dev"
         run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          DIFF=$(git diff HEAD~1 HEAD -- index.html)
+          # Check ALL commit messages in this push, not just the latest
+          COMMIT_MSG=$(git log ${{ github.event.before }}..${{ github.sha }} --pretty=%B 2>/dev/null || git log -1 --pretty=%B)
+          DIFF=$(git diff ${{ github.event.before }}..${{ github.sha }} -- index.html 2>/dev/null || git diff HEAD~1 HEAD -- index.html)
 
           # Detect breaking news (JSON block changed — look for headline field in added lines)
           if echo "$DIFF" | grep '^+' | grep -q '"headline"'; then
@@ -67,6 +77,13 @@ jobs:
           if echo "$DIFF" | grep -qiE 'edition-evening|evening-edition'; then
             echo "Detected: Evening edition from diff"
             node scripts/push-notify.js "The Evening Briefing is live" --type edition
+            exit 0
+          fi
+
+          # Manual dispatch
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual dispatch"
+            node scripts/push-notify.js "${{ github.event.inputs.message }}" --type "${{ github.event.inputs.type }}" --no-verify
             exit 0
           fi
 
