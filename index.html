@@ -4375,6 +4375,11 @@ window._marketData = {};
   const todayStr = new Date().getFullYear() + '-' + String(new Date().getMonth()+1).padStart(2,'0') + '-' + String(new Date().getDate()).padStart(2,'0');
   Object.entries(byDate).forEach(([dateStr, arr]) => {
     arr.sort((a, b) => {
+      // Weekly roundups always pinned to top (above evening)
+      const aWeekly = a.classList.contains('weekly') ? 1 : 0;
+      const bWeekly = b.classList.contains('weekly') ? 1 : 0;
+      if (aWeekly !== bWeekly) return bWeekly - aWeekly;
+
       const ta = a.dataset.time || '00:00';
       const tb = b.dataset.time || '00:00';
       const ha = parseInt(ta.split(':')[0]);
