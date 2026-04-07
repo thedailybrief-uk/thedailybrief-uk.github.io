@@ -1007,13 +1007,15 @@
 
     /* ── Day Navigation — horizontal date strip ── */
     .day-nav {
-      display: none; margin-bottom: 16px; padding: 0;
+      display: block; margin-bottom: 16px; padding: 0;
       position: sticky; top: 0; z-index: 45;
       background: color-mix(in srgb, var(--bg) 90%, transparent);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-light);
+      min-height: 44px;
+      visibility: hidden;
     }
-    .day-nav.visible { display: block; }
+    .day-nav.visible { visibility: visible; }
     .day-tabs {
       display: flex; align-items: stretch; justify-content: center;
       overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -1061,6 +1063,10 @@
     #day-editions {
       transition: opacity 0.3s ease, transform 0.3s ease;
       contain: layout style;
+      min-height: 80vh;
+    }
+    #day-editions:not(:empty) {
+      min-height: 0;
     }
     #day-editions.fade-out {
       opacity: 0; transform: translateY(6px);
