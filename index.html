@@ -1936,7 +1936,7 @@
        Lifecycle: 3h primary + 2h extension = 5h max per story.
        - Stories < 3h old take priority and display immediately
        - At 3h: if a newer breaking story exists, swap to it. If not, keep current story.
-       - Hard expiry at 8h from "posted" (or at "expires" if set) — banner comes down
+       - Hard expiry at 24h from "posted" (or at "expires" if set) — banner comes down
        - Optional "expires" field overrides the 8h default (e.g. for major events)
        To add a new breaking story, prepend an entry here with the current ISO timestamp. -->
   <script id="breaking-stories" type="application/json">[
@@ -5111,11 +5111,11 @@ if ('serviceWorker' in navigator) {
   var currentStory = null;
 
   if (jsonMode) {
-    // Time thresholds: 3h primary display, then keep for up to 8h total
+    // Time thresholds: 3h primary display, then keep for up to 24h total
     // At 3h: if a newer story exists, swap to it. If not, keep current.
-    // At 8h: banner comes down regardless.
+    // At 24h: banner comes down regardless (ensures it stays up until next briefing cycle).
     const THREE_HOURS = 3 * 60 * 60 * 1000;
-    const EIGHT_HOURS = 8 * 60 * 60 * 1000;
+    const EIGHT_HOURS = 24 * 60 * 60 * 1000;
     const now = Date.now();
 
     // Expiry: use per-story "expires" field if set, else posted + 8h
