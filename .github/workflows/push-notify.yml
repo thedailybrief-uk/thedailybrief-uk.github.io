@@ -29,7 +29,7 @@ jobs:
       - name: Install web-push
         run: npm install web-push
 
-      - name: Detect notification type and send
+      - name: Detect notification type and send (with deduplication)
         env:
           PUSH_AUTH_TOKEN: ${{ secrets.PUSH_AUTH_TOKEN }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
@@ -37,54 +37,56 @@ jobs:
           VAPID_SUBJECT: "mailto:ed@thedailybrief.co.uk"
           PUSH_WORKER_URL: "https://daily-brief-push.thedailybrief.workers.dev"
         run: |
-          # Check ALL commit messages in this push, not just the latest
-          COMMIT_MSG=$(git log ${{ github.event.before }}..${{ github.sha }} --pretty=%B 2>/dev/null || git log -1 --pretty=%B)
-          DIFF=$(git diff ${{ github.event.before }}..${{ github.sha }} -- index.html 2>/dev/null || git diff HEAD~1 HEAD -- index.html)
-
-          # Detect breaking news (JSON block changed — look for headline field in added lines)
-          if echo "$DIFF" | grep '^+' | grep -q '"headline"'; then
-            echo "Detected: Breaking news update"
-            # Extract the headline from the JSON diff (first added "headline" value)
-            HEADLINE=$(echo "$DIFF" | grep '^+' | grep -oP '"headline"\s*:\s*"\K[^"]+' | head -1)
-            if [ -z "$HEADLINE" ]; then
-              HEADLINE="Breaking news on The Daily Brief"
-            fi
-            node scripts/push-notify.js "$HEADLINE" --type breaking
-            exit 0
-          fi
-
-          # Detect morning briefing
-          if echo "$COMMIT_MSG" | grep -qiE 'morning (brief|edition|briefing)'; then
-            echo "Detected: Morning briefing"
-            node scripts/push-notify.js "The Morning Briefing is live" --type edition
-            exit 0
-          fi
-
-          # Detect evening briefing
-          if echo "$COMMIT_MSG" | grep -qiE 'evening (brief|edition|briefing)'; then
-            echo "Detected: Evening briefing"
-            node scripts/push-notify.js "The Evening Briefing is live" --type edition
-            exit 0
-          fi
-
-          # Fallback: check diff for edition patterns
-          if echo "$DIFF" | grep -qiE 'edition-morning|morning-edition'; then
-            echo "Detected: Morning edition from diff"
-            node scripts/push-notify.js "The Morning Briefing is live" --type edition
-            exit 0
-          fi
-
-          if echo "$DIFF" | grep -qiE 'edition-evening|evening-edition'; then
-            echo "Detected: Evening edition from diff"
-            node scripts/push-notify.js "The Evening Briefing is live" --type edition
-            exit 0
-          fi
-
-          # Manual dispatch
+          # Manual dispatch — always send, no dedup needed
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "Manual dispatch"
             node scripts/push-notify.js "${{ github.event.inputs.message }}" --type "${{ github.event.inputs.type }}" --no-verify
             exit 0
           fi
 
-          echo "No briefing or breaking news detected — skipping notification"
+          # Only check the LATEST commit message (not all commits in push)
+          # This prevents fix/chore commits from triggering notifications
+          LATEST_MSG=$(git log -1 --pretty=%B)
+
+          # STRICT commit message matching — only feat: commits trigger notifications
+          # This prevents fix:, chore:, and other commits from sending duplicates
+          if ! echo "$LATEST_MSG" | grep -q '^feat:'; then
+            echo "Not a feat: commit — skipping notification"
+            exit 0
+          fi
+
+          DIFF=$(git diff HEAD~1 HEAD -- index.html)
+
+          # --- BREAKING NEWS ---
+          # Only trigger if the breaking-stories JSON block was actually modified
+          # AND the commit message contains "Breaking banner"
+          if echo "$LATEST_MSG" | grep -qiE 'breaking banner|breaking news'; then
+            if echo "$DIFF" | grep '^+' | grep -q '"headline"'; then
+              echo "Detected: Breaking news update"
+              HEADLINE=$(echo "$DIFF" | grep '^+' | grep -oP '"headline"\s*:\s*"\K[^"]+' | head -1)
+              if [ -z "$HEADLINE" ]; then
+                HEADLINE="Breaking news on The Daily Brief"
+              fi
+              # Clean the headline — remove timestamp suffix (e.g. "— 13:06 GMT")
+              HEADLINE=$(echo "$HEADLINE" | sed 's/ — [0-9][0-9]:[0-9][0-9] GMT$//')
+              node scripts/push-notify.js "$HEADLINE" --type breaking
+              exit 0
+            fi
+          fi
+
+          # --- MORNING BRIEFING ---
+          # Only trigger on feat: commits with "Morning briefing" in the message
+          if echo "$LATEST_MSG" | grep -qiE '^feat:.*morning briefing'; then
+            echo "Detected: Morning briefing"
+            node scripts/push-notify.js "The Morning Briefing is live" --type edition
+            exit 0
+          fi
+
+          # --- EVENING BRIEFING ---
+          if echo "$LATEST_MSG" | grep -qiE '^feat:.*evening briefing'; then
+            echo "Detected: Evening briefing"
+            node scripts/push-notify.js "The Evening Briefing is live" --type edition
+            exit 0
+          fi
+
+          echo "No notification trigger detected — skipping"
