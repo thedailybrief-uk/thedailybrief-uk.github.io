@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Daily Brief — Morning Reel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .story {
+    width: 1080px;
+    height: 1920px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #0c0c14;
+  }
+
+  .story > * { position: relative; z-index: 1; }
+
+  /* ════════════════════════════════════════════ */
+  /* HOOK PHASE (0-1.5s) — full screen takeover  */
+  /* ════════════════════════════════════════════ */
+
+  .hook {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #0d1b3e 0%, #2074b5 50%, #0d1b3e 100%);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: hookFadeOut 0.5s ease forwards 1.5s;
+  }
+
+  .hook::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hook-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 400px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 0.85;
+    opacity: 0;
+    transform: scale(2.5);
+    animation: numberSlam 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.05s;
+    text-shadow: 0 0 80px rgba(255,255,255,0.4), 0 0 160px rgba(32,116,181,0.3);
+  }
+
+  .hook-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards 0.3s;
+  }
+
+  .hook-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 16px;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards 0.5s;
+  }
+
+  @keyframes numberSlam {
+    0% { opacity: 0; transform: scale(2.5); }
+    50% { opacity: 1; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes hookFadeOut {
+    to { opacity: 0; pointer-events: none; }
+  }
+
+  /* ════════════════════════════════════════════ */
+  /* MAIN PHASE (1.5s onwards) — headlines stack  */
+  /* ════════════════════════════════════════════ */
+
+  /* Accent bars */
+  .top-bar {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 8px; background: #2074b5;
+    transform: scaleX(0); transform-origin: left;
+    animation: barExtend 0.5s ease forwards 1.7s;
+  }
+  .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 8px; background: #2074b5;
+    transform: scaleX(0); transform-origin: right;
+    animation: barExtend 0.5s ease forwards 1.8s;
+  }
+  @keyframes barExtend { to { transform: scaleX(1); } }
+
+  .side-accent {
+    position: absolute; top: 0; left: 0; width: 6px; height: 0%;
+    background: linear-gradient(180deg, #2074b5, #4dc4ff, #2074b5);
+    animation: sideGrow 0.8s ease forwards 1.9s;
+  }
+  @keyframes sideGrow { to { height: 100%; } }
+
+  .glow {
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(32,116,181,0.15) 0%, transparent 70%);
+    pointer-events: none; opacity: 0;
+    animation: fadeIn 1s ease forwards 1.7s;
+  }
+
+  /* Header */
+  .story-header {
+    position: absolute; top: 220px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.4s ease forwards 1.9s;
+  }
+  .brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 38px; font-weight: 800; color: #fff; letter-spacing: 1px;
+  }
+  .date {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px; font-weight: 700; color: rgba(255,255,255,0.5);
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  /* Banner */
+  .banner {
+    position: absolute; top: 290px; left: 0; right: 0;
+    background: #2074b5;
+    padding: 30px 80px;
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    box-shadow: 0 6px 30px rgba(32,116,181,0.4);
+    opacity: 0; transform: translateY(-20px);
+    animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.0s;
+  }
+  .banner-icon { font-size: 24px; }
+  .banner-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 36px; font-weight: 900;
+    letter-spacing: 8px; text-transform: uppercase; color: #fff;
+  }
+  @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Headlines — BIGGER TEXT ── */
+  .headlines {
+    position: absolute; top: 410px; left: 80px; right: 140px;
+    display: flex; flex-direction: column; gap: 0;
+  }
+
+  .headline-item {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    opacity: 0; transform: translateY(30px);
+  }
+  .headline-item:last-child { border-bottom: none; }
+
+  .headline-item:nth-child(1) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.4s; }
+  .headline-item:nth-child(2) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 3.2s; }
+  .headline-item:nth-child(3) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 4.0s; }
+  .headline-item:nth-child(4) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 4.8s; }
+  .headline-item:nth-child(5) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 5.6s; }
+
+  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+  .headline-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 52px; font-weight: 900; color: #2074b5;
+    line-height: 1; min-width: 50px;
+    padding-top: 2px;
+  }
+
+  .headline-text { flex: 1; }
+
+  .headline-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .headline-tag.geo { color: #c0354d; }
+  .headline-tag.uk { color: #4dc4ff; }
+
+  .headline-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 54px; font-weight: 800; color: #fff;
+    line-height: 1.12;
+  }
+  .headline-title em { font-style: normal; color: #4dc4ff; }
+
+  /* Footer */
+  .story-footer {
+    position: absolute; bottom: 420px; left: 80px; right: 140px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0);
+    opacity: 0; transform: translateY(15px);
+    animation: footerIn 0.5s ease forwards 6.8s;
+  }
+  @keyframes footerIn {
+    to { opacity: 1; transform: translateY(0); border-top-color: rgba(255,255,255,0.06); }
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px; font-weight: 800;
+    color: rgba(255,255,255,0.6); letter-spacing: 1px;
+  }
+  .footer-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px; font-weight: 700;
+    color: #4dc4ff; letter-spacing: 1px;
+  }
+
+  /* Ticker strip */
+  .ticker-strip {
+    position: absolute; bottom: 490px; left: 0; width: 100%; height: 3px;
+    overflow: hidden; z-index: 2;
+  }
+  .ticker-strip::after {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #2074b5; transform: scaleX(0); transform-origin: left;
+    animation: barExtend 0.6s ease forwards 6.5s;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* Scale for browser preview */
+  @media screen {
+    .story { transform: scale(0.35); transform-origin: top left; margin-bottom: -1248px; margin-right: -702px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MORNING HEADLINES REEL -->
+<div class="story">
+
+  <!-- HOOK: Full-screen blue gradient with giant "5" slamming in -->
+  <div class="hook">
+    <div class="hook-number">5</div>
+    <div class="hook-label">Stories</div>
+    <div class="hook-sub">You Should Hear About</div>
+  </div>
+
+  <!-- MAIN: Headlines stack in after hook fades -->
+  <div class="top-bar"></div>
+  <div class="bottom-bar"></div>
+  <div class="side-accent"></div>
+  <div class="glow"></div>
+
+  <div class="story-header">
+    <div class="brand">The Daily Brief</div>
+    <div class="date">Sat 12 April</div>
+  </div>
+
+  <div class="banner">
+    <span class="banner-icon">&#9788;</span>
+    <div class="banner-text">This Morning</div>
+  </div>
+
+  <div class="headlines">
+    <div class="headline-item">
+      <div class="headline-num">01</div>
+      <div class="headline-text">
+        <div class="headline-tag geo">Geopolitical</div>
+        <div class="headline-title">Islamabad Talks <em>Under Way</em> &mdash; US Meets Iran</div>
+      </div>
+    </div>
+
+    <div class="headline-item">
+      <div class="headline-num">02</div>
+      <div class="headline-text">
+        <div class="headline-tag geo">Geopolitical</div>
+        <div class="headline-title">Hungary Votes &mdash; Orb&aacute;n Faces <em>Historic Challenge</em></div>
+      </div>
+    </div>
+
+    <div class="headline-item">
+      <div class="headline-num">03</div>
+      <div class="headline-text">
+        <div class="headline-tag uk">UK Domestic</div>
+        <div class="headline-title">Junior Doctor Strike <em>Ends Tomorrow</em></div>
+      </div>
+    </div>
+
+    <div class="headline-item">
+      <div class="headline-num">04</div>
+      <div class="headline-text">
+        <div class="headline-tag geo">Geopolitical</div>
+        <div class="headline-title">First Tanker <em>Transits Hormuz</em> Since Ceasefire</div>
+      </div>
+    </div>
+
+    <div class="headline-item">
+      <div class="headline-num">05</div>
+      <div class="headline-text">
+        <div class="headline-tag uk">UK Domestic</div>
+        <div class="headline-title">Parliament Returns <em>Monday</em> &mdash; Scrutiny Awaits</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker-strip"></div>
+  <div class="story-footer">
+    <div class="footer-brand">The Daily Brief</div>
+    <div class="footer-cta">thedailybrief.co.uk</div>
+  </div>
+</div>
+
+<audio autoplay preload="auto" src="news-alert.wav"></audio>
+
+</body>
+</html>

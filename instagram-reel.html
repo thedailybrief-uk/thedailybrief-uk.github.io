@@ -24,7 +24,7 @@
     overflow: hidden;
     flex-shrink: 0;
     background: #0c0c14;
-    --default-bg: url('https://images.unsplash.com/photo-1684778522082-c6f91d8fc4c3?w=1080&q=80');
+    --default-bg: url('https://images.unsplash.com/photo-1686277605090-fc342306b337?w=1080&q=80');
     --slide-bg: var(--default-bg);
   }
 
@@ -40,7 +40,7 @@
     animation: bgReveal 2s ease forwards 0.3s;
   }
   @keyframes bgReveal {
-    to { opacity: 0.22; }
+    to { opacity: 0.40; }
   }
 
   .story > * {
@@ -180,13 +180,13 @@
   /* -- Timestamp -- */
   .timestamp {
     position: absolute;
-    top: 480px;
+    top: 500px;
     left: 80px;
     right: 80px;
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     font-weight: 700;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.7);
     letter-spacing: 3px;
     text-transform: uppercase;
     padding-top: 20px;
@@ -196,12 +196,12 @@
   }
 
   /* -- Content area -- */
+  /* Instagram Reels safe zones: top 200px (username), bottom 400px (caption/buttons), right 120px (like/comment/share) */
   .story-content {
     position: absolute;
-    top: 935px;
+    top: 560px;
     left: 80px;
-    right: 80px;
-    transform: translateY(-50%);
+    right: 140px;
   }
 
   .story-content .category {
@@ -220,10 +220,10 @@
   /* Headline lines slide in staggered */
   .story-content h1 {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 62px;
+    font-size: 72px;
     font-weight: 900;
     color: #fff;
-    line-height: 1.08;
+    line-height: 1.06;
     margin-bottom: 36px;
   }
 
@@ -256,9 +256,9 @@
 
   .story-content .summary {
     font-family: 'Inter', sans-serif;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 400;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.85);
     line-height: 1.55;
     opacity: 0;
     transform: translateY(20px);
@@ -301,7 +301,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 600;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.65);
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-top: 6px;
@@ -310,9 +310,9 @@
   /* -- Footer -- */
   .story-footer {
     position: absolute;
-    bottom: 280px;
+    bottom: 420px;
     left: 80px;
-    right: 80px;
+    right: 140px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -334,7 +334,7 @@
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 28px;
     font-weight: 800;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.75);
     letter-spacing: 1px;
   }
 
@@ -349,7 +349,7 @@
   /* -- Ticker strip -- */
   .ticker-strip {
     position: absolute;
-    bottom: 350px;
+    bottom: 490px;
     left: 0;
     width: 100%;
     height: 3px;
@@ -387,8 +387,9 @@
 </head>
 <body>
 
-<!-- BREAKING NEWS REEL — 10s animation sequence -->
-<div class="story" style="--slide-bg: url('https://images.unsplash.com/photo-1684778522082-c6f91d8fc4c3?w=1080&q=80')">
+<audio autoplay preload="auto" src="news-alert.wav"></audio>
+<!-- BREAKING NEWS REEL — 10s animation + 5s hold -->
+<div class="story" style="--slide-bg: url('https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?w=1080&q=80')">
   <div class="red-bar"></div>
   <div class="side-accent"></div>
   <div class="red-glow"></div>
@@ -399,33 +400,33 @@
     <div class="breaking-icon"></div>
     <div class="breaking-text">Breaking News</div>
   </div>
-  <div class="timestamp">1 April 2026 &mdash; 16:12 GMT</div>
+  <div class="timestamp">11 April 2026 &mdash; 01:07 BST</div>
 
   <div class="story-content">
-    <div class="category">Geopolitical</div>
+    <div class="category">Science &amp; Space</div>
     <h1>
-      <span class="line">Trump &lsquo;Strongly</span>
-      <span class="line">Considering&rsquo; Pulling</span>
-      <span class="line">US Out of <em>NATO</em></span>
+      <span class="line">Artemis 2</span>
+      <span class="line"><em>Splashdown</em></span>
+      <span class="line">Confirmed Safe</span>
     </h1>
     <div class="divider"></div>
-    <div class="summary">Calls the 77-year-old alliance a &lsquo;paper tiger&rsquo; after allies refused to join the war on Iran. PM Starmer: Britain is &lsquo;fully committed to NATO&rsquo;.</div>
+    <div class="summary">Four astronauts return safely from the Moon &mdash; the first crewed lunar mission since Apollo 17 in 1972. Crew splashed down in the Pacific off San Diego.</div>
     <div class="key-facts">
       <div class="fact">
-        <div class="fact-value">77yr</div>
-        <div class="fact-label">Alliance age</div>
+        <div class="fact-value">4</div>
+        <div class="fact-label">Astronauts safe</div>
       </div>
       <div class="fact">
-        <div class="fact-value">2023</div>
-        <div class="fact-label">Law passed</div>
+        <div class="fact-value">252,756</div>
+        <div class="fact-label">Miles from Earth</div>
       </div>
       <div class="fact">
-        <div class="fact-value">32</div>
-        <div class="fact-label">Member states</div>
+        <div class="fact-value">10 Days</div>
+        <div class="fact-label">Mission duration</div>
       </div>
       <div class="fact">
-        <div class="fact-value">UK</div>
-        <div class="fact-label">&lsquo;Fully committed&rsquo;</div>
+        <div class="fact-value">Since 1972</div>
+        <div class="fact-label">First crewed return</div>
       </div>
     </div>
   </div>

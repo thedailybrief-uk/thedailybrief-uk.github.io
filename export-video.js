@@ -78,13 +78,30 @@ const framesDir = '/tmp/breaking-news-frames';
   console.log('Encoding video with ffmpeg...');
 
   // Encode with H.264, high quality, Instagram-compatible
+  // Mix in news-alert.wav audio if it exists
   const ffmpegPath = path.join(__dirname, 'node_modules/ffmpeg-static/ffmpeg');
-  execSync(`"${ffmpegPath}" -y -framerate ${fps} -i "${framesDir}/frame-%04d.png" \
-    -c:v libx264 -preset slow -crf 14 \
-    -pix_fmt yuv420p \
-    -vf "scale=1080:1920:flags=lanczos" \
-    -movflags +faststart \
-    "${outputPath}"`, { stdio: 'inherit' });
+  const audioFile = path.join(__dirname, 'news-alert.wav');
+  const hasAudio = fs.existsSync(audioFile);
+
+  if (hasAudio) {
+    console.log('Mixing audio from news-alert.wav...');
+    execSync(`"${ffmpegPath}" -y -framerate ${fps} -i "${framesDir}/frame-%04d.png" \
+      -i "${audioFile}" \
+      -c:v libx264 -preset slow -crf 14 \
+      -c:a aac -b:a 192k \
+      -pix_fmt yuv420p \
+      -vf "scale=1080:1920:flags=lanczos" \
+      -shortest \
+      -movflags +faststart \
+      "${outputPath}"`, { stdio: 'inherit' });
+  } else {
+    execSync(`"${ffmpegPath}" -y -framerate ${fps} -i "${framesDir}/frame-%04d.png" \
+      -c:v libx264 -preset slow -crf 14 \
+      -pix_fmt yuv420p \
+      -vf "scale=1080:1920:flags=lanczos" \
+      -movflags +faststart \
+      "${outputPath}"`, { stdio: 'inherit' });
+  }
 
   console.log(`\nDone! Video exported to ${outputPath}`);
 
