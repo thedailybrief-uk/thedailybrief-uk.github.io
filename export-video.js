@@ -91,7 +91,6 @@ const framesDir = '/tmp/breaking-news-frames';
       -c:a aac -b:a 192k \
       -pix_fmt yuv420p \
       -vf "scale=1080:1920:flags=lanczos" \
-      -shortest \
       -movflags +faststart \
       "${outputPath}"`, { stdio: 'inherit' });
   } else {
